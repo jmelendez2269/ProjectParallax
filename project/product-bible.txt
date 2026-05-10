@@ -1,0 +1,1070 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+STELLOQUY
+
+
+
+steh-LOH-kwee
+
+
+
+A conversation with the stars.
+
+
+
+
+
+
+
+PRODUCT BIBLE
+
+
+
+Version 1.0  |  March 2026
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Prepared by Jack
+
+
+
+Part of the Project Parallax ecosystem
+
+
+
+
+
+
+
+
+1. Vision and Purpose
+
+
+
+
+
+1.1 What Is Stelloquy?
+
+
+
+Stelloquy is a personal intelligence platform that uses astrology as its operating framework. It replaces the static, intimidating charts and outdated interpretations of traditional astrology tools with a living, conversational, data-rich experience that helps people understand themselves, navigate decisions, and recognize patterns across their lives and the world around them.
+
+
+
+The name Stelloquy is a coined word from stella (Latin: star) and colloquy (conversation). It means a conversation with the stars. This captures the core interaction model: instead of silently staring at charts, people talk to the cosmos in plain language and it talks back.
+
+
+
+
+
+1.2 The Problem We Solve
+
+
+
+Astrology is experiencing a cultural renaissance, but the tools have not kept pace. The current landscape suffers from three fundamental failures:
+
+
+
+
+
+Interpretation gap: Birth charts are dense, symbol-heavy, and require years of study to read. Most people who are interested in astrology cannot actually interpret their own chart beyond their Sun sign.
+
+
+
+
+
+Fragmentation: Location astrology (astrocartography), timing astrology (horary/electional), natal astrology, and fixed star astrology all exist in separate, disconnected tools. No platform synthesizes them.
+
+
+
+
+
+No empirical foundation: Astrology has been stuck in anecdote-land for millennia. There is no structured, longitudinal dataset connecting astrological configurations to real-world outcomes. Every interpretation traces back to texts that are decades or centuries old.
+
+
+
+
+
+1.3 Our Thesis
+
+
+
+Truth emerges from pattern. When you give people the tools to track their experiences against a consistent framework over time, patterns become visible that no single reading or static chart could reveal. Stelloquy is the instrument that makes those patterns visible, whether they appear in an individual life, across a community, or in the events of the world.
+
+
+
+
+
+1.4 Relationship to Project Parallax
+
+
+
+Stelloquy is a sibling product within the Project Parallax brand ecosystem, alongside the Prismatic Learning platform. Project Parallax operates as a brand house unified by the principle that truth emerges from triangulating multiple perspectives. Stelloquy applies this principle through astrological and celestial frameworks. The products share a parent brand but operate on separate domains with independent identities.
+
+
+
+
+
+
+
+
+2. Philosophical Guardrails
+
+
+
+These principles are non-negotiable and govern every product decision, feature design, and AI interaction across the platform.
+
+
+
+
+
+
+
+
+
+The platform never tells users what to believe. Stelloquy presents astrological frameworks, surfaces patterns, and offers interpretations. It never claims these as absolute truth. Users decide what resonates.
+
+
+
+
+
+We welcome people of deep single-tradition faith. A devout Christian, Muslim, Hindu, or practitioner of any tradition should feel respected, not challenged. Astrology is offered as a lens, not a competing belief system.
+
+
+
+
+
+Confidence scoring is honest. When data is uncertain, we say so. A single conjunction to a fixed star is an influence, not an identity. Multiple overlapping markers build a stronger case, and we communicate the difference.
+
+
+
+
+
+Show the data, not just the conclusion. Users should always be able to see which placements, degrees, and markers led to any interpretation or recommendation. The system is transparent by design.
+
+
+
+
+
+The AI embodies equanimity. When synthesizing information across modules, the AI attends equally to convergence and divergence. It does not weight positive or negative interpretations. It presents the full picture.
+
+
+
+
+
+Opt-in governs everything sensitive. Starseed analysis, collective research participation, and mundane news connections to personal charts are all opt-in. Nobody sees content they did not ask for.
+
+
+
+
+
+Privacy is sacred. Birth data is among the most personal information a person can share. Collective research data is always anonymized and aggregated. Individual data is never sold, shared, or used for advertising.
+
+
+
+
+
+Modernize without erasing tradition. When we update fixed star interpretations or other traditional material, we preserve the original alongside the modern reframing. The old texts have value; they simply need translation for contemporary life.
+
+
+
+
+
+
+
+
+3. Platform Architecture
+
+
+
+
+
+3.1 Core Identity Layer
+
+
+
+Every user has a single profile anchored by their natal chart: birth date, exact time, and location. This is the foundation. Every module, every AI interaction, and every pattern query references this core identity. The natal chart is computed once and stored as structured data (planetary positions in degrees, signs, and houses) that can be queried programmatically.
+
+
+
+
+
+3.2 Module Overview
+
+
+
+The platform consists of six interconnected modules, each adding a dimension to the user’s astrological experience:
+
+
+
+
+
+Module
+
+Function
+
+Key Data
+
+Transits & Natal
+
+Traditional chart reading, current transits, progressions, solar returns
+
+Planetary positions, aspects, house placements, transit timelines
+
+Astrocartography
+
+Planetary lines mapped geographically for relocation and travel guidance
+
+GeoJSON line paths, city proximity data, PostGIS spatial queries
+
+Horary
+
+Moment-cast charts for specific questions with outcome tracking
+
+Question text, cast time, AI interpretation, user-logged outcomes
+
+Living Journal
+
+Auto-tagged journal entries linked to astrological metadata
+
+Entry text, mood, AI-extracted themes, transit snapshots, location
+
+World Events
+
+Mundane astrology news module with entity charts and agent curation
+
+Entity birth data, news headlines, transit analysis, relevant degrees
+
+Starseed Origins
+
+Fixed star conjunction analysis with lineage scoring (opt-in)
+
+Fixed star catalog, orb calculations, lineage markers, confidence scores
+
+
+
+
+
+3.3 Cross-Cutting Layers
+
+
+
+
+
+AI Conversation Layer
+
+
+
+The primary interface for most users. Natural language queries are routed across all relevant modules. The AI assembles structured context from the user’s chart data, journal history, location data, transit snapshots, and collective patterns, then synthesizes a personalized, conversational response. The AI never fabricates astrological data; it draws only from computed positions and the curated knowledge base.
+
+
+
+
+
+Collective Intelligence Layer
+
+
+
+Opt-in, anonymized data aggregation across all users and all modules. As users journal their experiences, log horary outcomes, and report on location experiences, the platform accumulates the first structured, longitudinal dataset connecting astrological configurations to real-world outcomes at scale. This layer surfaces patterns no individual could detect alone.
+
+
+
+
+
+Galaxy Chart Visualization
+
+
+
+A 3D force-graph visualization replacing the traditional circular birth chart. Planets appear as luminous nodes in a star field, with fixed stars highlighted based on individual orb conjunctions. Aspects are rendered as distinct visual connections: flowing light for trines, tight orbital bonds for conjunctions, crackling paths for squares, taut beams for oppositions. Users can navigate through their personal galaxy, click any node for interpretation cards, and fly toward distant lineage clusters. Each node accumulates journal entries and pattern data over time, creating a living, evolving map of the self.
+
+
+
+
+
+
+
+
+4. Fixed Star Interpretation Modernization
+
+
+
+
+
+4.1 The Problem with Existing Interpretations
+
+
+
+The existing fixed star literature traces primarily to Ptolemy, Robson’s 1923 compilation, and medieval-era sources. These texts are full of language like “danger of disgrace,” “violent death,” and “blindness and injuries to the eyes.” While these descriptions served court astrologers advising kings about warfare and political strategy, they are functionally useless for modern individuals seeking self-knowledge and life navigation.
+
+
+
+No major astrology platform has undertaken a systematic modernization of fixed star interpretations. Stelloquy will be the first.
+
+
+
+
+
+4.2 Modernization Methodology
+
+
+
+
+
+Phase 1: Archetypal Reframing
+
+
+
+Every fixed star in the catalog receives a modernized core interpretation through a psychological and archetypal lens. The energy signature is preserved while the language is translated for contemporary use. Example: Algol’s traditional “violent death and decapitation” becomes “intense transformation through the severance of what no longer serves. A placement that demands confrontation with shadow material and rewards those who face their fears directly.” The traditional text is always preserved alongside the modern version.
+
+
+
+
+
+Phase 2: Contextual Interpretation Matrix
+
+
+
+Traditional sources provide one interpretation per star regardless of which planet conjuncts it. Stelloquy generates interpretations that account for the star, the planet or angle it touches, and the house context. Sirius conjunct the Sun is a completely different experience than Sirius conjunct Saturn. This creates thousands of unique interpretive combinations synthesized from foundational principles.
+
+
+
+
+
+Phase 3: Empirical Enrichment
+
+
+
+As users with specific fixed star conjunctions journal their experiences over time, the platform builds a real-world portrait of what each placement actually looks like in practice. Interpretations evolve from purely theoretical to experientially grounded, enriched by anonymized collective data.
+
+
+
+
+
+Phase 4: AI Synthesis
+
+
+
+The final interpretation a user sees is not pulled verbatim from a database. It is generated by the AI drawing from the modernized knowledge base, the user’s specific chart context, their journal history, and collective data. Every interpretation is personalized and living.
+
+
+
+
+
+4.3 MVP Inclusion Decision: Ship Without Fixed Stars in V1
+
+
+
+Fixed star analysis and the starseed origins module should NOT ship in the MVP. Here is the reasoning:
+
+
+
+
+
+Content dependency: The modernized fixed star interpretations are a massive content project (200+ stars, each with multi-planet context variations). Shipping with outdated Robson-era text would undermine the platform’s positioning as a modern alternative.
+
+
+
+
+
+Quality bar: A half-finished fixed star module with sparse interpretations feels worse than no fixed star module. The feature should launch complete for the initial star catalog or not at all.
+
+
+
+
+
+MVP focus: The MVP needs to nail the core loop: birth data entry, natal chart visualization (galaxy chart), transit tracking, journaling with auto-tagging, and the AI conversation layer. These five capabilities alone create a product that is differentiated and valuable.
+
+
+
+
+
+Data flywheel: The journal and AI layers start collecting data from day one even without fixed stars. When the fixed star module launches post-MVP, it immediately benefits from the accumulated user base and journal data.
+
+
+
+
+
+Strategic timing: Launch fixed stars and starseed origins together as a major feature release (version 2.0). This creates a compelling update narrative and gives existing users a reason to re-engage deeply.
+
+
+
+
+
+
+
+Recommendation: Fixed stars and starseed origins ship together in Phase 2, approximately 3-4 months after MVP launch. The galaxy chart in MVP shows planets and aspects only; fixed star nodes light up when the module activates.
+
+
+
+
+
+
+
+
+5. Your Sky Poster Product
+
+
+
+
+
+5.1 Concept
+
+
+
+A high-resolution, astronomically precise rendering of the literal night sky as it appeared from the user’s birth location at their exact birth time. This is a physical product (poster print) and a standalone revenue stream that also functions as a top-of-funnel marketing tool for the platform.
+
+
+
+
+
+5.2 Differentiation from Existing Star Maps
+
+
+
+Etsy star maps are generated from basic star catalogs and show constellations as simple dots and lines. They are decorative but carry no astrological information and limited astronomical precision. Stelloquy’s sky poster is:
+
+
+
+
+
+Astronomically precise: Rendered from Swiss Ephemeris data. Every planet and star is in its true altitude/azimuth position for that moment and location.
+
+
+
+
+
+Astrologically enriched: Stars and planets significant to the user’s chart glow subtly brighter. The rising sign constellation is accented. The poster is beautiful to anyone, but to the owner, it contains hidden layers of personal meaning.
+
+
+
+
+
+Artistically distinctive: A proprietary visual style instantly recognizable as Stelloquy. Deep navy backgrounds, custom typography, and an optional outer ring showing zodiac degrees.
+
+
+
+
+
+Connected: A QR code on the back links to the user’s full interactive chart on the platform, converting gift recipients into users.
+
+
+
+
+
+5.3 Pricing
+
+Tier
+
+Price Range
+
+Details
+
+Digital Download
+
+$39 – $69
+
+High-res PDF, print-ready, multiple sizes
+
+Printed & Shipped
+
+$79 – $149
+
+Premium paper, print-on-demand fulfillment
+
+Framed Premium
+
+$149 – $249
+
+Museum-quality frame, glass, gift packaging
+
+
+
+
+
+
+
+
+6. AI Architecture
+
+
+
+
+
+6.1 Conversational Layer Design
+
+
+
+The AI is not a chatbot bolted onto a chart calculator. It is the primary interface through which most users interact with the platform. Every query triggers a context assembly pipeline:
+
+
+
+
+
+User submits a natural language query.
+
+
+
+
+
+The system classifies which modules are relevant (natal, cartography, horary, journal, news, starseed).
+
+
+
+
+
+Structured context is assembled from each relevant module’s data tables.
+
+
+
+
+
+RAG retrieval pulls relevant interpretation snippets from the knowledge base.
+
+
+
+
+
+Collective pattern data is queried for relevant aggregates.
+
+
+
+
+
+The assembled context and query are sent to the LLM, which synthesizes a personalized response.
+
+
+
+
+
+The frontend highlights relevant map locations, chart nodes, or timeline events as the response streams.
+
+
+
+
+
+6.2 Model Strategy
+
+Phase
+
+Approach
+
+Model
+
+Purpose
+
+Phase 1 (MVP)
+
+API with RAG
+
+Claude via Anthropic API
+
+Fast to market. Excellent synthesis. Start collecting interaction data.
+
+Phase 2
+
+Fine-tuned model
+
+Smaller model trained on interaction data
+
+Better astrological interpretation. Lower latency. Cost reduction for routine queries.
+
+Phase 3
+
+Hybrid architecture
+
+Fine-tuned for synthesis + frontier for complex queries
+
+Empirical pattern integration. Prediction from outcome data.
+
+
+
+
+
+6.3 Knowledge Base (RAG)
+
+
+
+The vector database stores chunked, embedded interpretive content organized by category: natal interpretation by planet/sign/house, transit interpretation by planet pair, fixed star interpretation by star and conjuncting body, horary rules and frameworks, and mundane astrology principles. Content is sourced from modernized traditional texts, original interpretive writing, and over time, empirically enriched summaries from collective data.
+
+
+
+
+
+
+
+
+7. World Events / Mundane News Module
+
+
+
+
+
+7.1 Agent Architecture
+
+
+
+A system of AI agents continuously monitors and processes world events through an astrological lens:
+
+
+
+
+
+Ingestion agents: Scan RSS feeds, news APIs, and social media for notable events. Categorize by entity type (person, country, company, invention/event).
+
+
+
+
+
+Research agents: Look up or research birth data for identified entities. Query AstroDatabank, Wikipedia, SEC filings, and public records. Flag confidence levels using the Rodden Rating system.
+
+
+
+
+
+Calculation agents: Compute current transits to entity natal charts, active progressions, and relevant horary charts using the Swiss Ephemeris engine.
+
+
+
+
+
+Writing agents: Generate interactive astrological articles with plain-language narrative, key signatures identified, and conversational interface context prepared.
+
+
+
+
+
+Connection agents: Match news events to individual users based on activated zodiac degrees. Enable personalized news feeds where stories surface based on astrological relevance to the user’s chart.
+
+
+
+
+
+7.2 Entity Types
+
+Entity Type
+
+Birth Data Source
+
+Example
+
+People
+
+AstroDatabank, public records, verified social media
+
+Public figures, politicians, celebrities
+
+Countries
+
+Established national charts (e.g., US Sibley chart)
+
+Multiple chart options stored for debated nations
+
+Companies
+
+Incorporation date from SEC/state filings
+
+Apple: April 1, 1976. Tesla: July 1, 2003
+
+Inventions
+
+Announcement, patent, or first demo date
+
+iPhone: Jan 9, 2007. Bitcoin: Jan 3, 2009
+
+Events
+
+Moment of occurrence
+
+Earthquakes, elections, treaties, launches
+
+
+
+
+
+
+
+
+8. Data Strategy and Privacy
+
+
+
+
+
+8.1 The Data Flywheel
+
+
+
+Every module feeds data into the collective intelligence layer. Every module makes every other module smarter. The more users journal and interact, the smarter the AI gets. The smarter the AI gets, the more valuable the journaling becomes. The news module brings people back daily. The collective intelligence layer produces insights nobody else can generate because nobody else has the dataset. This creates a network effect around astrological data that has never existed.
+
+
+
+
+
+8.2 Personal Pattern Recognition
+
+
+
+Each user builds their own evidence base over time. The system automatically surfaces patterns: every time Mars transits your 10th house, you report career conflict. It has happened four times. Mars enters your 10th house next month. Here is what you logged last time and what strategies you noted. This transforms astrology from abstract interpretation into a personal research tool.
+
+
+
+
+
+8.3 Collective Pattern Recognition (The Fate Dataset)
+
+
+
+With sufficient opt-in users, the platform can surface questions astrology has never been able to rigorously test: Do people with Venus lines through a city actually report better romantic experiences? Do horary charts cast under certain conditions correlate with accurate outcomes? Do Jupiter transits to the midheaven coincide with career advancement? The platform does not need to prove or disprove astrology. It surfaces patterns from real data and lets people draw their own conclusions.
+
+
+
+
+
+8.4 Privacy Architecture
+
+
+
+
+
+Birth data is encrypted at rest and in transit.
+
+
+
+
+
+Collective research data is anonymized and aggregated before any analysis. No individual can be identified from research outputs.
+
+
+
+
+
+Users can delete their data at any time with immediate effect on personal data and eventual removal from aggregated datasets.
+
+
+
+
+
+No data is sold, shared with third parties, or used for advertising. Ever.
+
+
+
+
+
+Opt-in controls are granular: users choose which modules contribute to collective research independently.
+
+
+
+
+
+
+
+
+9. Monetization Strategy
+
+
+
+
+
+9.1 Subscription Tiers
+
+Tier
+
+Price
+
+Includes
+
+Stargazer (Free)
+
+$0
+
+Birth chart, basic transit view, limited AI queries (5/day), galaxy chart (planets only), basic journal
+
+Navigator
+
+$14/mo
+
+Unlimited AI queries, full transit tracking, astrocartography, horary casting, full journal with auto-tagging, galaxy chart with aspects
+
+Oracle
+
+$30/mo
+
+Everything in Navigator plus: fixed star analysis, starseed origins, world events module, personalized news feed, collective pattern insights, priority AI, advanced pattern reports
+
+
+
+
+
+
+
+
+
+9.2 Additional Revenue Streams
+
+
+
+
+
+Your Sky Posters: $39–$249 per order depending on format. High-margin product with gifting potential and built-in user acquisition via QR code.
+
+
+
+
+
+One-time Reports: Deep-dive PDF reports for specific life events (relocation analysis, year-ahead forecast, compatibility report). $9.99–$29.99 each.
+
+
+
+
+
+API Access: For developers building on the Stelloquy calculation engine or knowledge base. Tiered pricing based on usage.
+
+
+
+
+
+Research Partnerships: As the Fate Dataset grows, academic and institutional research partnerships may generate licensing revenue.
+
+
+
+
+
+
+
+
+10. Technology Stack
+
+Layer
+
+Technology
+
+Rationale
+
+Frontend
+
+Next.js, React, TypeScript
+
+SSR for SEO, fast load times, modular component architecture
+
+Galaxy Chart
+
+Three.js (WebGL), custom shaders
+
+3D force-graph, bloom post-processing, raycasting for interaction
+
+Map Layer
+
+Mapbox GL JS
+
+GeoJSON rendering, custom styling, smooth interactions for astrocartography
+
+Backend
+
+Python, FastAPI
+
+Mature pyswisseph bindings. Async-first for AI streaming.
+
+Ephemeris Engine
+
+Swiss Ephemeris (pyswisseph)
+
+Industry standard. Covers natal, transit, horary, and fixed star calculations
+
+Database
+
+PostgreSQL + PostGIS + pgvector
+
+Relational data, spatial queries for astrocartography, vector store for RAG
+
+AI Layer
+
+Claude API (Anthropic)
+
+Best-in-class synthesis. Streaming support. Context window for rich chart data.
+
+Sky Poster
+
+Python Skyfield + Cairo/SVG pipeline
+
+Astronomical precision rendering. Server-side high-res generation.
+
+News Agents
+
+Python async workers, NewsAPI, RSS
+
+Continuous ingestion, entity research, and astrological analysis pipeline
+
+Auth & Payments
+
+Clerk + Stripe
+
+Fast auth integration. Subscription management. Poster checkout.
+
+Infrastructure
+
+Vercel (frontend) + Railway/Fly.io (backend)
+
+Edge deployment for frontend. Persistent compute for backend workers.
+
+
+
+
+
+
+
+
+11. Competitive Landscape
+
+Competitor
+
+What They Do
+
+What Stelloquy Does Differently
+
+Co-Star
+
+Daily horoscopes, social features, basic chart
+
+No AI conversation, no journaling, no astrocartography, no data collection, no fixed stars
+
+The Pattern
+
+AI-generated personality insights, timing alerts
+
+Black-box algorithm. No chart transparency. No horary, no cartography, no collective research
+
+TimePassages
+
+Traditional chart software with interpretive text
+
+Desktop-era UX. Static reports. No AI, no journaling, no connected modules
+
+Astro.com
+
+Comprehensive chart calculation, AstroClick Travel
+
+Powerful engine but 1990s UX. No AI. Astrocartography is basic. No journal or data layer.
+
+Etsy Star Maps
+
+Decorative sky prints based on birth data
+
+Not astronomically precise. No astrological enrichment. No connection to a platform.
+
+
+
+
+
+
+
+Stelloquy’s defensible moat is the data flywheel. No competitor is collecting structured, longitudinal data connecting astrological configurations to real-world outcomes. As the dataset grows, the AI gets smarter, which makes the product more valuable, which attracts more users, which grows the dataset further.
+
+
+
+
+
+
+
+
+12. Brand Identity
+
+
+
+
+
+12.1 Name and Etymology
+
+
+
+Name: Stelloquy (steh-LOH-kwee)
+
+
+
+Origin: Coined from stella (Latin: star) + colloquy (conversation)
+
+
+
+Meaning: A conversation with the stars
+
+
+
+Tagline: Your stars have something to say.
+
+
+
+
+
+12.2 Brand Voice
+
+
+
+Stelloquy speaks with warmth, intelligence, and wonder. It is never preachy, never dismissive of skepticism, and never dogmatic about astrological claims. The voice balances reverence for the tradition with excitement about what technology and data can add. It treats users as intelligent adults exploring a framework, not believers requiring validation.
+
+
+
+
+
+12.3 Positioning
+
+
+
+Stelloquy is not an astrology app. It is a personal intelligence platform that uses astrology as its operating framework. The astrology is the engine, but the value propositions are self-knowledge, better decision-making, pattern recognition, a new way to consume news, and participation in genuine research. This framing opens the platform to a much wider audience, including people who are astro-curious but would not download a horoscope app.
+
+
+
+
+

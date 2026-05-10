@@ -1,0 +1,435 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Project Parallax — App Icons</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600&family=Cinzel:wght@500;600&family=Fira+Mono:wght@400;500&display=swap');
+
+:root {
+  --void:    #0A0A0E;
+  --bone:    #F2EFE6;
+  --bone-dim:rgba(242,239,230,0.5);
+  --rule:    rgba(255,255,255,0.07);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--void);
+  background-image:
+    radial-gradient(ellipse 60% 40% at 20% 10%, rgba(153,102,255,0.06) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 35% at 80% 90%, rgba(78,231,253,0.05) 0%, transparent 60%);
+  color: var(--bone);
+  font-family: 'Space Grotesk', sans-serif;
+  padding: 64px 56px 96px;
+  min-height: 100vh;
+}
+
+h1 {
+  font-family: 'Cinzel', serif;
+  font-weight: 500;
+  font-size: 28px;
+  letter-spacing: 0.28em;
+  margin-bottom: 6px;
+}
+
+.subtitle {
+  font-family: 'Fira Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.3em;
+  color: var(--bone-dim);
+  margin-bottom: 72px;
+}
+
+.product { margin-bottom: 80px; }
+
+.product-header {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 32px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--rule);
+}
+
+.product-name {
+  font-family: 'Cinzel', serif;
+  font-weight: 600;
+  font-size: 18px;
+  letter-spacing: 0.28em;
+}
+
+.product-sub {
+  font-family: 'Fira Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  color: var(--bone-dim);
+  margin-top: 4px;
+}
+
+.product-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+
+.icon-row { display: flex; align-items: flex-end; gap: 24px; flex-wrap: wrap; margin-bottom: 20px; }
+
+.icon-cell { display: flex; flex-direction: column; align-items: center; gap: 9px; }
+.icon-cell .lbl {
+  font-family: 'Fira Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  color: var(--bone-dim);
+}
+
+.dark-band {
+  background: #060608;
+  border: 1px solid var(--rule);
+  border-radius: 12px;
+  padding: 22px 26px;
+  display: inline-flex;
+  align-items: flex-end;
+  gap: 24px;
+  flex-wrap: wrap;
+  margin-top: 6px;
+}
+</style>
+</head>
+<body>
+
+<h1>APP ICONS</h1>
+<p class="subtitle">PROJECT PARALLAX FAMILY · FAVICON + APP ICON SET · ALL SIZES</p>
+
+<!-- KAIROS -->
+<div class="product">
+  <div class="product-header">
+    <div class="product-dot" style="background:#9966FF; box-shadow:0 0 10px rgba(153,102,255,0.8);"></div>
+    <div>
+      <div class="product-name" style="color:#9966FF;">KAIROS</div>
+      <div class="product-sub">VIOLET · PERSONAL TIMING · THE OPPORTUNE MOMENT</div>
+    </div>
+  </div>
+  <div class="icon-row" id="kairos-row"></div>
+  <div class="dark-band" id="kairos-dark"></div>
+</div>
+
+<!-- PRISMARIUM -->
+<div class="product">
+  <div class="product-header">
+    <div class="product-dot" style="background:#4EE7FD; box-shadow:0 0 10px rgba(78,231,253,0.8);"></div>
+    <div>
+      <div class="product-name" style="color:#4EE7FD;">PRISMARIUM</div>
+      <div class="product-sub">CYAN · KNOWLEDGE SYNTHESIS · WHERE WISDOM CONVERGES</div>
+    </div>
+  </div>
+  <div class="icon-row" id="prism-row"></div>
+  <div class="dark-band" id="prism-dark"></div>
+</div>
+
+<!-- CHRONOS -->
+<div class="product">
+  <div class="product-header">
+    <div class="product-dot" style="background:#FF9B2B; box-shadow:0 0 10px rgba(255,155,43,0.8);"></div>
+    <div>
+      <div class="product-name" style="color:#FF9B2B;">CHRONOS</div>
+      <div class="product-sub">AMBER · PATTERN RESEARCH · THE FLOW OF TIME</div>
+    </div>
+  </div>
+  <div class="icon-row" id="chronos-row"></div>
+  <div class="dark-band" id="chronos-dark"></div>
+</div>
+
+<!-- PROJECT PARALLAX -->
+<div class="product">
+  <div class="product-header">
+    <div class="product-dot" style="background:linear-gradient(135deg,#9966FF,#4EE7FD,#FF9B2B); box-shadow:0 0 10px rgba(153,102,255,0.5);"></div>
+    <div>
+      <div class="product-name" style="background:linear-gradient(90deg,#9966FF,#4EE7FD,#FF9B2B);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">PROJECT PARALLAX</div>
+      <div class="product-sub">SPECTRUM · PARENT BRAND · TWO PERSPECTIVES, ONE CONTINUUM</div>
+    </div>
+  </div>
+  <div class="icon-row" id="parallax-row"></div>
+  <div class="dark-band" id="parallax-dark"></div>
+</div>
+
+<script>
+const SIZES = [16, 32, 48, 64, 128, 180, 192, 512];
+
+/* ─── SIMPLE TRIANGLE ──────────────────────────────────────────────────
+   Solid filled upward-pointing triangle with subtle inner glow.
+   Used for Kairos, Prismarium, and Chronos.
+   color: fill color hex
+*/
+function simpleTriangle(color, s) {
+  const pad = s * 0.16;
+  const cx = s / 2;
+
+  // Apex at top-center, base across bottom
+  const tx = cx,            ty = pad;
+  const bly = s - pad,      blx = pad;
+  const brx = s - pad,      bry = s - pad;
+
+  // Gradient IDs
+  const fid  = `fST${color.replace('#','')}${s}`;
+  const gid  = `gST${color.replace('#','')}${s}`;
+  const gidG = `gSTg${color.replace('#','')}${s}`;
+
+  // Derive a lighter tint and darker shade from the color for gradient
+  // We'll do this purely via SVG stops with opacity modulation
+
+  return `
+  <defs>
+    <filter id="${fid}" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="${(s*0.06).toFixed(2)}" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <!-- fill gradient: lighter at top, richer at bottom -->
+    <linearGradient id="${gid}" x1="0.5" y1="0" x2="0.5" y2="1">
+      <stop offset="0%"   stop-color="${color}" stop-opacity="0.75"/>
+      <stop offset="100%" stop-color="${color}" stop-opacity="1"/>
+    </linearGradient>
+    <!-- glow gradient for soft halo -->
+    <linearGradient id="${gidG}" x1="0.5" y1="0" x2="0.5" y2="1">
+      <stop offset="0%"   stop-color="${color}" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="${color}" stop-opacity="0.1"/>
+    </linearGradient>
+  </defs>
+
+  <!-- outer glow -->
+  <polygon points="${tx},${ty} ${blx},${bly} ${brx},${bry}"
+    fill="${color}" opacity="0.18" filter="url(#${fid})"/>
+
+  <!-- main filled triangle -->
+  <polygon points="${tx},${ty} ${blx},${bly} ${brx},${bry}"
+    fill="url(#${gid})"/>
+
+  <!-- bright edge highlight along left edge (light source top-left) -->
+  <line x1="${tx}" y1="${ty}" x2="${blx}" y2="${bly}"
+    stroke="white" stroke-width="${Math.max(0.8, s*0.018).toFixed(2)}" opacity="0.22" stroke-linecap="round"/>
+
+  <!-- subtle top-apex sparkle -->
+  <circle cx="${tx}" cy="${ty}" r="${Math.max(1, s*0.035).toFixed(2)}"
+    fill="white" opacity="${s >= 32 ? 0.55 : 0.4}"/>
+  `;
+}
+
+function kairosIcon(s)   { return simpleTriangle('#9966FF', s); }
+function prismIcon(s)    { return simpleTriangle('#4EE7FD', s); }
+function chronosIcon(s)  { return simpleTriangle('#FF9B2B', s); }
+
+/* ─── PROJECT PARALLAX — LOGO-FAITHFUL COMPOSITION ─────────────────────
+   Mirrors the master logo:
+   • Outer upward triangle (cyan-left → amber-right gradient stroke, violet apex)
+   • Inner merkaba (Star of David) seated at the triangle's heart
+   • Thin compass ring threading through the cardinal nodes
+   • Four cardinal node dots: top (violet), bottom (cyan), left (cyan), right (amber)
+   At very small sizes (≤32px), collapses to the inner merkaba only for legibility.
+*/
+function parallaxIcon(s) {
+  const cx = s / 2, cy = s / 2;
+  const pad = s * 0.08;
+  const R   = (s / 2) - pad;
+
+  function tri(r, rotDeg, ox=0, oy=0) {
+    return [0,1,2].map(i => {
+      const a = (rotDeg + i * 120) * Math.PI / 180;
+      return [cx + ox + r * Math.cos(a), cy + oy + r * Math.sin(a)];
+    });
+  }
+  const pts = arr => arr.map(p => p[0].toFixed(2) + ',' + p[1].toFixed(2)).join(' ');
+
+  const sw   = Math.max(1.2, s * 0.022);   // outer triangle stroke
+  const swM  = Math.max(0.9, s * 0.017);   // merkaba stroke
+  const sw2  = Math.max(0.5, s * 0.010);   // ring stroke
+  const nr   = Math.max(1.6, s * 0.038);   // cardinal node radius
+  const fid  = `fPX${s}`;
+
+  const fullComposition = s >= 48;
+  const showRing  = s >= 32;
+  const showNodes = s >= 48;
+
+  // ── OUTER TRIANGLE (full-bleed upward) ──
+  const outR = R * 0.96;
+  const outer = tri(outR, -90);          // [top, bot-right, bot-left]
+  const oTop = outer[0], oBR = outer[1], oBL = outer[2];
+
+  // ── INNER MERKABA — sized + positioned to sit in the visual center
+  // In the source logo the star nests inside the outer triangle's lower-mid.
+  // Center it on the triangle's centroid (slightly below geometric center).
+  const triCx = (oTop[0] + oBR[0] + oBL[0]) / 3;
+  const triCy = (oTop[1] + oBR[1] + oBL[1]) / 3;
+  const mR = R * 0.42;
+  const mUp = [0,1,2].map(i => {
+    const a = (-90 + i*120) * Math.PI/180;
+    return [triCx + mR*Math.cos(a), triCy + mR*Math.sin(a)];
+  });
+  const mDn = [0,1,2].map(i => {
+    const a = (90 + i*120) * Math.PI/180;
+    return [triCx + mR*Math.cos(a), triCy + mR*Math.sin(a)];
+  });
+
+  // ── CARDINAL NODES on a circle threading through them ──
+  const ringR = R * 0.92;
+  const nTop = [cx, cy - ringR];
+  const nBot = [cx, cy + ringR];
+  const nL   = [cx - ringR, cy];
+  const nR_  = [cx + ringR, cy];
+
+  // Small-size fallback: just render the merkaba centered at canvas
+  if (!fullComposition) {
+    const smR = R * 0.78;
+    const sUp = tri(smR, -90);
+    const sDn = tri(smR,  90);
+    return `
+    <defs>
+      <filter id="${fid}" x="-80%" y="-80%" width="260%" height="260%">
+        <feGaussianBlur in="SourceGraphic" stdDeviation="${(s*0.045).toFixed(2)}" result="b"/>
+        <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+      </filter>
+      <linearGradient id="gPXdn${s}" x1="0" y1="0.5" x2="1" y2="0.5">
+        <stop offset="0%"   stop-color="#4EE7FD"/>
+        <stop offset="100%" stop-color="#FF9B2B"/>
+      </linearGradient>
+    </defs>
+    ${showRing ? `<circle cx="${cx}" cy="${cy}" r="${(R*0.95).toFixed(2)}" fill="none" stroke="rgba(242,239,230,0.10)" stroke-width="${sw2.toFixed(2)}"/>` : ''}
+    <polygon points="${pts(sDn)}" fill="none" stroke="url(#gPXdn${s})" stroke-width="${swM.toFixed(2)}" stroke-linejoin="round" filter="url(#${fid})" opacity="0.95"/>
+    <polygon points="${pts(sUp)}" fill="none" stroke="#c8a8ff" stroke-width="${swM.toFixed(2)}" stroke-linejoin="round" filter="url(#${fid})"/>
+    <circle cx="${cx}" cy="${cy}" r="${(nr*0.55).toFixed(2)}" fill="#ffffff" opacity="0.9"/>
+    `;
+  }
+
+  return `
+  <defs>
+    <filter id="${fid}" x="-80%" y="-80%" width="260%" height="260%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="${(s*0.045).toFixed(2)}" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="${fid}s" x="-80%" y="-80%" width="260%" height="260%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="${(s*0.022).toFixed(2)}" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+
+    <!-- outer triangle stroke: cyan (bot-left) → violet (apex) → amber (bot-right) -->
+    <linearGradient id="gPXout${s}" x1="0" y1="1" x2="1" y2="1" gradientUnits="objectBoundingBox">
+      <stop offset="0%"   stop-color="#4EE7FD"/>
+      <stop offset="50%"  stop-color="#9966FF"/>
+      <stop offset="100%" stop-color="#FF9B2B"/>
+    </linearGradient>
+    <!-- merkaba down-tri gradient: cyan→amber across -->
+    <linearGradient id="gPXmdn${s}" x1="0" y1="0.5" x2="1" y2="0.5">
+      <stop offset="0%"   stop-color="#4EE7FD"/>
+      <stop offset="100%" stop-color="#FF9B2B"/>
+    </linearGradient>
+    <!-- merkaba up-tri: violet -->
+    <linearGradient id="gPXmup${s}" x1="0.5" y1="0" x2="0.5" y2="1">
+      <stop offset="0%"   stop-color="#d4b0ff"/>
+      <stop offset="100%" stop-color="#9966FF"/>
+    </linearGradient>
+    <!-- outer triangle fill tint (very low alpha) -->
+    <linearGradient id="gPXfill${s}" x1="0" y1="1" x2="1" y2="0">
+      <stop offset="0%"   stop-color="#4EE7FD" stop-opacity="0.08"/>
+      <stop offset="50%"  stop-color="#9966FF" stop-opacity="0.10"/>
+      <stop offset="100%" stop-color="#FF9B2B" stop-opacity="0.08"/>
+    </linearGradient>
+  </defs>
+
+  ${showRing ? `
+  <!-- compass ring (soft) -->
+  <circle cx="${cx}" cy="${cy}" r="${ringR.toFixed(2)}"
+    fill="none" stroke="rgba(242,239,230,0.14)" stroke-width="${sw2.toFixed(2)}"/>
+  <circle cx="${cx}" cy="${cy}" r="${ringR.toFixed(2)}"
+    fill="none" stroke="rgba(153,102,255,0.10)" stroke-width="${(sw2*3.5).toFixed(2)}" filter="url(#${fid})"/>
+  ` : ''}
+
+  <!-- OUTER TRIANGLE: soft glow halo -->
+  <polygon points="${pts(outer)}"
+    fill="none" stroke="url(#gPXout${s})" stroke-width="${(sw*2.2).toFixed(2)}"
+    stroke-linejoin="round" opacity="0.45" filter="url(#${fid})"/>
+  <!-- OUTER TRIANGLE: faint inner fill -->
+  <polygon points="${pts(outer)}" fill="url(#gPXfill${s})"/>
+  <!-- OUTER TRIANGLE: main stroke -->
+  <polygon points="${pts(outer)}"
+    fill="none" stroke="url(#gPXout${s})" stroke-width="${sw.toFixed(2)}"
+    stroke-linejoin="round" filter="url(#${fid}s)"/>
+  <!-- OUTER TRIANGLE: bright inner hairline -->
+  <polygon points="${pts(outer)}"
+    fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="${(sw*0.22).toFixed(2)}"
+    stroke-linejoin="round"/>
+
+  <!-- INNER MERKABA: downward (cyan→amber) -->
+  <polygon points="${pts(mDn)}"
+    fill="none" stroke="url(#gPXmdn${s})" stroke-width="${swM.toFixed(2)}"
+    stroke-linejoin="round" filter="url(#${fid}s)" opacity="0.95"/>
+  <polygon points="${pts(mDn)}"
+    fill="none" stroke="rgba(255,255,255,0.45)" stroke-width="${(swM*0.25).toFixed(2)}"
+    stroke-linejoin="round"/>
+
+  <!-- INNER MERKABA: upward (violet) -->
+  <polygon points="${pts(mUp)}"
+    fill="rgba(153,102,255,0.10)"
+    stroke="url(#gPXmup${s})" stroke-width="${swM.toFixed(2)}"
+    stroke-linejoin="round" filter="url(#${fid}s)"/>
+  <polygon points="${pts(mUp)}"
+    fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="${(swM*0.25).toFixed(2)}"
+    stroke-linejoin="round"/>
+
+  ${showNodes ? `
+  <!-- CARDINAL NODES: top(violet), right(amber), bottom(cyan), left(cyan) -->
+  <!-- top -->
+  <circle cx="${nTop[0]}" cy="${nTop[1].toFixed(2)}" r="${nr.toFixed(2)}" fill="#9966FF" opacity="0.45" filter="url(#${fid})"/>
+  <circle cx="${nTop[0]}" cy="${nTop[1].toFixed(2)}" r="${(nr*0.55).toFixed(2)}" fill="none" stroke="#c8a8ff" stroke-width="${(sw2*1.4).toFixed(2)}"/>
+  <circle cx="${nTop[0]}" cy="${nTop[1].toFixed(2)}" r="${(nr*0.22).toFixed(2)}" fill="#ffffff"/>
+
+  <!-- right -->
+  <circle cx="${nR_[0].toFixed(2)}" cy="${nR_[1]}" r="${nr.toFixed(2)}" fill="#FF9B2B" opacity="0.45" filter="url(#${fid})"/>
+  <circle cx="${nR_[0].toFixed(2)}" cy="${nR_[1]}" r="${(nr*0.55).toFixed(2)}" fill="none" stroke="#ffd28a" stroke-width="${(sw2*1.4).toFixed(2)}"/>
+  <circle cx="${nR_[0].toFixed(2)}" cy="${nR_[1]}" r="${(nr*0.22).toFixed(2)}" fill="#ffffff"/>
+
+  <!-- bottom -->
+  <circle cx="${nBot[0]}" cy="${nBot[1].toFixed(2)}" r="${nr.toFixed(2)}" fill="#4EE7FD" opacity="0.45" filter="url(#${fid})"/>
+  <circle cx="${nBot[0]}" cy="${nBot[1].toFixed(2)}" r="${(nr*0.55).toFixed(2)}" fill="none" stroke="#a8f5ff" stroke-width="${(sw2*1.4).toFixed(2)}"/>
+  <circle cx="${nBot[0]}" cy="${nBot[1].toFixed(2)}" r="${(nr*0.22).toFixed(2)}" fill="#ffffff"/>
+
+  <!-- left -->
+  <circle cx="${nL[0].toFixed(2)}" cy="${nL[1]}" r="${nr.toFixed(2)}" fill="#4EE7FD" opacity="0.45" filter="url(#${fid})"/>
+  <circle cx="${nL[0].toFixed(2)}" cy="${nL[1]}" r="${(nr*0.55).toFixed(2)}" fill="none" stroke="#a8f5ff" stroke-width="${(sw2*1.4).toFixed(2)}"/>
+  <circle cx="${nL[0].toFixed(2)}" cy="${nL[1]}" r="${(nr*0.22).toFixed(2)}" fill="#ffffff"/>
+  ` : ''}
+
+  <!-- center confluence -->
+  <circle cx="${triCx.toFixed(2)}" cy="${triCy.toFixed(2)}" r="${(nr*1.2).toFixed(2)}" fill="#ffffff" opacity="0.10" filter="url(#${fid})"/>
+  <circle cx="${triCx.toFixed(2)}" cy="${triCy.toFixed(2)}" r="${(nr*0.35).toFixed(2)}" fill="#ffffff" opacity="0.95"/>
+  `;
+}
+
+/* ─── RENDERER ─────────────────────────────────────────────────────── */
+function makeIconSVG(fn, s) {
+  const br = Math.round(s * 0.2237);
+  return `<svg width="${s}" height="${s}" viewBox="0 0 ${s} ${s}" xmlns="http://www.w3.org/2000/svg">
+    <rect width="${s}" height="${s}" rx="${br}" fill="#0A0A0E"/>
+    ${fn(s)}
+  </svg>`;
+}
+
+function renderRow(rowId, darkId, fn) {
+  const row  = document.getElementById(rowId);
+  const dark = document.getElementById(darkId);
+  SIZES.forEach(s => {
+    const cell = document.createElement('div');
+    cell.className = 'icon-cell';
+    cell.innerHTML = `${makeIconSVG(fn, s)}<span class="lbl">${s}px</span>`;
+    row.appendChild(cell);
+    if (s <= 64) {
+      const dc = document.createElement('div');
+      dc.className = 'icon-cell';
+      dc.innerHTML = `${makeIconSVG(fn, s)}<span class="lbl" style="color:rgba(242,239,230,0.3);">${s}px</span>`;
+      dark.appendChild(dc);
+    }
+  });
+}
+
+renderRow('kairos-row',   'kairos-dark',   kairosIcon);
+renderRow('prism-row',    'prism-dark',    prismIcon);
+renderRow('chronos-row',  'chronos-dark',  chronosIcon);
+renderRow('parallax-row', 'parallax-dark', parallaxIcon);
+</script>
+</body>
+</html>

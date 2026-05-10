@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Prismarium · Project Parallax — Design System</title>
+<link rel="stylesheet" href="colors_and_type.css">
+<style>
+  body {
+    padding: 64px 48px 120px;
+    background-image:
+      radial-gradient(circle at 50% 0%, rgba(6,182,212,0.06) 0%, transparent 55%),
+      radial-gradient(circle at 88% 18%, rgba(180,143,74,0.03) 0%, transparent 50%);
+  }
+  body::after {
+    content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 0; opacity: .28; mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    background-size: 200px 200px;
+  }
+  .wrap { max-width: 1080px; margin: 0 auto; position: relative; z-index: 1; }
+
+  .eyebrow { font-family: var(--font-mono); font-size: 10px; letter-spacing: .35em; text-transform: uppercase; color: var(--cyan-500); opacity: .75; }
+  h1.hero {
+    font-family: var(--font-display); font-weight: 600; font-size: 64px; letter-spacing: -0.01em;
+    color: var(--text-primary); margin: 14px 0 8px;
+  }
+  .hero .prism {
+    background: linear-gradient(90deg, #FF3A5C, #FF8C2A, #F5D020, #2AFFA0, #20E0F5, #3A7FFF, #B03AFF);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .tag { font-family: var(--font-serif); font-style: italic; font-size: 22px; color: #a1a1aa; margin-bottom: 40px; line-height: 1.5; max-width: 640px; }
+
+  .rule { height: 1px; margin: 28px 0;
+    background: linear-gradient(90deg, transparent, rgba(34,211,238,0.35), rgba(180,143,74,0.25), transparent); }
+
+  .sec { font-family: var(--font-mono); font-size: 10px; letter-spacing: .28em; text-transform: uppercase; color: #52525b; margin: 48px 0 16px; display: flex; align-items: center; gap: 10px; }
+  .sec::after { content: ''; flex: 1; height: 1px; background: rgba(255,255,255,0.06); }
+
+  /* UI kit card */
+  .kits { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+  .kit {
+    background: var(--bg-card); border: 1px solid var(--border-default);
+    border-radius: 12px; padding: 22px 24px; text-decoration: none; display: flex; flex-direction: column; gap: 10px;
+    transition: all .25s ease; position: relative; overflow: hidden;
+  }
+  .kit::before {
+    content: ''; position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity .25s ease;
+    background: radial-gradient(600px 200px at 0% 0%, rgba(34,211,238,0.08), transparent 60%);
+  }
+  .kit:hover { border-color: var(--border-cyan); box-shadow: var(--shadow-cyan); }
+  .kit:hover::before { opacity: 1; }
+  .kit.soon { opacity: .55; pointer-events: none; }
+  .kit .mark { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 8px; background: rgba(0,0,0,0.45); border: 1px solid rgba(255,255,255,0.08); }
+  .kit h3 { font-family: var(--font-display); font-size: 15px; font-weight: 600; letter-spacing: .22em; text-transform: uppercase; color: var(--text-primary); margin: 0; }
+  .kit p { font-family: var(--font-serif); font-size: 16px; color: #a1a1aa; margin: 0; line-height: 1.55; font-style: italic; }
+  .kit .meta { font-family: var(--font-mono); font-size: 9px; letter-spacing: .25em; text-transform: uppercase; color: #52525b; margin-top: auto; padding-top: 12px; }
+  .kit .meta .status { color: var(--cyan-400); }
+  .kit.soon .meta .status { color: var(--gold-500); }
+
+  /* flat links */
+  .flat { display: flex; justify-content: space-between; align-items: center; padding: 14px 18px;
+    background: rgba(255,255,255,0.02); border: 1px solid var(--border-subtle); border-radius: 8px;
+    margin-bottom: 6px; text-decoration: none; color: #a1a1aa; font-family: var(--font-sans); font-size: 14px;
+    transition: all .15s ease; }
+  .flat:hover { background: rgba(34,211,238,0.04); border-color: var(--border-cyan); color: var(--text-primary); }
+  .flat .tag-meta { font-family: var(--font-mono); font-size: 10px; color: #52525b; letter-spacing: .15em; text-transform: uppercase; }
+  .flat:hover .tag-meta { color: var(--cyan-400); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="eyebrow">PROJECT PARALLAX / DESIGN SYSTEM v0.1</div>
+  <h1 class="hero">The <span class="prism">Prismarium</span> System</h1>
+  <div class="tag">Where hidden wisdom reveals our unity. Design tokens, components, and prototypes for the Convergence platform — and its sibling products Kairos and Stelloquy.</div>
+  <div class="rule"></div>
+
+  <div class="sec">UI Kits</div>
+  <div class="kits">
+    <a class="kit" href="ui_kits/prismarium/index.html">
+      <div style="display:flex; align-items:center; gap:10px;">
+        <div class="mark">
+          <svg viewBox="0 0 100 100" width="22" height="22" fill="none">
+            <circle cx="50" cy="50" r="40" stroke="#22D3EE" stroke-width="2" opacity="0.5"/>
+            <circle cx="50" cy="50" r="20" stroke="#22D3EE" stroke-width="1"/>
+            <circle cx="50" cy="50" r="4" fill="#22D3EE"/>
+          </svg>
+        </div>
+        <h3>Prismarium</h3>
+      </div>
+      <p>Library · Journal · Graph · The Convergence Machine — 7-lens AI reasoning.</p>
+      <div class="meta"><span class="status">● Live prototype</span> &nbsp;·&nbsp; 5 screens</div>
+    </a>
+    <div class="kit soon">
+      <div style="display:flex; align-items:center; gap:10px;">
+        <div class="mark" style="border-color: rgba(58,127,255,0.35);">
+          <svg viewBox="0 0 100 100" width="22" height="22" fill="none" stroke="#3A7FFF" stroke-width="2">
+            <path d="M50 15 L85 80 L15 80 Z"/>
+            <circle cx="50" cy="15" r="3" fill="#3A7FFF"/><circle cx="85" cy="80" r="3" fill="#3A7FFF"/><circle cx="15" cy="80" r="3" fill="#3A7FFF"/>
+            <line x1="35" y1="50" x2="65" y2="50" stroke="#3A7FFF" opacity="0.5"/>
+            <circle cx="35" cy="50" r="2" fill="#3A7FFF"/><circle cx="65" cy="50" r="2" fill="#3A7FFF"/>
+          </svg>
+        </div>
+        <h3 style="color:#A8C8FF;">Kairos</h3>
+      </div>
+      <p>The Intelligence — AI-powered insight engine. Constellation wireframes in Space Grotesk.</p>
+      <div class="meta"><span class="status">○ Not yet built</span></div>
+    </div>
+    <div class="kit soon" style="grid-column: span 2;">
+      <div style="display:flex; align-items:center; gap:10px;">
+        <div class="mark" style="border-color: rgba(180,143,74,0.35);">
+          <svg viewBox="0 0 100 100" width="22" height="22" fill="none" stroke="#C5A050" stroke-width="1.5">
+            <path d="M50 15 L85 80 L15 80 Z"/>
+            <circle cx="50" cy="55" r="20"/>
+            <circle cx="50" cy="55" r="10"/>
+            <line x1="50" y1="15" x2="50" y2="80"/>
+          </svg>
+        </div>
+        <h3 style="color:#E8C870;">Stelloquy</h3>
+      </div>
+      <p>The Architect — sacred geometry, time systems, structural frameworks. Metatron's cube, Flower of Life, golden ratio as design substrate.</p>
+      <div class="meta"><span class="status">○ Not yet built</span></div>
+    </div>
+  </div>
+
+  <div class="sec">Foundations</div>
+  <a class="flat" href="README.md"><span>README.md — brand overview, voice, visuals, iconography</span><span class="tag-meta">MD · Read</span></a>
+  <a class="flat" href="colors_and_type.css"><span>colors_and_type.css — CSS variables, tokens, base styles</span><span class="tag-meta">CSS</span></a>
+  <a class="flat" href="SKILL.md"><span>SKILL.md — agent skill definition</span><span class="tag-meta">MD</span></a>
+
+  <div class="sec">Preview Cards</div>
+  <a class="flat" href="preview/brand-logo.html"><span>Brand · Logomark &amp; wordmark</span><span class="tag-meta">Brand</span></a>
+  <a class="flat" href="preview/brand-prism.html"><span>Brand · Prism motif</span><span class="tag-meta">Brand</span></a>
+  <a class="flat" href="preview/brand-hero-terrarium.html"><span>Brand · Hero terrarium</span><span class="tag-meta">Brand</span></a>
+  <a class="flat" href="preview/brand-product-logos.html"><span>Brand · Three product marks</span><span class="tag-meta">Brand</span></a>
+  <a class="flat" href="preview/colors-backgrounds.html"><span>Colors · Backgrounds</span><span class="tag-meta">Colors</span></a>
+  <a class="flat" href="preview/colors-accents.html"><span>Colors · Cyan / Gold / Burgundy accents</span><span class="tag-meta">Colors</span></a>
+  <a class="flat" href="preview/colors-spectrum.html"><span>Colors · 7-lens spectrum</span><span class="tag-meta">Colors</span></a>
+  <a class="flat" href="preview/colors-semantic.html"><span>Colors · Semantic roles</span><span class="tag-meta">Colors</span></a>
+  <a class="flat" href="preview/type-display.html"><span>Type · Display (Cinzel)</span><span class="tag-meta">Type</span></a>
+  <a class="flat" href="preview/type-body.html"><span>Type · Body &amp; serif (Inter + Cormorant)</span><span class="tag-meta">Type</span></a>
+  <a class="flat" href="preview/type-scale.html"><span>Type · Scale</span><span class="tag-meta">Type</span></a>
+  <a class="flat" href="preview/spacing-tokens.html"><span>Spacing · Tokens &amp; radii</span><span class="tag-meta">Spacing</span></a>
+  <a class="flat" href="preview/shadows-glass.html"><span>Spacing · Shadows &amp; glass</span><span class="tag-meta">Spacing</span></a>
+  <a class="flat" href="preview/components-buttons.html"><span>Components · Buttons</span><span class="tag-meta">Components</span></a>
+  <a class="flat" href="preview/components-inputs.html"><span>Components · Inputs</span><span class="tag-meta">Components</span></a>
+  <a class="flat" href="preview/components-cards.html"><span>Components · Cards</span><span class="tag-meta">Components</span></a>
+  <a class="flat" href="preview/components-badges-nav.html"><span>Components · Badges &amp; nav</span><span class="tag-meta">Components</span></a>
+</div>
+</body>
+</html>

@@ -1,0 +1,862 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Project Parallax — v7 · the cohesive brand · luxury identity system</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&family=Kalam:wght@300;400;700&family=Space+Grotesk:wght@300;400;500;600;700&family=Cinzel:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Fira+Mono:wght@400;500&display=swap');
+
+  :root {
+    --paper:#F4F1E8; --ink:#1B1815; --ink-soft:#3A3530; --ink-faint:#8A847A; --ink-veil:rgba(27,24,21,0.18);
+    --hand:'Kalam',cursive; --hand-bold:'Caveat',cursive;
+    --margin-red:#B43A2A; --accent-blue:#2E5BFF;
+    --bone:#F2EFE6; --void:#0A0A0E; --noir:#000000;
+    /* metals */
+    --gold:#C9A14A; --gold-soft:#E8C77A; --gold-deep:#8E6B23;
+    --silver:#C8CDD3; --silver-soft:#E2E5EA; --silver-deep:#7A8088;
+    --iris:#7E5AD6; --iris-soft:#B49AE8; --iris-deep:#5C3FA0;
+    --candy-cyan:#2BD9E8; --candy-coral:#FF8B6E; --candy-butter:#F5D86C;
+  }
+  html, body { color: var(--ink); }
+  body {
+    background: var(--paper);
+    background-image:
+      linear-gradient(rgba(27,24,21,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(27,24,21,0.04) 1px, transparent 1px);
+    background-size: 28px 28px;
+    font-family: var(--hand); font-size: 17px; line-height: 1.5; margin: 0;
+  }
+  .page { max-width: 1280px; margin: 0 auto; padding: 56px 56px 120px; position: relative; }
+  .page::before { content:''; position:absolute; left:92px; top:0; bottom:0; width:1px; background:var(--margin-red); opacity:0.4; }
+
+  h1.cover-title { font-family: var(--hand-bold); font-size: 64px; font-weight: 700; line-height: 1; margin: 0 0 8px; transform: rotate(-1deg); }
+  .cover-meta { font-family: var(--hand); font-size: 14px; color: var(--ink-faint); letter-spacing: 0.05em; margin: 0; }
+  .cover-sub { font-size: 21px; color: var(--ink-soft); margin: 4px 0 0; }
+  h2.section { font-family: var(--hand-bold); font-size: 40px; font-weight: 700; line-height: 1.05; margin: 72px 0 4px; transform: rotate(-0.4deg); }
+  h2.section .num { color: var(--margin-red); font-size: 26px; margin-right: 12px; vertical-align: 6px; }
+  .section-sub { font-size: 18px; color: var(--ink-soft); margin: 0 0 28px; max-width: 880px; }
+  h3.sub { font-family: var(--hand-bold); font-size: 26px; margin: 32px 0 8px; transform: rotate(-0.3deg); }
+  em.under { font-style:normal; color: var(--accent-blue); border-bottom: 1px solid var(--accent-blue); }
+
+  .callout { border: 1.5px dashed var(--margin-red); border-radius: 6px; padding: 14px 18px; background: rgba(180,58,42,0.05); margin: 18px 0; font-size: 16px; color: var(--ink-soft); }
+  .callout strong { color: var(--margin-red); font-family: var(--hand-bold); font-weight: 700; font-size: 18px; }
+  .cover-card { border: 2px solid var(--ink); border-radius: 10px; padding: 28px 32px; background: rgba(255,255,255,0.55); position: relative; max-width: 940px; }
+  .cover-stamp { position: absolute; top: 22px; right: 28px; font-size: 12px; color: var(--margin-red); border: 1.5px dashed var(--margin-red); padding: 5px 10px; border-radius: 4px; transform: rotate(4deg); letter-spacing: 0.05em; }
+  .cover-thesis { margin: 8px 0 0; font-size: 16px; line-height: 1.55; color: var(--ink-soft); max-width: 820px; }
+
+  /* ─────── shared canvas ─────── */
+  .lux { background: var(--noir); border-radius: 10px; overflow: hidden; }
+
+  /* ─────── lockup display (matches your reference) ─────── */
+  .lockup-show {
+    background: var(--noir);
+    border-radius: 10px;
+    padding: 56px 48px;
+    display: grid;
+    grid-template-columns: 1fr 1px 1fr;
+    gap: 48px;
+    align-items: center;
+    margin-top: 16px;
+    position: relative;
+  }
+  .lockup-divider { background: rgba(201,161,74,0.25); width: 1px; }
+  .lockup-side { display: flex; flex-direction: column; align-items: center; gap: 36px; }
+  .lockup-horiz { display: flex; align-items: center; gap: 28px; }
+  .lockup-horiz .badge-svg { width: 100px; height: 100px; flex-shrink: 0; }
+  .lockup-horiz .vrule { width: 1px; align-self: stretch; background: rgba(201,161,74,0.35); }
+  .lockup-horiz .text { display: flex; flex-direction: column; gap: 4px; }
+  .lockup-horiz .name {
+    font-family: 'Cinzel', serif; font-weight: 500;
+    font-size: 38px; letter-spacing: 0.32em;
+    color: var(--gold-soft);
+    line-height: 1;
+  }
+  .lockup-horiz .strap {
+    font-family: 'Cinzel', serif; font-weight: 400;
+    font-size: 10px; letter-spacing: 0.42em;
+    color: var(--gold);
+    opacity: 0.75;
+    line-height: 1;
+  }
+  .lockup-circ { width: 76px; height: 76px; }
+
+  /* ─────── badge cell (single mark large) ─────── */
+  .badge-row {
+    display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-top: 16px;
+  }
+  .badge-cell {
+    border: 1.5px solid var(--ink);
+    border-radius: 10px;
+    overflow: hidden;
+    background: var(--noir);
+    position: relative;
+  }
+  .badge-cell .canv {
+    aspect-ratio: 1/1;
+    display: flex; align-items: center; justify-content: center;
+    padding: 36px;
+  }
+  .badge-cell .canv svg { width: 100%; height: 100%; }
+  .badge-cell .meta {
+    background: rgba(255,255,255,0.06);
+    color: var(--bone);
+    padding: 12px 16px;
+    border-top: 1px solid rgba(201,161,74,0.2);
+  }
+  .badge-cell .opt { font-family: 'Fira Mono', monospace; font-size: 10px; color: var(--gold); letter-spacing: 0.12em; }
+  .badge-cell .nm { font-family: 'Cinzel', serif; font-weight: 500; font-size: 16px; letter-spacing: 0.18em; margin: 4px 0 2px; color: var(--gold-soft); }
+  .badge-cell .ds { font-family: var(--hand); font-size: 13px; color: rgba(242,239,230,0.7); line-height: 1.4; }
+
+  /* ─────── glyph row (concept exploration) ─────── */
+  .glyph-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 14px; }
+  .glyph-cell { border: 1.5px solid var(--ink); border-radius: 8px; overflow: hidden; background: var(--noir); }
+  .glyph-cell.feat { box-shadow: 0 0 0 2px var(--gold), 0 0 0 4px var(--paper); }
+  .glyph-cell .canv { aspect-ratio: 1/1; padding: 28px; display: flex; align-items: center; justify-content: center; }
+  .glyph-cell .canv svg { width: 100%; height: 100%; }
+  .glyph-cell .meta { padding: 10px 12px; background: rgba(255,255,255,0.06); }
+  .glyph-cell .opt { font-family: 'Fira Mono', monospace; font-size: 10px; color: var(--gold); letter-spacing: 0.1em; }
+  .glyph-cell .nm { font-family: 'Cinzel', serif; font-weight: 500; font-size: 13px; letter-spacing: 0.15em; margin: 3px 0; color: var(--gold-soft); }
+  .glyph-cell .ds { font-family: var(--hand); font-size: 12px; line-height: 1.35; color: rgba(242,239,230,0.7); }
+
+  /* ─────── parallax wordmark variants ─────── */
+  .pwm-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px; }
+  .pwm-cell { border: 1.5px solid var(--ink); border-radius: 10px; overflow: hidden; background: var(--noir); }
+  .pwm-cell .canv { padding: 56px 48px; min-height: 200px; display: flex; align-items: center; justify-content: center; gap: 28px; }
+  .pwm-cell .meta { padding: 10px 14px; background: rgba(255,255,255,0.06); }
+  .pwm-cell .opt { font-family: 'Fira Mono', monospace; font-size: 10px; color: var(--gold); letter-spacing: 0.1em; }
+  .pwm-cell .nm { font-family: var(--hand-bold); font-size: 17px; color: var(--bone); }
+  .pwm-cell .ds { font-family: var(--hand); font-size: 13px; color: rgba(242,239,230,0.7); }
+
+  /* ─── parallax stereo type (cyan/coral split) ─── */
+  .px-stereo {
+    font-family: 'Cinzel', serif; font-weight: 500;
+    letter-spacing: 0.32em; line-height: 1;
+    position: relative; display: inline-block;
+    color: var(--gold-soft);
+  }
+  .px-stereo .l1, .px-stereo .l2, .px-stereo .l3 {
+    position: absolute; inset: 0;
+    mix-blend-mode: screen;
+  }
+  .px-stereo.three .l1 { color: var(--candy-cyan); transform: translate(-3px, -2px); }
+  .px-stereo.three .l2 { color: var(--candy-coral); transform: translate(3px, 2px); }
+  .px-stereo.three .l3 { color: var(--candy-butter); transform: translate(0, 3px); opacity: 0.55; }
+  .px-stereo.two .l1 { color: var(--candy-cyan); transform: translate(-3px, -2px); }
+  .px-stereo.two .l2 { color: var(--candy-coral); transform: translate(3px, 2px); }
+  .px-stereo .l0 { color: var(--gold-soft); position: relative; }
+  .px-eyebrow {
+    font-family: 'Cinzel', serif; font-weight: 400;
+    letter-spacing: 0.5em; font-size: 11px;
+    color: var(--gold); opacity: 0.85;
+    text-transform: uppercase;
+  }
+
+  /* ─── Sightline canvas presets ─── */
+  .canvas-void { background: radial-gradient(ellipse at 50% 30%, #2A4068 0%, var(--void) 70%); }
+  .canvas-bone { background: var(--bone); }
+  .canvas-warm { background: linear-gradient(160deg, var(--candy-butter), #F0A858); }
+
+  /* sightline grid */
+  .sl-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-top: 16px; }
+  .sl-cell { border: 1.5px solid var(--ink); border-radius: 10px; overflow: hidden; }
+  .sl-cell .canv { aspect-ratio: 1.2/1; display: flex; align-items: center; justify-content: center; padding: 36px; }
+  .sl-cell .canv svg { width: 100%; height: 100%; }
+  .sl-cell .meta { padding: 10px 14px; background: rgba(255,255,255,0.55); }
+  .sl-cell .opt { font-family: 'Fira Mono', monospace; font-size: 10px; color: var(--margin-red); letter-spacing: 0.08em; }
+  .sl-cell .nm { font-family: var(--hand-bold); font-size: 16px; }
+  .sl-cell .ds { font-size: 12px; color: var(--ink-soft); line-height: 1.4; }
+
+  /* ─── orbs ─── */
+  .orb-stage { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px; }
+  .orb-cell { border: 1.5px solid var(--ink); border-radius: 10px; overflow: hidden; background: var(--void); aspect-ratio: 1.5/1; display: flex; align-items: center; justify-content: center; position: relative; }
+  .orb-cell .role-tag { position: absolute; top: 14px; left: 18px; font-family: 'Fira Mono', monospace; font-size: 10px; letter-spacing: 0.2em; color: rgba(255,255,255,0.6); text-transform: uppercase; }
+  .orb-cell .lab { position: absolute; bottom: 14px; right: 18px; font-family: 'Fira Mono', monospace; font-size: 10px; letter-spacing: 0.18em; color: rgba(255,255,255,0.7); }
+  .orb-warm {
+    width: 130px; height: 130px; border-radius: 50%;
+    background: radial-gradient(circle at 50% 40%, #F0EBE0 0%, #E0A862 25%, #C24A6E 55%, #6E3FA0 85%, transparent 100%);
+    box-shadow: 0 0 60px rgba(224,168,98,0.4), 0 0 100px rgba(110,63,160,0.3);
+    animation: orb-w 5s ease-in-out infinite;
+  }
+  .orb-cool {
+    width: 130px; height: 130px; border-radius: 50%;
+    background: radial-gradient(circle at 50% 40%, #F2FAFF 0%, #7CECE0 25%, var(--candy-cyan) 55%, #3F6AE8 85%, transparent 100%);
+    box-shadow: 0 0 60px rgba(43,217,232,0.4), 0 0 100px rgba(63,106,232,0.3);
+    animation: orb-c 5s ease-in-out infinite;
+  }
+  @keyframes orb-w { 0%,100%{transform:scale(1)} 50%{transform:scale(1.06)} }
+  @keyframes orb-c { 0%,100%{transform:scale(1)} 50%{transform:scale(0.96)} }
+
+  /* drift */
+  .drift-stage { position: relative; height: 380px; border-radius: 10px; border: 1.5px solid var(--ink); overflow: hidden; margin-top: 16px; background: #0E1622; }
+  .drift-layer { position: absolute; inset: -10%; border-radius: inherit; }
+  .drift-l1 { background: radial-gradient(ellipse 70% 50% at 30% 30%, #3F6AE8 0%, transparent 60%); animation: drift1 28s ease-in-out infinite alternate; }
+  .drift-l2 { background: radial-gradient(ellipse 60% 60% at 70% 70%, var(--candy-coral) 0%, transparent 60%); animation: drift2 34s ease-in-out infinite alternate; mix-blend-mode: screen; }
+  .drift-l3 { background: radial-gradient(ellipse 50% 40% at 50% 50%, var(--candy-butter) 0%, transparent 60%); animation: drift3 22s ease-in-out infinite alternate; mix-blend-mode: screen; opacity: 0.7; }
+  .drift-l4 { background: radial-gradient(ellipse 90% 60% at 50% 100%, var(--iris) 0%, transparent 70%); animation: drift4 40s ease-in-out infinite alternate; mix-blend-mode: screen; opacity: 0.6; }
+  @keyframes drift1 { 0%{transform:translate(0,0) scale(1)} 100%{transform:translate(15%,10%) scale(1.2)} }
+  @keyframes drift2 { 0%{transform:translate(0,0) scale(1)} 100%{transform:translate(-12%,-8%) scale(1.15)} }
+  @keyframes drift3 { 0%{transform:translate(0,0) scale(1); opacity:0.55} 100%{transform:translate(8%,-12%) scale(0.85); opacity:0.85} }
+  @keyframes drift4 { 0%{transform:translate(0,0) scale(1)} 100%{transform:translate(-8%,5%) scale(1.1)} }
+  .drift-text { position: absolute; bottom: 28px; left: 32px; color: white; }
+  .drift-text .eyebrow { font-family: 'Fira Mono', monospace; font-size: 11px; letter-spacing: 0.3em; opacity: 0.7; }
+  .drift-text .big { font-family:'Cinzel',serif; font-size: 38px; font-weight: 500; letter-spacing: 0.04em; line-height: 1.1; margin-top: 10px; }
+  .drift-text .small { font-family:'Cormorant Garamond',serif; font-style:italic; font-size: 16px; opacity: 0.85; margin-top: 8px; }
+
+  /* palette */
+  .palette { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 16px; }
+  .sw { border: 1.5px solid var(--ink); border-radius: 8px; overflow: hidden; }
+  .sw .chip { aspect-ratio: 4/3; }
+  .sw .info { padding: 8px 12px; background: rgba(255,255,255,0.55); font-family:'Fira Mono',monospace; font-size: 10px; }
+  .sw .info b { display: block; font-family: var(--hand-bold); font-size: 14px; }
+
+  /* family table */
+  table.fam { width: 100%; border-collapse: collapse; margin-top: 16px; font-size: 14px; }
+  table.fam th, table.fam td { border-bottom: 1px dashed var(--ink-veil); padding: 10px 12px; text-align: left; }
+  table.fam th { font-family:'Fira Mono',monospace; font-size: 10px; letter-spacing: 0.1em; color: var(--margin-red); }
+  table.fam tr td:first-child { font-family: var(--hand-bold); font-size: 16px; width: 22%; }
+  .tag { font-family:'Fira Mono',monospace; font-size: 10px; padding: 2px 8px; border: 1px solid var(--ink); border-radius: 3px; letter-spacing: 0.08em; }
+
+  @media (max-width: 1100px) {
+    .lockup-show { grid-template-columns: 1fr; }
+    .lockup-divider { height: 1px; width: 100%; }
+    .badge-row, .pwm-grid, .sl-grid, .orb-stage, .glyph-grid, .palette { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- ════════════════ COVER ════════════════ -->
+  <section class="cover">
+    <p class="cover-meta">SKETCHBOOK — VOL. 07 · v7 · APR 2026</p>
+    <h1 class="cover-title">v7 — the cohesive identity · luxury system · all siblings together.</h1>
+    <p class="cover-sub">Your reference image was right. Sophisticated, ornamental, gold-on-noir. <em class="under">Now</em> it's a system, not a sketch.</p>
+
+    <div class="cover-card" style="margin-top:22px;">
+      <span class="cover-stamp">v7 · LUXURY</span>
+      <h3 class="sub" style="margin-top:0;">What I'm correcting</h3>
+      <p class="cover-thesis"><em>v6 was wrong:</em> the cyan-disc Kairos and dashed-strata Chronos undermined the sophistication of the actual products. Apologies — I was so excited about the "system" thinking I forgot to dress for the occasion.</p>
+      <p class="cover-thesis"><em>Reference embraced:</em> the K-monogram with sparkles inside an orbit · the hourglass-in-circle · gold-on-noir · Cinzel wordmark with serif divider · horizontal lockup + circular badge. That's the language for all three siblings.</p>
+      <p class="cover-thesis"><em>What's here now:</em> Kairos refined exactly to your draft · Chronos drawn at the same level of finish (your hourglass kept · plus three Greek-glyph alternatives if you want to push past it) · Prismarium's PR-01 prism brought back into the family · the Project Parallax wordmark with both a 2-line and 3-line stereo variant.</p>
+    </div>
+  </section>
+
+  <!-- ════════════════ 01 · KAIROS LOCKUP — like the reference ════════════════ -->
+  <section>
+    <h2 class="section"><span class="num">01</span>Kairos · the lockup · refined to your reference</h2>
+    <p class="section-sub">
+      Gold ornamental K with the spear-and-dot vertical strike, sparkles inside a thin circular orbit.
+      Horizontal lockup with serif divider · circular badge below. Same construction as your image, drawn to scale and on grid.
+    </p>
+
+    <div class="lockup-show">
+      <!-- LEFT: Kairos -->
+      <div class="lockup-side">
+        <div class="lockup-horiz">
+          <svg class="badge-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="goldK1" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#E8C77A"/>
+                <stop offset="50%" stop-color="#C9A14A"/>
+                <stop offset="100%" stop-color="#8E6B23"/>
+              </linearGradient>
+            </defs>
+            <!-- thin orbit -->
+            <circle cx="100" cy="100" r="76" fill="none" stroke="url(#goldK1)" stroke-width="1.2"/>
+            <!-- vertical strike: dot top, K behind, spear-tip bottom -->
+            <circle cx="100" cy="14" r="3" fill="url(#goldK1)"/>
+            <line x1="100" y1="20" x2="100" y2="40" stroke="url(#goldK1)" stroke-width="1.5"/>
+            <line x1="100" y1="160" x2="100" y2="178" stroke="url(#goldK1)" stroke-width="1.5"/>
+            <polygon points="100,190 95,180 105,180" fill="url(#goldK1)"/>
+            <!-- ornamental K -->
+            <text x="100" y="132" font-family="Cinzel, serif" font-weight="600" font-size="92" fill="url(#goldK1)" text-anchor="middle" letter-spacing="0">K</text>
+            <!-- 4-point sparkle -->
+            <g transform="translate(140 78)">
+              <path d="M 0 -16 L 2.4 -2.4 L 16 0 L 2.4 2.4 L 0 16 L -2.4 2.4 L -16 0 L -2.4 -2.4 Z" fill="url(#goldK1)"/>
+              <circle cx="0" cy="0" r="1.5" fill="#0A0A0E"/>
+            </g>
+            <!-- second tiny sparkle -->
+            <g transform="translate(64 122)">
+              <path d="M 0 -8 L 1.2 -1.2 L 8 0 L 1.2 1.2 L 0 8 L -1.2 1.2 L -8 0 L -1.2 -1.2 Z" fill="url(#goldK1)" opacity="0.7"/>
+            </g>
+          </svg>
+          <div class="vrule"></div>
+          <div class="text">
+            <div class="name">KAIROS</div>
+            <div class="strap">THE OPPORTUNE MOMENT</div>
+          </div>
+        </div>
+
+        <!-- circular badge below -->
+        <svg class="lockup-circ" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="100" cy="100" r="76" fill="none" stroke="url(#goldK1)" stroke-width="1.2"/>
+          <circle cx="100" cy="14" r="3" fill="url(#goldK1)"/>
+          <line x1="100" y1="20" x2="100" y2="40" stroke="url(#goldK1)" stroke-width="1.5"/>
+          <line x1="100" y1="160" x2="100" y2="178" stroke="url(#goldK1)" stroke-width="1.5"/>
+          <polygon points="100,190 95,180 105,180" fill="url(#goldK1)"/>
+          <text x="100" y="132" font-family="Cinzel, serif" font-weight="600" font-size="92" fill="url(#goldK1)" text-anchor="middle">K</text>
+          <g transform="translate(140 78)">
+            <path d="M 0 -16 L 2.4 -2.4 L 16 0 L 2.4 2.4 L 0 16 L -2.4 2.4 L -16 0 L -2.4 -2.4 Z" fill="url(#goldK1)"/>
+            <circle cx="0" cy="0" r="1.5" fill="#0A0A0E"/>
+          </g>
+        </svg>
+      </div>
+
+      <div class="lockup-divider"></div>
+
+      <!-- RIGHT: Chronos · with hourglass kept from your reference -->
+      <div class="lockup-side">
+        <div class="lockup-horiz">
+          <svg class="badge-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="goldC1" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#E8C77A"/>
+                <stop offset="50%" stop-color="#C9A14A"/>
+                <stop offset="100%" stop-color="#8E6B23"/>
+              </linearGradient>
+            </defs>
+            <!-- thin orbit -->
+            <circle cx="100" cy="100" r="76" fill="none" stroke="url(#goldC1)" stroke-width="1.2"/>
+            <!-- finial top -->
+            <line x1="100" y1="14" x2="100" y2="22" stroke="url(#goldC1)" stroke-width="1.5"/>
+            <polygon points="100,8 96,16 104,16" fill="url(#goldC1)"/>
+            <!-- finial bottom -->
+            <line x1="100" y1="178" x2="100" y2="186" stroke="url(#goldC1)" stroke-width="1.5"/>
+            <circle cx="100" cy="190" r="3" fill="url(#goldC1)"/>
+            <!-- hourglass frame: top plate, bottom plate, two pillars, glass -->
+            <line x1="58" y1="42" x2="142" y2="42" stroke="url(#goldC1)" stroke-width="2.5" stroke-linecap="round"/>
+            <line x1="58" y1="158" x2="142" y2="158" stroke="url(#goldC1)" stroke-width="2.5" stroke-linecap="round"/>
+            <!-- glass shape -->
+            <path d="M 64 42 L 64 56 L 100 100 L 64 144 L 64 158" fill="none" stroke="url(#goldC1)" stroke-width="1.8" stroke-linejoin="round"/>
+            <path d="M 136 42 L 136 56 L 100 100 L 136 144 L 136 158" fill="none" stroke="url(#goldC1)" stroke-width="1.8" stroke-linejoin="round"/>
+            <!-- side pillars (slimmer, ornamental) -->
+            <line x1="58" y1="44" x2="58" y2="156" stroke="url(#goldC1)" stroke-width="1" opacity="0.7"/>
+            <line x1="142" y1="44" x2="142" y2="156" stroke="url(#goldC1)" stroke-width="1" opacity="0.7"/>
+            <!-- sand: top half slightly fuller, bottom growing -->
+            <path d="M 70 48 L 130 48 L 102 96 L 98 96 Z" fill="url(#goldC1)" opacity="0.6"/>
+            <path d="M 78 152 L 122 152 L 102 110 L 98 110 Z" fill="url(#goldC1)" opacity="0.85"/>
+            <!-- falling stream -->
+            <line x1="100" y1="100" x2="100" y2="108" stroke="url(#goldC1)" stroke-width="1.2"/>
+          </svg>
+          <div class="vrule"></div>
+          <div class="text">
+            <div class="name">CHRONOS</div>
+            <div class="strap">THE FLOW OF TIME</div>
+          </div>
+        </div>
+
+        <svg class="lockup-circ" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="100" cy="100" r="76" fill="none" stroke="url(#goldC1)" stroke-width="1.2"/>
+          <line x1="100" y1="14" x2="100" y2="22" stroke="url(#goldC1)" stroke-width="1.5"/>
+          <polygon points="100,8 96,16 104,16" fill="url(#goldC1)"/>
+          <line x1="100" y1="178" x2="100" y2="186" stroke="url(#goldC1)" stroke-width="1.5"/>
+          <circle cx="100" cy="190" r="3" fill="url(#goldC1)"/>
+          <line x1="58" y1="42" x2="142" y2="42" stroke="url(#goldC1)" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="58" y1="158" x2="142" y2="158" stroke="url(#goldC1)" stroke-width="2.5" stroke-linecap="round"/>
+          <path d="M 64 42 L 64 56 L 100 100 L 64 144 L 64 158" fill="none" stroke="url(#goldC1)" stroke-width="1.8" stroke-linejoin="round"/>
+          <path d="M 136 42 L 136 56 L 100 100 L 136 144 L 136 158" fill="none" stroke="url(#goldC1)" stroke-width="1.8" stroke-linejoin="round"/>
+          <path d="M 70 48 L 130 48 L 102 96 L 98 96 Z" fill="url(#goldC1)" opacity="0.6"/>
+          <path d="M 78 152 L 122 152 L 102 110 L 98 110 Z" fill="url(#goldC1)" opacity="0.85"/>
+          <line x1="100" y1="100" x2="100" y2="108" stroke="url(#goldC1)" stroke-width="1.2"/>
+        </svg>
+      </div>
+    </div>
+
+    <div class="callout">
+      <strong>What changed.</strong> Both marks now share: a <em class="under">76px gold orbit</em>,
+      <em class="under">finial top + bottom</em> (sparkle-or-arrow / dot-or-arrow), Cinzel wordmark with the same letterspacing,
+      gold-tinted serif divider, identical strapline metrics. They feel like siblings cut from the same plate.
+    </div>
+  </section>
+
+  <!-- ════════════════ 02 · GREEK GLYPH ALTERNATIVES (optional, for if you want to push past hourglass) ════════════════ -->
+  <section>
+    <h2 class="section"><span class="num">02</span>Chronos · alternative glyphs · if hourglass is too obvious</h2>
+    <p class="section-sub">
+      Just options. The hourglass works · it has dignity at this finish level.
+      But if you want a more <em class="under">Greek</em> or <em class="under">esoteric</em> mark — same gold-on-noir luxury treatment, drawn to match Kairos.
+    </p>
+
+    <div class="glyph-grid">
+      <!-- CG-01 — Chi-Rho-style monogram (Greek letter Chi χ for χρόνος) -->
+      <div class="glyph-cell feat">
+        <div class="canv">
+          <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="goldG1" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#E8C77A"/>
+                <stop offset="100%" stop-color="#8E6B23"/>
+              </linearGradient>
+            </defs>
+            <circle cx="100" cy="100" r="76" fill="none" stroke="url(#goldG1)" stroke-width="1.2"/>
+            <!-- finials -->
+            <circle cx="100" cy="14" r="3" fill="url(#goldG1)"/>
+            <circle cx="100" cy="186" r="3" fill="url(#goldG1)"/>
+            <!-- Greek Chi χ (lowercase, serif) -->
+            <text x="100" y="138" font-family="Cinzel, serif" font-weight="500" font-size="120" fill="url(#goldG1)" text-anchor="middle">Χ</text>
+            <!-- small sparkle -->
+            <g transform="translate(140 70)">
+              <path d="M 0 -10 L 1.5 -1.5 L 10 0 L 1.5 1.5 L 0 10 L -1.5 1.5 L -10 0 L -1.5 -1.5 Z" fill="url(#goldG1)"/>
+            </g>
+          </svg>
+        </div>
+        <div class="meta">
+          <div class="opt">CG-01 · CHI</div>
+          <div class="nm">CHI · X for χρόνος</div>
+          <div class="ds">The actual Greek letter that begins Chronos. Pairs naturally with K — both single-letter monograms.</div>
+        </div>
+      </div>
+
+      <!-- CG-02 — ouroboros -->
+      <div class="glyph-cell">
+        <div class="canv">
+          <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="100" cy="100" r="76" fill="none" stroke="url(#goldG1)" stroke-width="1.2"/>
+            <circle cx="100" cy="14" r="3" fill="url(#goldG1)"/>
+            <circle cx="100" cy="186" r="3" fill="url(#goldG1)"/>
+            <!-- ouroboros: serpent eating tail, drawn as a thicker ring with a head bite -->
+            <circle cx="100" cy="100" r="44" fill="none" stroke="url(#goldG1)" stroke-width="3.5"/>
+            <!-- segmentation marks -->
+            <g stroke="url(#goldG1)" stroke-width="0.8" opacity="0.8">
+              <line x1="100" y1="56" x2="100" y2="62"/>
+              <line x1="138" y1="78" x2="133" y2="82"/>
+              <line x1="144" y1="100" x2="138" y2="100"/>
+              <line x1="138" y1="122" x2="133" y2="118"/>
+              <line x1="100" y1="144" x2="100" y2="138"/>
+              <line x1="62" y1="122" x2="67" y2="118"/>
+              <line x1="56" y1="100" x2="62" y2="100"/>
+              <line x1="62" y1="78" x2="67" y2="82"/>
+            </g>
+            <!-- head + bite -->
+            <path d="M 138 96 L 148 100 L 138 104 L 134 100 Z" fill="url(#goldG1)"/>
+            <circle cx="142" cy="98" r="1.2" fill="#0A0A0E"/>
+          </svg>
+        </div>
+        <div class="meta">
+          <div class="opt">CG-02 · OUROBOROS</div>
+          <div class="nm">OUROBOROS</div>
+          <div class="ds">Serpent eating its tail · cycles of time, eternal recurrence. The most ancient time-symbol there is.</div>
+        </div>
+      </div>
+
+      <!-- CG-03 — Saturn / Cronos planetary glyph -->
+      <div class="glyph-cell">
+        <div class="canv">
+          <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="100" cy="100" r="76" fill="none" stroke="url(#goldG1)" stroke-width="1.2"/>
+            <circle cx="100" cy="14" r="3" fill="url(#goldG1)"/>
+            <circle cx="100" cy="186" r="3" fill="url(#goldG1)"/>
+            <!-- Saturn glyph ♄ — vertical stem with crescent at the bottom and a crossbar near top -->
+            <g stroke="url(#goldG1)" stroke-width="3" fill="none" stroke-linecap="round">
+              <line x1="100" y1="48" x2="100" y2="138"/>
+              <line x1="84" y1="64" x2="116" y2="64"/>
+              <path d="M 100 138 Q 122 138 122 116 Q 122 100 138 100" />
+            </g>
+          </svg>
+        </div>
+        <div class="meta">
+          <div class="opt">CG-03 · SATURN</div>
+          <div class="nm">SATURN GLYPH ♄</div>
+          <div class="ds">The astrological planet of Cronos · time, structure, limits. Direct astrological tie — perfect for the audience.</div>
+        </div>
+      </div>
+
+      <!-- CG-04 — Sundial gnomon -->
+      <div class="glyph-cell">
+        <div class="canv">
+          <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="100" cy="100" r="76" fill="none" stroke="url(#goldG1)" stroke-width="1.2"/>
+            <circle cx="100" cy="14" r="3" fill="url(#goldG1)"/>
+            <circle cx="100" cy="186" r="3" fill="url(#goldG1)"/>
+            <!-- sundial dial -->
+            <circle cx="100" cy="120" r="44" fill="none" stroke="url(#goldG1)" stroke-width="1.5"/>
+            <!-- hour ticks -->
+            <g stroke="url(#goldG1)" stroke-width="1">
+              <line x1="100" y1="80" x2="100" y2="86"/>
+              <line x1="140" y1="120" x2="134" y2="120"/>
+              <line x1="60" y1="120" x2="66" y2="120"/>
+              <line x1="128" y1="92" x2="124" y2="96"/>
+              <line x1="72" y1="92" x2="76" y2="96"/>
+              <line x1="128" y1="148" x2="124" y2="144"/>
+              <line x1="72" y1="148" x2="76" y2="144"/>
+            </g>
+            <!-- gnomon shadow (triangle pointing) -->
+            <path d="M 100 120 L 130 100 L 100 90 Z" fill="url(#goldG1)" opacity="0.85"/>
+            <!-- center pin -->
+            <circle cx="100" cy="120" r="2.5" fill="url(#goldG1)"/>
+          </svg>
+        </div>
+        <div class="meta">
+          <div class="opt">CG-04 · SUNDIAL</div>
+          <div class="nm">SUNDIAL · GNOMON</div>
+          <div class="ds">Oldest instrument for measuring time · sun-cast shadow. Astronomical tie · pairs with Kairos's celestial energy.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout">
+      <strong>My read.</strong> If you keep the hourglass, no shame — it's drawn at full luxury here and reads dignified.
+      But <em class="under">CG-01 (Chi)</em> is genuinely beautiful as a sibling to K · both letter-monograms · same construction logic ·
+      and tells the Greek story directly. <em class="under">CG-03 (Saturn)</em> is the strongest if you want to lean into astrology specifically.
+      Tell me which feels right.
+    </div>
+  </section>
+
+  <!-- ════════════════ 03 · PRISMARIUM PR-01 brought back ════════════════ -->
+  <section>
+    <h2 class="section"><span class="num">03</span>Prismarium · PR-01 · the third sibling</h2>
+    <p class="section-sub">
+      The original prism mark · iris triangle refracting a ray into the lens spectrum.
+      Re-rendered at the same finish level as Kairos and Chronos · gold orbit, finials, on noir.
+    </p>
+
+    <div class="lockup-show" style="grid-template-columns: 1fr; padding: 56px 48px;">
+      <div class="lockup-side">
+        <div class="lockup-horiz">
+          <svg class="badge-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="goldP1" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#E8C77A"/>
+                <stop offset="100%" stop-color="#8E6B23"/>
+              </linearGradient>
+              <linearGradient id="irisFill" x1="0" x2="0" y1="0" y2="1">
+                <stop offset="0%" stop-color="#B49AE8"/>
+                <stop offset="100%" stop-color="#5C3FA0"/>
+              </linearGradient>
+            </defs>
+            <!-- orbit -->
+            <circle cx="100" cy="100" r="76" fill="none" stroke="url(#goldP1)" stroke-width="1.2"/>
+            <!-- finials -->
+            <circle cx="100" cy="14" r="3" fill="url(#goldP1)"/>
+            <circle cx="100" cy="186" r="3" fill="url(#goldP1)"/>
+            <!-- prism triangle (slightly smaller so it sits inside circle nicely) -->
+            <polygon points="100,52 142,140 58,140" fill="url(#irisFill)" stroke="url(#goldP1)" stroke-width="1.5"/>
+            <!-- incoming white ray -->
+            <line x1="32" y1="96" x2="78" y2="96" stroke="#F2EFE6" stroke-width="1.5" opacity="0.9"/>
+            <!-- refracted spectrum, gold-toned for cohesion -->
+            <g stroke-width="1.5" stroke-linecap="round" opacity="0.95">
+              <line x1="124" y1="92" x2="170" y2="76" stroke="#FF8B6E"/>
+              <line x1="125" y1="100" x2="172" y2="92" stroke="#F0A858"/>
+              <line x1="124" y1="108" x2="170" y2="110" stroke="#F5D86C"/>
+              <line x1="123" y1="116" x2="168" y2="128" stroke="#7CECE0"/>
+            </g>
+          </svg>
+          <div class="vrule"></div>
+          <div class="text">
+            <div class="name">PRISMARIUM</div>
+            <div class="strap">WHERE WISDOM CONVERGES</div>
+          </div>
+        </div>
+
+        <svg class="lockup-circ" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="100" cy="100" r="76" fill="none" stroke="url(#goldP1)" stroke-width="1.2"/>
+          <circle cx="100" cy="14" r="3" fill="url(#goldP1)"/>
+          <circle cx="100" cy="186" r="3" fill="url(#goldP1)"/>
+          <polygon points="100,52 142,140 58,140" fill="url(#irisFill)" stroke="url(#goldP1)" stroke-width="1.5"/>
+          <line x1="32" y1="96" x2="78" y2="96" stroke="#F2EFE6" stroke-width="1.5"/>
+          <g stroke-width="1.5" stroke-linecap="round">
+            <line x1="124" y1="92" x2="170" y2="76" stroke="#FF8B6E"/>
+            <line x1="125" y1="100" x2="172" y2="92" stroke="#F0A858"/>
+            <line x1="124" y1="108" x2="170" y2="110" stroke="#F5D86C"/>
+            <line x1="123" y1="116" x2="168" y2="128" stroke="#7CECE0"/>
+          </g>
+        </svg>
+      </div>
+    </div>
+
+    <div class="callout">
+      <strong>The trio works.</strong> Same orbit · same finials · same Cinzel wordmark · same divider.
+      Iris is the only color that breaks ranks because Prismarium's whole DNA is "all colors at once."
+      That's a feature — Prismarium is the spectrum, Kairos and Chronos are the gold instruments.
+    </div>
+  </section>
+
+  <!-- ════════════════ 04 · THE TRIO · ALL THREE MARKS TOGETHER ════════════════ -->
+  <section>
+    <h2 class="section"><span class="num">04</span>The trio · circular badges · matched set</h2>
+    <p class="section-sub">
+      How the three siblings sit on a shelf together · same construction · different glyphs.
+    </p>
+
+    <div class="badge-row">
+      <div class="badge-cell">
+        <div class="canv">
+          <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="100" cy="100" r="76" fill="none" stroke="url(#goldK1)" stroke-width="1.2"/>
+            <circle cx="100" cy="14" r="3" fill="url(#goldK1)"/>
+            <line x1="100" y1="20" x2="100" y2="40" stroke="url(#goldK1)" stroke-width="1.5"/>
+            <line x1="100" y1="160" x2="100" y2="178" stroke="url(#goldK1)" stroke-width="1.5"/>
+            <polygon points="100,190 95,180 105,180" fill="url(#goldK1)"/>
+            <text x="100" y="132" font-family="Cinzel, serif" font-weight="600" font-size="92" fill="url(#goldK1)" text-anchor="middle">K</text>
+            <g transform="translate(140 78)"><path d="M 0 -16 L 2.4 -2.4 L 16 0 L 2.4 2.4 L 0 16 L -2.4 2.4 L -16 0 L -2.4 -2.4 Z" fill="url(#goldK1)"/></g>
+          </svg>
+        </div>
+        <div class="meta">
+          <div class="opt">SIBLING · 01</div>
+          <div class="nm">KAIROS</div>
+          <div class="ds">The opportune moment. Personal astrology · ship now.</div>
+        </div>
+      </div>
+
+      <div class="badge-cell">
+        <div class="canv">
+          <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="100" cy="100" r="76" fill="none" stroke="url(#goldC1)" stroke-width="1.2"/>
+            <line x1="100" y1="14" x2="100" y2="22" stroke="url(#goldC1)" stroke-width="1.5"/>
+            <polygon points="100,8 96,16 104,16" fill="url(#goldC1)"/>
+            <line x1="100" y1="178" x2="100" y2="186" stroke="url(#goldC1)" stroke-width="1.5"/>
+            <circle cx="100" cy="190" r="3" fill="url(#goldC1)"/>
+            <line x1="58" y1="42" x2="142" y2="42" stroke="url(#goldC1)" stroke-width="2.5" stroke-linecap="round"/>
+            <line x1="58" y1="158" x2="142" y2="158" stroke="url(#goldC1)" stroke-width="2.5" stroke-linecap="round"/>
+            <path d="M 64 42 L 64 56 L 100 100 L 64 144 L 64 158" fill="none" stroke="url(#goldC1)" stroke-width="1.8"/>
+            <path d="M 136 42 L 136 56 L 100 100 L 136 144 L 136 158" fill="none" stroke="url(#goldC1)" stroke-width="1.8"/>
+            <path d="M 70 48 L 130 48 L 102 96 L 98 96 Z" fill="url(#goldC1)" opacity="0.6"/>
+            <path d="M 78 152 L 122 152 L 102 110 L 98 110 Z" fill="url(#goldC1)" opacity="0.85"/>
+          </svg>
+        </div>
+        <div class="meta">
+          <div class="opt">SIBLING · 02</div>
+          <div class="nm">CHRONOS</div>
+          <div class="ds">The flow of time. World patterns + practitioner. Phase 2.</div>
+        </div>
+      </div>
+
+      <div class="badge-cell">
+        <div class="canv">
+          <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="100" cy="100" r="76" fill="none" stroke="url(#goldP1)" stroke-width="1.2"/>
+            <circle cx="100" cy="14" r="3" fill="url(#goldP1)"/>
+            <circle cx="100" cy="186" r="3" fill="url(#goldP1)"/>
+            <polygon points="100,52 142,140 58,140" fill="url(#irisFill)" stroke="url(#goldP1)" stroke-width="1.5"/>
+            <line x1="32" y1="96" x2="78" y2="96" stroke="#F2EFE6" stroke-width="1.5"/>
+            <g stroke-width="1.5" stroke-linecap="round">
+              <line x1="124" y1="92" x2="170" y2="76" stroke="#FF8B6E"/>
+              <line x1="125" y1="100" x2="172" y2="92" stroke="#F0A858"/>
+              <line x1="124" y1="108" x2="170" y2="110" stroke="#F5D86C"/>
+              <line x1="123" y1="116" x2="168" y2="128" stroke="#7CECE0"/>
+            </g>
+          </svg>
+        </div>
+        <div class="meta">
+          <div class="opt">SIBLING · 03</div>
+          <div class="nm">PRISMARIUM</div>
+          <div class="ds">Where wisdom converges. Esoteric library. Separate track.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════ 05 · PROJECT PARALLAX · 2-line vs 3-line ════════════════ -->
+  <section>
+    <h2 class="section"><span class="num">05</span>Project Parallax · the parent · 2-line vs 3-line stereo</h2>
+    <p class="section-sub">
+      You asked to see the wordmark with three offset lines instead of two. Both shown · same Sightline mark · gold-on-noir to match the family.
+    </p>
+
+    <div class="pwm-grid">
+      <div class="pwm-cell">
+        <div class="canv">
+          <svg width="64" height="64" viewBox="0 0 100 100">
+            <circle cx="20" cy="50" r="3.5" fill="#E8C77A"/>
+            <line x1="23" y1="50" x2="80" y2="32" stroke="#E8C77A" stroke-width="1.5" stroke-dasharray="3 3" opacity="0.8"/>
+            <line x1="23" y1="50" x2="80" y2="68" stroke="#E8C77A" stroke-width="1.5" stroke-dasharray="3 3" opacity="0.8"/>
+            <circle cx="58" cy="40" r="6" fill="#F5D86C"/>
+            <circle cx="80" cy="50" r="11" fill="none" stroke="#2BD9E8" stroke-width="2.5"/>
+          </svg>
+          <div style="display:flex; flex-direction:column; gap:8px;">
+            <span class="px-eyebrow">— PROJECT —</span>
+            <span class="px-stereo two" style="font-size:38px;">
+              <span class="l1">PARALLAX</span>
+              <span class="l2">PARALLAX</span>
+              <span class="l0">PARALLAX</span>
+            </span>
+          </div>
+        </div>
+        <div class="meta">
+          <div class="opt">WM-05 · 2-LINE STEREO</div>
+          <div class="nm">Cyan + coral split (current)</div>
+          <div class="ds">Two offset layers · binocular parallax · the canon.</div>
+        </div>
+      </div>
+
+      <div class="pwm-cell">
+        <div class="canv">
+          <svg width="64" height="64" viewBox="0 0 100 100">
+            <circle cx="20" cy="50" r="3.5" fill="#E8C77A"/>
+            <line x1="23" y1="50" x2="80" y2="32" stroke="#E8C77A" stroke-width="1.5" stroke-dasharray="3 3" opacity="0.8"/>
+            <line x1="23" y1="50" x2="80" y2="68" stroke="#E8C77A" stroke-width="1.5" stroke-dasharray="3 3" opacity="0.8"/>
+            <circle cx="58" cy="40" r="6" fill="#F5D86C"/>
+            <circle cx="80" cy="50" r="11" fill="none" stroke="#2BD9E8" stroke-width="2.5"/>
+          </svg>
+          <div style="display:flex; flex-direction:column; gap:8px;">
+            <span class="px-eyebrow">— PROJECT —</span>
+            <span class="px-stereo three" style="font-size:38px;">
+              <span class="l1">PARALLAX</span>
+              <span class="l2">PARALLAX</span>
+              <span class="l3">PARALLAX</span>
+              <span class="l0">PARALLAX</span>
+            </span>
+          </div>
+        </div>
+        <div class="meta">
+          <div class="opt">WM-05b · 3-LINE STEREO</div>
+          <div class="nm">Cyan + coral + butter (3-line)</div>
+          <div class="ds">Three offsets · trinocular · maps to the three siblings · butter ghost ties to Sightline star.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout">
+      <strong>3-line tradeoff.</strong> Symbolically perfect — three offsets for three siblings, butter color = the Sightline star = system origin.
+      Visually it gets <em class="under">slightly</em> noisier · butter on dark needs the lower opacity I've used (0.55).
+      My instinct: 2-line for nav/footer/small contexts · 3-line for hero/cover/about. They co-exist.
+    </div>
+  </section>
+
+  <!-- ════════════════ 06 · SIGHTLINE PALETTES · SL-06 / SL-01 / SL-05 ════════════════ -->
+  <section>
+    <h2 class="section"><span class="num">06</span>Sightline · SL-06 · SL-01 · SL-05</h2>
+    <p class="section-sub">The Parallax mark in three palette skins. Night canon · day secondary · mono utility.</p>
+
+    <div class="sl-grid">
+      <div class="sl-cell">
+        <div class="canv canvas-void">
+          <svg viewBox="0 0 100 100">
+            <circle cx="20" cy="50" r="3.5" fill="#F2EFE6"/>
+            <line x1="23" y1="50" x2="80" y2="32" stroke="#F2EFE6" stroke-width="1.5" stroke-dasharray="3 3" opacity="0.7"/>
+            <line x1="23" y1="50" x2="80" y2="68" stroke="#F2EFE6" stroke-width="1.5" stroke-dasharray="3 3" opacity="0.7"/>
+            <circle cx="58" cy="40" r="6" fill="#F5D86C"/>
+            <circle cx="80" cy="50" r="11" fill="none" stroke="#2BD9E8" stroke-width="2.5"/>
+          </svg>
+        </div>
+        <div class="meta">
+          <div class="opt">SL-06 · NIGHT · CANON</div>
+          <div class="nm">Sightline · night</div>
+          <div class="ds">Butter star · cyan disc · bone linework on void.</div>
+        </div>
+      </div>
+
+      <div class="sl-cell">
+        <div class="canv canvas-bone">
+          <svg viewBox="0 0 100 100">
+            <circle cx="20" cy="50" r="3.5" fill="#1B1815"/>
+            <line x1="23" y1="50" x2="78" y2="32" stroke="#1B1815" stroke-width="1.5" stroke-dasharray="3 3"/>
+            <line x1="23" y1="50" x2="78" y2="68" stroke="#1B1815" stroke-width="1.5" stroke-dasharray="3 3"/>
+            <circle cx="58" cy="40" r="6" fill="#F5D86C" stroke="#1B1815" stroke-width="1"/>
+            <circle cx="78" cy="50" r="11" fill="none" stroke="#2BD9E8" stroke-width="2.5"/>
+          </svg>
+        </div>
+        <div class="meta">
+          <div class="opt">SL-01 · DAY</div>
+          <div class="nm">Sightline · day</div>
+          <div class="ds">Same colors, ink linework on bone.</div>
+        </div>
+      </div>
+
+      <div class="sl-cell">
+        <div class="canv canvas-warm">
+          <svg viewBox="0 0 100 100">
+            <circle cx="20" cy="50" r="3.5" fill="#1B1815"/>
+            <line x1="23" y1="50" x2="80" y2="32" stroke="#1B1815" stroke-width="1.5" stroke-dasharray="3 3"/>
+            <line x1="23" y1="50" x2="80" y2="68" stroke="#1B1815" stroke-width="1.5" stroke-dasharray="3 3"/>
+            <circle cx="58" cy="40" r="6" fill="#1B1815"/>
+            <circle cx="80" cy="50" r="11" fill="none" stroke="#1B1815" stroke-width="2.5"/>
+          </svg>
+        </div>
+        <div class="meta">
+          <div class="opt">SL-05 · MONO</div>
+          <div class="nm">Sightline · 1-color</div>
+          <div class="ds">Single-pass · embroidery, screen-print, foil.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════ 07 · STELLOQUY ORBS ════════════════ -->
+  <section>
+    <h2 class="section"><span class="num">07</span>Stelloquy · the AI voice · ST-WARM · ST-COOL</h2>
+    <p class="section-sub">The two states of the AI · warm = speaking · cool = listening. Speaks through all three siblings.</p>
+
+    <div class="orb-stage">
+      <div class="orb-cell">
+        <span class="role-tag">Default · Speaking</span>
+        <div class="orb-warm"></div>
+        <span class="lab">ST-WARM · A</span>
+      </div>
+      <div class="orb-cell">
+        <span class="role-tag">Listening · Thinking</span>
+        <div class="orb-cool"></div>
+        <span class="lab">ST-COOL · B</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════ 08 · DRIFT ════════════════ -->
+  <section>
+    <h2 class="section"><span class="num">08</span>Background drift · brand surface · Aten Reign cycle</h2>
+    <p class="section-sub">Color shifts over minutes, not frames. Brand surfaces drift slowly · never freeze on a single color.</p>
+
+    <div class="drift-stage">
+      <div class="drift-layer drift-l1"></div>
+      <div class="drift-layer drift-l2"></div>
+      <div class="drift-layer drift-l3"></div>
+      <div class="drift-layer drift-l4"></div>
+      <div class="drift-text">
+        <div class="eyebrow">// PROJECT PARALLAX</div>
+        <div class="big">Two perspectives.<br/>One continuum.</div>
+        <div class="small">A breathing brand surface · Aten Reign cycle</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════ 09 · PALETTE ════════════════ -->
+  <section>
+    <h2 class="section"><span class="num">09</span>Palette · the family system</h2>
+    <p class="section-sub">Gold for the marks. Iris for Prismarium. Cyan/coral/butter for the wordmark. Bone, void, noir for canvases.</p>
+
+    <div class="palette">
+      <div class="sw"><div class="chip" style="background:#C9A14A"></div><div class="info"><b>Gold</b>#C9A14A — mark metal</div></div>
+      <div class="sw"><div class="chip" style="background:#E8C77A"></div><div class="info"><b>Gold soft</b>#E8C77A — wordmark</div></div>
+      <div class="sw"><div class="chip" style="background:#7E5AD6"></div><div class="info"><b>Iris</b>#7E5AD6 — Prismarium</div></div>
+      <div class="sw"><div class="chip" style="background:#2BD9E8"></div><div class="info"><b>Cyan</b>#2BD9E8 — Parallax L</div></div>
+      <div class="sw"><div class="chip" style="background:#FF8B6E"></div><div class="info"><b>Coral</b>#FF8B6E — Parallax R</div></div>
+      <div class="sw"><div class="chip" style="background:#F5D86C"></div><div class="info"><b>Butter</b>#F5D86C — the star</div></div>
+      <div class="sw"><div class="chip" style="background:#F2EFE6; border:1px solid #ccc;"></div><div class="info"><b>Bone</b>#F2EFE6 — light canvas</div></div>
+      <div class="sw"><div class="chip" style="background:#0A0A0E"></div><div class="info"><b>Void</b>#0A0A0E — dark canvas</div></div>
+    </div>
+  </section>
+
+  <!-- ════════════════ 10 · SYSTEM TABLE ════════════════ -->
+  <section>
+    <h2 class="section"><span class="num">10</span>The system · every asset · where it lives</h2>
+
+    <table class="fam">
+      <thead><tr><th>Asset</th><th>Code</th><th>Role</th></tr></thead>
+      <tbody>
+        <tr><td>Project Parallax wordmark</td><td><span class="tag">WM-05 / WM-05b</span></td><td>Parent brand · 2-line for small contexts · 3-line for hero (if you approve)</td></tr>
+        <tr><td>Sightline mark</td><td><span class="tag">SL-06 · SL-01 · SL-05</span></td><td>Parent brand mark · night, day, mono</td></tr>
+        <tr><td>Stelloquy orbs</td><td><span class="tag">ST-A (warm) · ST-B (cool)</span></td><td>AI voice · speaks through all siblings · warm idle / cool listening</td></tr>
+        <tr><td>Kairos lockup + badge</td><td><span class="tag">KAIROS · gold</span></td><td>Sibling 01 · personal astrology · ship now</td></tr>
+        <tr><td>Chronos lockup + badge</td><td><span class="tag">CHRONOS · hourglass / Chi / Saturn / Sundial</span></td><td>Sibling 02 · world + practitioner · pick the glyph</td></tr>
+        <tr><td>Prismarium lockup + badge</td><td><span class="tag">PR-01 · iris</span></td><td>Sibling 03 · esoteric library · separate track</td></tr>
+        <tr><td>Background drift</td><td><span class="tag">surface motion</span></td><td>UI brand surfaces · color shifts over minutes</td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout" style="margin-top:24px;">
+      <strong>Calls I need from you.</strong>
+      (1) Keep hourglass for Chronos · or switch to <em class="under">Chi · Saturn · Sundial</em>?
+      (2) WM-05 (2-line) · WM-05b (3-line) · or both with rules for when each is used?
+      (3) Anything still off about Kairos's K? It's drawn here exactly to your reference but I can tune the K weight, the orbit thickness, or the sparkle position.
+    </div>
+  </section>
+
+  <p style="margin-top:80px; border-top: 1px dashed var(--ink-faint); padding-top:18px; text-align:center; color:var(--ink-faint); font-size:14px;">
+    v7 · luxury cohesion · gold orbits · matched siblings · stelloquy speaks
+  </p>
+
+</div>
+
+</body>
+</html>

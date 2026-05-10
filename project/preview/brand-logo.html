@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { background: #08080e; margin: 0; padding: 20px; display: flex; align-items: center; gap: 32px; flex-wrap: wrap; }
+  .logo-block { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+  .logo-full { display: flex; align-items: center; gap: 12px; }
+  .mark { width: 40px; height: 40px; border-radius: 50%; border: 1px solid rgba(34,211,238,0.35); background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; }
+  .wordmark { font-family: 'Cinzel', serif; font-size: 22px; font-weight: 700; letter-spacing: 0.3em; color: #e4e4e7; text-transform: uppercase; }
+  .label { font-family: 'Fira Mono', monospace; font-size: 9px; color: #52525b; letter-spacing: 0.2em; text-transform: uppercase; }
+  .logo-sm { display: flex; align-items: center; gap: 8px; }
+  .mark-sm { width: 28px; height: 28px; border-radius: 50%; border: 1px solid rgba(34,211,238,0.3); background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; }
+  .wordmark-sm { font-family: 'Cinzel', serif; font-size: 14px; font-weight: 700; letter-spacing: 0.3em; color: #e4e4e7; text-transform: uppercase; }
+  .logo-icon-only { width: 52px; height: 52px; border-radius: 50%; border: 1px solid rgba(34,211,238,0.35); background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; }
+  .parallax-label { font-family: 'Cinzel', serif; font-size: 11px; letter-spacing: 0.25em; color: rgba(200,180,255,0.6); text-transform: uppercase; text-align: center; }
+  .parallax-tag { font-family: 'Cormorant Garamond', serif; font-size: 12px; font-style: italic; color: rgba(180,160,240,0.45); text-align: center; margin-top: 2px; }
+</style>
+</head>
+<body>
+  <div class="logo-block">
+    <div class="logo-full">
+      <div class="mark">
+        <svg viewBox="0 0 100 100" fill="none" width="28" height="28">
+          <circle cx="50" cy="50" r="40" stroke="#22D3EE" stroke-width="2" fill="none" opacity="0.5"/>
+          <circle cx="50" cy="50" r="20" stroke="#22D3EE" stroke-width="1" fill="none"/>
+          <circle cx="50" cy="50" r="4" fill="#22D3EE"/>
+        </svg>
+      </div>
+      <span class="wordmark">Prismarium</span>
+    </div>
+    <div class="label">Full Lockup — Default</div>
+  </div>
+
+  <div class="logo-block">
+    <div class="logo-sm">
+      <div class="mark-sm">
+        <svg viewBox="0 0 100 100" fill="none" width="18" height="18">
+          <circle cx="50" cy="50" r="40" stroke="#22D3EE" stroke-width="2" fill="none" opacity="0.5"/>
+          <circle cx="50" cy="50" r="20" stroke="#22D3EE" stroke-width="1" fill="none"/>
+          <circle cx="50" cy="50" r="4" fill="#22D3EE"/>
+        </svg>
+      </div>
+      <span class="wordmark-sm">Prismarium</span>
+    </div>
+    <div class="label">Small / Nav</div>
+  </div>
+
+  <div class="logo-block">
+    <div class="logo-icon-only">
+      <svg viewBox="0 0 100 100" fill="none" width="34" height="34">
+        <circle cx="50" cy="50" r="40" stroke="#22D3EE" stroke-width="2" fill="none" opacity="0.5"/>
+        <circle cx="50" cy="50" r="20" stroke="#22D3EE" stroke-width="1" fill="none"/>
+        <circle cx="50" cy="50" r="4" fill="#22D3EE"/>
+      </svg>
+    </div>
+    <div class="label">Icon Only</div>
+  </div>
+
+  <div class="logo-block" style="margin-left: auto;">
+    <div class="parallax-label">Project Parallax</div>
+    <div class="parallax-tag">"Seeing things from different perspectives"</div>
+  </div>
+</body>
+</html>

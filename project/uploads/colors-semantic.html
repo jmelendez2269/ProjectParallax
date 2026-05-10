@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { background: #0A1212; margin: 0; padding: 16px; font-family: 'Fira Mono', monospace; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+  .row-item { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 5px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); }
+  .dot { width: 20px; height: 20px; border-radius: 50%; flex-shrink: 0; }
+  .info { flex: 1; }
+  .name { font-size: 10px; color: #71717a; letter-spacing: 0.06em; text-transform: uppercase; }
+  .val  { font-size: 11px; color: #a1a1aa; margin-top: 1px; }
+</style>
+</head>
+<body>
+<div class="grid">
+  <div class="row-item"><div class="dot" style="background:#F1F5F9;"></div><div class="info"><div class="name">Text Primary</div><div class="val">#F1F5F9</div></div></div>
+  <div class="row-item"><div class="dot" style="background:#F0EFEB;"></div><div class="info"><div class="name">Text Cream</div><div class="val">#F0EFEB</div></div></div>
+  <div class="row-item"><div class="dot" style="background:#A1A1AA;"></div><div class="info"><div class="name">Text Secondary</div><div class="val">#A1A1AA</div></div></div>
+  <div class="row-item"><div class="dot" style="background:#52525B;"></div><div class="info"><div class="name">Text Muted</div><div class="val">#52525B</div></div></div>
+  <div class="row-item"><div class="dot" style="background:#22D3EE;"></div><div class="info"><div class="name">Text Cyan</div><div class="val">#22D3EE</div></div></div>
+  <div class="row-item"><div class="dot" style="background:#B48F4A;"></div><div class="info"><div class="name">Text Gold</div><div class="val">#B48F4A</div></div></div>
+  <div class="row-item"><div class="dot" style="background:rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12);"></div><div class="info"><div class="name">Border Subtle</div><div class="val">rgba(fff,0.06)</div></div></div>
+  <div class="row-item"><div class="dot" style="background:rgba(255,255,255,0.10); border: 1px solid rgba(255,255,255,0.18);"></div><div class="info"><div class="name">Border Default</div><div class="val">rgba(fff,0.10)</div></div></div>
+</div>
+</body>
+</html>

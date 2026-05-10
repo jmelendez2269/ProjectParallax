@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { background: #08080e; margin: 0; padding: 16px; font-family: 'Fira Mono', monospace; }
+  .label { font-size: 9px; color: #52525b; letter-spacing: 0.25em; text-transform: uppercase; margin-bottom: 10px; }
+  .row { display: flex; gap: 6px; }
+  .lens { flex: 1; border-radius: 6px; overflow: hidden; }
+  .lens-color { height: 52px; }
+  .lens-info { padding: 6px 8px 8px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); border-top: none; border-radius: 0 0 6px 6px; }
+  .lens-name { font-size: 9px; color: #71717a; letter-spacing: 0.05em; text-transform: uppercase; display: block; }
+  .lens-hex  { font-size: 10px; color: #a1a1aa; margin-top: 2px; display: block; }
+  .spectrum-bar { height: 6px; border-radius: 3px; margin-top: 12px;
+    background: linear-gradient(90deg, #FF3A5C, #FF8C2A, #F5D020, #2AFFA0, #20E0F5, #3A7FFF, #B03AFF); }
+</style>
+</head>
+<body>
+<div class="label">7 Lens Spectrum — The Convergence Machine</div>
+<div class="row">
+  <div class="lens">
+    <div class="lens-color" style="background:#FF3A5C; box-shadow:inset 0 -2px 8px rgba(0,0,0,0.4);"></div>
+    <div class="lens-info"><span class="lens-name">Scientific</span><span class="lens-hex">#FF3A5C</span></div>
+  </div>
+  <div class="lens">
+    <div class="lens-color" style="background:#FF8C2A;box-shadow:inset 0 -2px 8px rgba(0,0,0,0.4);"></div>
+    <div class="lens-info"><span class="lens-name">Psychological</span><span class="lens-hex">#FF8C2A</span></div>
+  </div>
+  <div class="lens">
+    <div class="lens-color" style="background:#F5D020;box-shadow:inset 0 -2px 8px rgba(0,0,0,0.4);"></div>
+    <div class="lens-info"><span class="lens-name">Philosophical</span><span class="lens-hex">#F5D020</span></div>
+  </div>
+  <div class="lens">
+    <div class="lens-color" style="background:#2AFFA0;box-shadow:inset 0 -2px 8px rgba(0,0,0,0.4);"></div>
+    <div class="lens-info"><span class="lens-name">Spiritual</span><span class="lens-hex">#2AFFA0</span></div>
+  </div>
+  <div class="lens">
+    <div class="lens-color" style="background:#20E0F5;box-shadow:inset 0 -2px 8px rgba(0,0,0,0.4);"></div>
+    <div class="lens-info"><span class="lens-name">Historical</span><span class="lens-hex">#20E0F5</span></div>
+  </div>
+  <div class="lens">
+    <div class="lens-color" style="background:#3A7FFF;box-shadow:inset 0 -2px 8px rgba(0,0,0,0.4);"></div>
+    <div class="lens-info"><span class="lens-name">Occult</span><span class="lens-hex">#3A7FFF</span></div>
+  </div>
+  <div class="lens">
+    <div class="lens-color" style="background:#B03AFF;box-shadow:inset 0 -2px 8px rgba(0,0,0,0.4);"></div>
+    <div class="lens-info"><span class="lens-name">Mathematical</span><span class="lens-hex">#B03AFF</span></div>
+  </div>
+</div>
+<div class="spectrum-bar"></div>
+</body>
+</html>

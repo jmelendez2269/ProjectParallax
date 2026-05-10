@@ -1,0 +1,1761 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Project Parallax — Turrell Brand Exploration</title>
+<link rel="stylesheet" href="tokens.css">
+<style>
+  /* ─── SKETCHY WIREFRAME OVERLAY ─────────────────────────── */
+  @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&family=Kalam:wght@300;400;700&display=swap');
+
+  :root {
+    --paper:       #F4F1E8;
+    --paper-dark:  #E8E2D0;
+    --ink:         #1B1815;
+    --ink-soft:    #3A3530;
+    --ink-faint:   #8A847A;
+    --rule:        rgba(27,24,21,0.12);
+    --hand:        'Kalam', 'Caveat', cursive;
+    --hand-bold:   'Caveat', cursive;
+    --accent-blue: #2E5BFF;
+    --accent-red:  #C7321F;
+    --margin-red:  #B43A2A;
+  }
+
+  body {
+    background: var(--paper);
+    background-image:
+      /* faint grid */
+      linear-gradient(rgba(27,24,21,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(27,24,21,0.04) 1px, transparent 1px),
+      /* paper grain */
+      radial-gradient(circle at 20% 30%, rgba(120,90,40,0.04) 0%, transparent 50%),
+      radial-gradient(circle at 80% 70%, rgba(80,60,30,0.04) 0%, transparent 50%);
+    background-size: 28px 28px, 28px 28px, 600px 600px, 800px 800px;
+    color: var(--ink);
+    font-family: var(--hand);
+    font-weight: 400;
+    font-size: 17px;
+    line-height: 1.5;
+    margin: 0;
+    padding: 0;
+  }
+
+  .page {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 64px 56px 120px;
+    position: relative;
+  }
+
+  /* Margin red rule (notebook) */
+  .page::before {
+    content: '';
+    position: absolute;
+    left: 92px;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: var(--margin-red);
+    opacity: 0.4;
+  }
+
+  /* ─── Headers ─── */
+  h1.cover-title {
+    font-family: var(--hand-bold);
+    font-size: 76px;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    margin: 0 0 8px;
+    transform: rotate(-1deg);
+  }
+  .cover-sub {
+    font-family: var(--hand);
+    font-size: 22px;
+    color: var(--ink-soft);
+    margin: 0 0 6px;
+  }
+  .cover-meta {
+    font-family: var(--hand);
+    font-size: 15px;
+    color: var(--ink-faint);
+    letter-spacing: 0.05em;
+    margin: 0;
+  }
+
+  h2.section {
+    font-family: var(--hand-bold);
+    font-size: 44px;
+    font-weight: 700;
+    color: var(--ink);
+    margin: 80px 0 4px;
+    line-height: 1;
+    transform: rotate(-0.5deg);
+  }
+  h2.section .num {
+    color: var(--margin-red);
+    font-size: 28px;
+    margin-right: 12px;
+    vertical-align: 8px;
+  }
+  .section-sub {
+    font-family: var(--hand);
+    font-size: 18px;
+    color: var(--ink-soft);
+    margin: 0 0 32px;
+    max-width: 720px;
+  }
+
+  h3.sub {
+    font-family: var(--hand-bold);
+    font-size: 28px;
+    color: var(--ink);
+    margin: 36px 0 8px;
+    transform: rotate(-0.3deg);
+  }
+
+  /* ─── Sketchy wires (boxes drawn with double-stroke) ─── */
+  .wire {
+    border: 1.5px solid var(--ink);
+    border-radius: 6px;
+    background: rgba(255,255,255,0.4);
+    position: relative;
+    box-shadow:
+      1px 2px 0 rgba(27,24,21,0.06),
+      inset 0 0 0 1px rgba(27,24,21,0.04);
+  }
+  .wire::after {
+    /* second pass — pencil double-line */
+    content: '';
+    position: absolute;
+    inset: -2px -1px 0 -2px;
+    border: 1px solid rgba(27,24,21,0.25);
+    border-radius: 7px;
+    pointer-events: none;
+  }
+
+  .scribble {
+    font-family: var(--hand);
+    color: var(--ink-soft);
+    font-size: 15px;
+  }
+  .label-tag {
+    display: inline-block;
+    font-family: var(--hand);
+    font-size: 13px;
+    color: var(--margin-red);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    border-bottom: 1px dashed var(--margin-red);
+    padding-bottom: 1px;
+  }
+  .pen-blue { color: var(--accent-blue); }
+  .pen-red  { color: var(--accent-red); }
+
+  /* arrows / annotations */
+  .annot {
+    font-family: var(--hand);
+    color: var(--accent-red);
+    font-size: 15px;
+    line-height: 1.3;
+  }
+  .annot-blue {
+    font-family: var(--hand);
+    color: var(--accent-blue);
+    font-size: 15px;
+    line-height: 1.3;
+  }
+
+  /* ─── COVER ─────────────────────────────────────────── */
+  .cover {
+    padding: 24px 0 24px 24px;
+  }
+  .cover-card {
+    border: 2px solid var(--ink);
+    border-radius: 10px;
+    padding: 36px 40px;
+    background: rgba(255,255,255,0.55);
+    position: relative;
+    max-width: 920px;
+  }
+  .cover-card::after {
+    content: '';
+    position: absolute;
+    inset: -4px -2px 2px -4px;
+    border: 1px solid rgba(27,24,21,0.3);
+    border-radius: 12px;
+    pointer-events: none;
+  }
+  .cover-stamp {
+    position: absolute;
+    top: 24px; right: 32px;
+    font-family: var(--hand);
+    font-size: 13px;
+    color: var(--margin-red);
+    border: 1.5px dashed var(--margin-red);
+    padding: 6px 12px;
+    border-radius: 4px;
+    transform: rotate(4deg);
+    letter-spacing: 0.05em;
+  }
+  .cover-thesis {
+    margin: 24px 0 0;
+    font-size: 18px;
+    line-height: 1.55;
+    color: var(--ink-soft);
+    max-width: 720px;
+  }
+  .cover-thesis em {
+    color: var(--accent-blue);
+    font-style: normal;
+    border-bottom: 1px solid var(--accent-blue);
+  }
+  .cover-toc {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4px 28px;
+    margin-top: 28px;
+    font-family: var(--hand);
+    font-size: 16px;
+    color: var(--ink-soft);
+  }
+  .cover-toc div span {
+    color: var(--margin-red);
+    margin-right: 8px;
+  }
+
+  /* ─── PHILOSOPHY GRID ─────────────────────────────────── */
+  .phil-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    margin-top: 24px;
+  }
+  .phil-card {
+    border: 1.5px solid var(--ink);
+    border-radius: 6px;
+    padding: 16px 16px 18px;
+    background: rgba(255,255,255,0.5);
+    position: relative;
+  }
+  .phil-card::after {
+    content: '';
+    position: absolute;
+    inset: -2px -1px 1px -2px;
+    border: 1px solid rgba(27,24,21,0.22);
+    border-radius: 7px;
+    pointer-events: none;
+  }
+  .phil-card .swatch {
+    height: 96px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    border: 1px solid rgba(0,0,0,0.2);
+    box-shadow: inset 0 0 40px rgba(0,0,0,0.15);
+  }
+  .phil-card h4 {
+    font-family: var(--hand-bold);
+    font-size: 22px;
+    margin: 0 0 4px;
+    color: var(--ink);
+  }
+  .phil-card p {
+    margin: 0;
+    font-family: var(--hand);
+    font-size: 15px;
+    line-height: 1.45;
+    color: var(--ink-soft);
+  }
+  .phil-card .ref {
+    display: block;
+    margin-top: 8px;
+    font-size: 13px;
+    color: var(--margin-red);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  /* ─── PALETTE ─────────────────────────────────────────── */
+  .palette-row {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 24px;
+    margin-bottom: 28px;
+    align-items: start;
+  }
+  .palette-row .label-block {
+    padding-top: 6px;
+  }
+  .palette-row .label-block h4 {
+    font-family: var(--hand-bold);
+    font-size: 24px;
+    margin: 0 0 4px;
+  }
+  .palette-row .label-block p {
+    font-family: var(--hand);
+    font-size: 14px;
+    color: var(--ink-soft);
+    margin: 0;
+    line-height: 1.4;
+  }
+  .swatch-strip {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .swatch-chip {
+    width: 124px;
+    border: 1.5px solid var(--ink);
+    border-radius: 4px;
+    overflow: hidden;
+    background: white;
+    position: relative;
+  }
+  .swatch-chip .col {
+    height: 70px;
+    box-shadow: inset 0 0 30px rgba(0,0,0,0.12);
+  }
+  .swatch-chip .meta {
+    padding: 6px 8px 8px;
+    font-family: var(--hand);
+    font-size: 12px;
+    line-height: 1.25;
+  }
+  .swatch-chip .name {
+    color: var(--ink);
+    font-weight: 700;
+    font-family: var(--hand-bold);
+    font-size: 15px;
+  }
+  .swatch-chip .hex {
+    color: var(--ink-faint);
+    font-size: 11px;
+    letter-spacing: 0.05em;
+    font-family: 'Fira Mono', monospace;
+  }
+
+  /* ─── 7 LENS GRID ─────────────────────────────────────── */
+  .lens-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 10px;
+    margin-top: 24px;
+  }
+  .lens-card {
+    border: 1.5px solid var(--ink);
+    border-radius: 6px;
+    overflow: hidden;
+    background: white;
+    position: relative;
+  }
+  .lens-card .col {
+    height: 130px;
+    position: relative;
+  }
+  .lens-card .col::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 50% 50%, transparent 30%, rgba(0,0,0,0.4));
+  }
+  .lens-card .meta {
+    padding: 8px 10px 10px;
+    font-family: var(--hand);
+    font-size: 13px;
+    line-height: 1.3;
+  }
+  .lens-card .num {
+    color: var(--margin-red);
+    font-family: 'Fira Mono', monospace;
+    font-size: 11px;
+  }
+  .lens-card .name {
+    font-family: var(--hand-bold);
+    font-size: 16px;
+    color: var(--ink);
+    margin: 2px 0;
+  }
+  .lens-card .lens {
+    color: var(--ink-soft);
+    font-size: 12px;
+  }
+  .lens-card .hex {
+    margin-top: 4px;
+    font-family: 'Fira Mono', monospace;
+    font-size: 10px;
+    color: var(--ink-faint);
+    letter-spacing: 0.04em;
+  }
+
+  /* Spectrum strip showing OLD vs NEW */
+  .spectrum-compare {
+    display: grid;
+    grid-template-columns: 100px 1fr;
+    gap: 12px;
+    align-items: center;
+    margin-top: 20px;
+  }
+  .spectrum-compare .lab {
+    font-family: var(--hand-bold);
+    font-size: 18px;
+  }
+  .spectrum-compare .strip {
+    height: 36px;
+    border: 1.5px solid var(--ink);
+    border-radius: 4px;
+    box-shadow: inset 0 0 30px rgba(0,0,0,0.15);
+  }
+  .strip-old {
+    background: linear-gradient(90deg,
+      #FF3A5C 0%, #FF8C2A 16%, #F5D020 32%, #2AFFA0 48%,
+      #20E0F5 64%, #3A7FFF 80%, #B03AFF 100%);
+  }
+  .strip-new {
+    background: linear-gradient(90deg,
+      #C24A6E 0%, #D6794A 16%, #E0A862 32%, #5C9B7A 48%,
+      #4A8AB0 64%, #3D5BC6 80%, #6E3FA0 100%);
+  }
+
+  /* ─── LOGO LAB GRID ───────────────────────────────────── */
+  .logo-lab {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 14px;
+    margin-top: 20px;
+  }
+  .logo-cell {
+    border: 1.5px solid var(--ink);
+    border-radius: 6px;
+    background: rgba(255,255,255,0.55);
+    overflow: hidden;
+    position: relative;
+  }
+  .logo-cell::after {
+    content: '';
+    position: absolute;
+    inset: -2px -1px 1px -2px;
+    border: 1px solid rgba(27,24,21,0.22);
+    border-radius: 7px;
+    pointer-events: none;
+  }
+  .logo-cell .canvas {
+    aspect-ratio: 1 / 1;
+    background: #0A0E14;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .logo-cell .canvas svg {
+    width: 75%;
+    height: 75%;
+  }
+  .logo-cell .meta {
+    padding: 8px 10px 10px;
+    font-family: var(--hand);
+    font-size: 13px;
+    line-height: 1.3;
+    background: rgba(255,255,255,0.5);
+  }
+  .logo-cell .opt {
+    font-family: 'Fira Mono', monospace;
+    font-size: 10px;
+    color: var(--margin-red);
+    letter-spacing: 0.05em;
+  }
+  .logo-cell .name {
+    font-family: var(--hand-bold);
+    font-size: 16px;
+    color: var(--ink);
+    margin: 2px 0 2px;
+  }
+  .logo-cell .desc {
+    color: var(--ink-soft);
+    font-size: 12px;
+    line-height: 1.3;
+  }
+  .logo-cell.featured .canvas {
+    box-shadow: inset 0 0 0 2px var(--accent-red);
+  }
+  .featured-tag {
+    position: absolute;
+    top: -8px;
+    right: 8px;
+    background: var(--accent-red);
+    color: var(--paper);
+    font-family: var(--hand);
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 3px;
+    letter-spacing: 0.05em;
+    transform: rotate(3deg);
+    z-index: 2;
+  }
+
+  /* Family lockup */
+  .family-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+    margin-top: 20px;
+  }
+  .family-cell {
+    border: 1.5px solid var(--ink);
+    border-radius: 6px;
+    background: #0A0E14;
+    aspect-ratio: 1 / 1;
+    position: relative;
+    overflow: hidden;
+  }
+  .family-cell svg {
+    position: absolute; inset: 12%;
+    width: 76%; height: 76%;
+  }
+  .family-cell .label {
+    position: absolute;
+    bottom: 14px; left: 0; right: 0;
+    text-align: center;
+    font-family: 'Cinzel', serif;
+    font-size: 13px;
+    letter-spacing: 0.3em;
+    color: rgba(255,255,255,0.85);
+    text-transform: uppercase;
+  }
+  .family-cell .role {
+    position: absolute;
+    top: 14px; left: 0; right: 0;
+    text-align: center;
+    font-family: 'Fira Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.3em;
+    color: rgba(255,255,255,0.4);
+    text-transform: uppercase;
+  }
+
+  /* Mascot in context */
+  .mascot-grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr;
+    gap: 18px;
+    margin-top: 20px;
+  }
+  .mascot-canvas {
+    border: 1.5px solid var(--ink);
+    border-radius: 6px;
+    background: #0A0E14;
+    overflow: hidden;
+    position: relative;
+  }
+  .mascot-canvas .mc-label {
+    position: absolute;
+    bottom: 10px; left: 14px;
+    font-family: 'Fira Mono', monospace;
+    font-size: 10px;
+    color: rgba(255,255,255,0.45);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+
+  /* Notes / arrows column */
+  .notes-col {
+    border-left: 1px dashed rgba(27,24,21,0.3);
+    padding-left: 18px;
+    font-family: var(--hand);
+    font-size: 14px;
+    color: var(--ink-soft);
+    line-height: 1.5;
+  }
+  .notes-col h5 {
+    font-family: var(--hand-bold);
+    font-size: 18px;
+    color: var(--ink);
+    margin: 0 0 6px;
+  }
+  .notes-col ul {
+    margin: 0 0 14px; padding-left: 18px;
+  }
+  .notes-col li { margin-bottom: 4px; }
+
+  .two-col {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 32px;
+    margin-top: 8px;
+  }
+
+  /* arrow scribbles */
+  .arrow {
+    position: absolute;
+    font-family: var(--hand);
+    color: var(--accent-red);
+    font-size: 14px;
+    pointer-events: none;
+  }
+
+  /* Page break decoration */
+  .break {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 56px 0 24px;
+    color: var(--ink-faint);
+    font-family: var(--hand);
+    font-size: 13px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+  .break::before, .break::after {
+    content: ''; flex: 1;
+    height: 1px;
+    background: repeating-linear-gradient(90deg,
+      var(--ink-faint) 0 6px, transparent 6px 12px);
+    opacity: 0.5;
+  }
+
+  /* Section anchors / nav */
+  .quick-nav {
+    position: sticky;
+    top: 16px;
+    z-index: 10;
+    background: rgba(244,241,232,0.9);
+    backdrop-filter: blur(4px);
+    border: 1.5px solid var(--ink);
+    border-radius: 999px;
+    padding: 8px 18px;
+    margin: 0 auto 32px;
+    display: inline-flex;
+    gap: 14px;
+    font-family: var(--hand);
+    font-size: 14px;
+    box-shadow: 1px 2px 0 rgba(27,24,21,0.1);
+  }
+  .quick-nav a {
+    color: var(--ink-soft);
+    text-decoration: none;
+    padding: 2px 6px;
+    border-radius: 3px;
+  }
+  .quick-nav a:hover {
+    color: var(--margin-red);
+    background: rgba(180,58,42,0.08);
+  }
+  .nav-wrap { text-align: center; margin-top: -16px; }
+
+  /* footer */
+  .footer-note {
+    margin-top: 80px;
+    border-top: 1px dashed var(--ink-faint);
+    padding-top: 18px;
+    font-family: var(--hand);
+    font-size: 14px;
+    color: var(--ink-faint);
+    text-align: center;
+  }
+
+  /* spectrum mini callout */
+  .callout {
+    border: 1.5px dashed var(--accent-red);
+    border-radius: 6px;
+    padding: 12px 16px;
+    background: rgba(180,58,42,0.04);
+    margin: 16px 0;
+    font-family: var(--hand);
+    font-size: 15px;
+    color: var(--ink-soft);
+  }
+  .callout strong {
+    color: var(--margin-red);
+    font-family: var(--hand-bold);
+    font-weight: 700;
+  }
+
+  @media (max-width: 1100px) {
+    .logo-lab { grid-template-columns: repeat(3, 1fr); }
+    .lens-grid { grid-template-columns: repeat(4, 1fr); }
+    .family-row { grid-template-columns: repeat(2, 1fr); }
+    .phil-grid { grid-template-columns: repeat(2, 1fr); }
+    .mascot-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- ═══════════════════════ COVER ═══════════════════════ -->
+  <section class="cover" id="cover">
+    <p class="cover-meta">SKETCHBOOK — VOL. 01 · APR 2026</p>
+    <h1 class="cover-title">Project Parallax</h1>
+    <p class="cover-sub">Rebrand exploration — through the lens of <span class="pen-blue">James Turrell</span></p>
+
+    <div class="cover-card" style="margin-top:24px;">
+      <span class="cover-stamp">WIP · NOT FINAL</span>
+      <h3 class="sub" style="margin-top:0;">Thesis</h3>
+      <p class="cover-thesis">
+        Turrell treats <em>light as material</em>, not illumination. Color is felt, not labeled.
+        Edges dissolve. Time slows. The viewer becomes part of the work.
+      </p>
+      <p class="cover-thesis">
+        Translating this into a software brand means: <em>fields not icons</em>,
+        <em>gradients that breathe</em>, <em>afterimages</em>, and a palette pulled from
+        Skyspaces &amp; Ganzfelds rather than from a color wheel.
+      </p>
+
+      <div class="cover-toc">
+        <div><span>01.</span>Color philosophy &amp; references</div>
+        <div><span>05.</span>Prismarium — workshop mark</div>
+        <div><span>02.</span>Retuned core palette</div>
+        <div><span>06.</span>Kairos — intelligence mark</div>
+        <div><span>03.</span>7-lens spectrum (reimagined)</div>
+        <div><span>07.</span>Chronos — architect mark</div>
+        <div><span>04.</span>Project Parallax parent mark</div>
+        <div><span>08.</span>Stelloquy — AI mascot</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="nav-wrap">
+    <nav class="quick-nav">
+      <a href="#philosophy">Philosophy</a>
+      <a href="#palette">Palette</a>
+      <a href="#lenses">7 Lenses</a>
+      <a href="#parallax">Parallax</a>
+      <a href="#prismarium">Prismarium</a>
+      <a href="#kairos">Kairos</a>
+      <a href="#chronos">Chronos</a>
+      <a href="#stelloquy">Stelloquy</a>
+      <a href="#family">Family</a>
+    </nav>
+  </div>
+
+  <!-- ═══════════════════════ 01 PHILOSOPHY ═══════════════════════ -->
+  <section id="philosophy">
+    <h2 class="section"><span class="num">01</span>Color philosophy</h2>
+    <p class="section-sub">
+      Five Turrell ideas we'll borrow. Each maps to a behavior the brand can adopt.
+    </p>
+
+    <div class="phil-grid">
+      <!-- Skyspaces -->
+      <div class="phil-card">
+        <div class="swatch" style="background: linear-gradient(180deg, #2A1B4A 0%, #5C3FA0 35%, #C77A4A 75%, #F2D89A 100%);"></div>
+        <h4>Skyspaces</h4>
+        <p>An aperture frames sky &amp; engineered light. The <em>frame</em> teaches the eye to see new colors in the natural one.</p>
+        <span class="ref">→ Logo apertures · framed glow</span>
+      </div>
+      <!-- Ganzfeld -->
+      <div class="phil-card">
+        <div class="swatch" style="background: radial-gradient(circle at 50% 50%, #FF7AA8 0%, #C24A6E 60%, #5C2840 100%);"></div>
+        <h4>Ganzfeld</h4>
+        <p>Total color field, no edges. Eye loses focus. Brain re-builds the image from a wash of pure pigment.</p>
+        <span class="ref">→ Backgrounds · loading screens</span>
+      </div>
+      <!-- Roden Crater -->
+      <div class="phil-card">
+        <div class="swatch" style="background: linear-gradient(135deg, #0A1224 0%, #1B2A5C 40%, #5A3A8C 80%, #B86A6A 100%);"></div>
+        <h4>Roden Crater</h4>
+        <p>An astronomical instrument for the eye. Color tracks celestial time. Solstices become palette events.</p>
+        <span class="ref">→ Time-aware UI · Chronos identity</span>
+      </div>
+      <!-- Afterimage -->
+      <div class="phil-card">
+        <div class="swatch" style="background: linear-gradient(90deg, #FF3A6E 0%, #FF3A6E 50%, #2AE0A0 50%, #2AE0A0 100%);"></div>
+        <h4>Retinal afterimage</h4>
+        <p>Stare at red, look away — see green. Turrell uses this; we'll use complementaries to define hover &amp; focus colors.</p>
+        <span class="ref">→ Hover states · focus rings</span>
+      </div>
+      <!-- Slow gradient -->
+      <div class="phil-card">
+        <div class="swatch" style="background: linear-gradient(135deg, #1A1F4A 0%, #4A3A8C 50%, #B47AAA 100%); animation: phil-breathe 8s ease-in-out infinite;"></div>
+        <h4>Breathing time</h4>
+        <p>Color shifts over minutes, not frames. UI brand surfaces drift slowly — never a static brand color.</p>
+        <span class="ref">→ Background drift · brand "alive"</span>
+      </div>
+      <!-- Light is object -->
+      <div class="phil-card">
+        <div class="swatch" style="background: radial-gradient(ellipse 80% 50% at 50% 50%, #FFE0B0 0%, #C77A4A 35%, #2A1F4A 80%);"></div>
+        <h4>Light as object</h4>
+        <p>The glow <em>is</em> the thing. No outline, no surface — just luminous mass with a soft edge.</p>
+        <span class="ref">→ Logo construction · mascot</span>
+      </div>
+    </div>
+
+    <style>
+      @keyframes phil-breathe {
+        0%,100% { filter: hue-rotate(0deg) brightness(1); }
+        50%     { filter: hue-rotate(20deg) brightness(1.1); }
+      }
+    </style>
+  </section>
+
+  <!-- ═══════════════════════ 02 PALETTE ═══════════════════════ -->
+  <section id="palette">
+    <h2 class="section"><span class="num">02</span>Retuned core palette</h2>
+    <p class="section-sub">
+      Goal: keep the dark midnight base, but pull the accents away from screen-pure neon
+      and toward Turrell's <span class="pen-blue">desaturated, atmospheric</span> hues.
+      Five families. Each named after a Turrell motif.
+    </p>
+
+    <!-- Voids -->
+    <div class="palette-row">
+      <div class="label-block">
+        <h4>Voids</h4>
+        <p>Backgrounds. Never pure black — always a faint cast (warm, cool, plum) so a color field reads as a <em>place</em>.</p>
+      </div>
+      <div class="swatch-strip">
+        <div class="swatch-chip"><div class="col" style="background:#080A14;"></div><div class="meta"><div class="name">Crater</div><div class="hex">#080A14</div></div></div>
+        <div class="swatch-chip"><div class="col" style="background:#0F1424;"></div><div class="meta"><div class="name">Cobalt void</div><div class="hex">#0F1424</div></div></div>
+        <div class="swatch-chip"><div class="col" style="background:#181426;"></div><div class="meta"><div class="name">Plum void</div><div class="hex">#181426</div></div></div>
+        <div class="swatch-chip"><div class="col" style="background:#0E1820;"></div><div class="meta"><div class="name">Teal-black</div><div class="hex">#0E1820</div></div></div>
+      </div>
+    </div>
+
+    <!-- Atmospheres -->
+    <div class="palette-row">
+      <div class="label-block">
+        <h4>Atmospheres</h4>
+        <p>Mid-tone fields used inside Skyspace apertures &amp; large brand surfaces. Drift between these — <em>never freeze</em>.</p>
+      </div>
+      <div class="swatch-strip">
+        <div class="swatch-chip"><div class="col" style="background:#3D5BC6;"></div><div class="meta"><div class="name">Aten dusk</div><div class="hex">#3D5BC6</div></div></div>
+        <div class="swatch-chip"><div class="col" style="background:#6E3FA0;"></div><div class="meta"><div class="name">Iris</div><div class="hex">#6E3FA0</div></div></div>
+        <div class="swatch-chip"><div class="col" style="background:#C24A6E;"></div><div class="meta"><div class="name">Ganzfeld rose</div><div class="hex">#C24A6E</div></div></div>
+        <div class="swatch-chip"><div class="col" style="background:#D6794A;"></div><div class="meta"><div class="name">Crater amber</div><div class="hex">#D6794A</div></div></div>
+        <div class="swatch-chip"><div class="col" style="background:#5C9B7A;"></div><div class="meta"><div class="name">Mendota mint</div><div class="hex">#5C9B7A</div></div></div>
+      </div>
+    </div>
+
+    <!-- Apertures (interactive) -->
+    <div class="palette-row">
+      <div class="label-block">
+        <h4>Apertures</h4>
+        <p>Interactive accents — replace the old screen-cyan. Pulled toward Turrell's <em>cool atmospheric blues</em>.</p>
+      </div>
+      <div class="swatch-strip">
+        <div class="swatch-chip"><div class="col" style="background:#4A8AB0;"></div><div class="meta"><div class="name">Glacial</div><div class="hex">#4A8AB0</div></div></div>
+        <div class="swatch-chip"><div class="col" style="background:#7DB4D0;"></div><div class="meta"><div class="name">Aperture</div><div class="hex">#7DB4D0</div></div></div>
+        <div class="swatch-chip"><div class="col" style="background:#A8D0E0;"></div><div class="meta"><div class="name">Skyspace</div><div class="hex">#A8D0E0</div></div></div>
+      </div>
+    </div>
+
+    <!-- Embers -->
+    <div class="palette-row">
+      <div class="label-block">
+        <h4>Embers</h4>
+        <p>Prestige / warm accents — replace aged brass. Sunset palette from Roden Crater photographs.</p>
+      </div>
+      <div class="swatch-strip">
+        <div class="swatch-chip"><div class="col" style="background:#E0A862;"></div><div class="meta"><div class="name">Solar</div><div class="hex">#E0A862</div></div></div>
+        <div class="swatch-chip"><div class="col" style="background:#C77A4A;"></div><div class="meta"><div class="name">Ember</div><div class="hex">#C77A4A</div></div></div>
+        <div class="swatch-chip"><div class="col" style="background:#8A4A3F;"></div><div class="meta"><div class="name">Iron oxide</div><div class="hex">#8A4A3F</div></div></div>
+      </div>
+    </div>
+
+    <!-- Texts -->
+    <div class="palette-row">
+      <div class="label-block">
+        <h4>Inks</h4>
+        <p>Type colors — slightly warm, never #FFF. Reading on a luminous field needs warmth.</p>
+      </div>
+      <div class="swatch-strip">
+        <div class="swatch-chip"><div class="col" style="background:#F0EBE0;"></div><div class="meta"><div class="name">Bone</div><div class="hex">#F0EBE0</div></div></div>
+        <div class="swatch-chip"><div class="col" style="background:#A89E92;"></div><div class="meta"><div class="name">Linen</div><div class="hex">#A89E92</div></div></div>
+        <div class="swatch-chip"><div class="col" style="background:#5C5650;"></div><div class="meta"><div class="name">Ash</div><div class="hex">#5C5650</div></div></div>
+      </div>
+    </div>
+
+    <div class="callout">
+      <strong>Decision needed:</strong> the existing system uses high-chroma cyan (#22D3EE) everywhere
+      as the interactive accent. Turrell-faithful answer is the desaturated <em>Aperture</em> family. This is the
+      single biggest visual departure from the current brand — confirm before locking.
+    </div>
+  </section>
+
+  <!-- ═══════════════════════ 03 SEVEN LENSES ═══════════════════════ -->
+  <section id="lenses">
+    <h2 class="section"><span class="num">03</span>The 7-lens spectrum, retuned</h2>
+    <p class="section-sub">
+      Today's lenses are screen-rainbow primaries. Turrell's spectrum is <em>not</em> rainbow —
+      it's Roden Crater at sunset, bands of pigment with depth, not pure RGB.
+      Each lens is mapped to a <span class="pen-blue">specific Turrell work</span>.
+    </p>
+
+    <div class="spectrum-compare">
+      <div class="lab">Before</div>
+      <div class="strip strip-old"></div>
+      <div class="lab">After</div>
+      <div class="strip strip-new"></div>
+    </div>
+
+    <div class="lens-grid">
+      <div class="lens-card">
+        <div class="col" style="background:#C24A6E;"></div>
+        <div class="meta">
+          <div class="num">L01</div>
+          <div class="name">Magenta</div>
+          <div class="lens">Scientific</div>
+          <div class="hex">#C24A6E · "Aten Reign"</div>
+        </div>
+      </div>
+      <div class="lens-card">
+        <div class="col" style="background:#D6794A;"></div>
+        <div class="meta">
+          <div class="num">L02</div>
+          <div class="name">Crater</div>
+          <div class="lens">Psychological</div>
+          <div class="hex">#D6794A · "Roden dusk"</div>
+        </div>
+      </div>
+      <div class="lens-card">
+        <div class="col" style="background:#E0A862;"></div>
+        <div class="meta">
+          <div class="num">L03</div>
+          <div class="name">Solar</div>
+          <div class="lens">Philosophical</div>
+          <div class="hex">#E0A862 · "Knight Rise"</div>
+        </div>
+      </div>
+      <div class="lens-card">
+        <div class="col" style="background:#5C9B7A;"></div>
+        <div class="meta">
+          <div class="num">L04</div>
+          <div class="name">Mendota</div>
+          <div class="lens">Religious</div>
+          <div class="hex">#5C9B7A · "Mendota Stoppages"</div>
+        </div>
+      </div>
+      <div class="lens-card">
+        <div class="col" style="background:#4A8AB0;"></div>
+        <div class="meta">
+          <div class="num">L05</div>
+          <div class="name">Glacial</div>
+          <div class="lens">Historical</div>
+          <div class="hex">#4A8AB0 · "Afrum"</div>
+        </div>
+      </div>
+      <div class="lens-card">
+        <div class="col" style="background:#3D5BC6;"></div>
+        <div class="meta">
+          <div class="num">L06</div>
+          <div class="name">Cobalt</div>
+          <div class="lens">Symbolic</div>
+          <div class="hex">#3D5BC6 · "Aten dawn"</div>
+        </div>
+      </div>
+      <div class="lens-card">
+        <div class="col" style="background:#6E3FA0;"></div>
+        <div class="meta">
+          <div class="num">L07</div>
+          <div class="name">Iris</div>
+          <div class="lens">Mathematical</div>
+          <div class="hex">#6E3FA0 · "Ganzfeld violet"</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout">
+      <strong>Why this works:</strong> the new strip flows like a Turrell sunset photograph
+      — magenta to amber to violet — instead of looking like a rainbow flag.
+      Each lens still has its identity, but the family <em>belongs together</em>.
+    </div>
+  </section>
+
+  <div class="break">end of color · onto marks</div>
+
+  <!-- ═══════════════════════ 04 PARALLAX MARK ═══════════════════════ -->
+  <section id="parallax">
+    <h2 class="section"><span class="num">04</span>Project Parallax — parent mark</h2>
+    <p class="section-sub">
+      The umbrella. Tagline: <em>"Seeing things from different perspectives."</em>
+      Five directions. All built around <span class="pen-blue">aperture geometry</span> — a
+      framed opening through which light becomes color.
+    </p>
+
+    <div class="logo-lab">
+      <!-- 01: Three-aperture stack -->
+      <div class="logo-cell featured">
+        <div class="featured-tag">recommend</div>
+        <div class="canvas">
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <radialGradient id="px1a" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#7DB4D0"/>
+                <stop offset="100%" stop-color="#3D5BC6" stop-opacity="0"/>
+              </radialGradient>
+              <radialGradient id="px1b" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#C77A4A"/>
+                <stop offset="100%" stop-color="#8A4A3F" stop-opacity="0"/>
+              </radialGradient>
+              <radialGradient id="px1c" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#B47AAA"/>
+                <stop offset="100%" stop-color="#6E3FA0" stop-opacity="0"/>
+              </radialGradient>
+            </defs>
+            <circle cx="50" cy="50" r="42" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="0.5"/>
+            <circle cx="35" cy="42" r="22" fill="url(#px1a)"/>
+            <circle cx="65" cy="42" r="22" fill="url(#px1b)"/>
+            <circle cx="50" cy="62" r="22" fill="url(#px1c)"/>
+          </svg>
+        </div>
+        <div class="meta">
+          <div class="opt">PX-01 · TRIAD APERTURE</div>
+          <div class="name">Three Skyspaces</div>
+          <div class="desc">Three glowing apertures overlap — one per product. The overlap is the parent.</div>
+        </div>
+      </div>
+
+      <!-- 02: Prism aperture -->
+      <div class="logo-cell">
+        <div class="canvas">
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="px2g" x1="0" x2="1" y1="0" y2="1">
+                <stop offset="0%" stop-color="#3D5BC6"/>
+                <stop offset="50%" stop-color="#C24A6E"/>
+                <stop offset="100%" stop-color="#E0A862"/>
+              </linearGradient>
+            </defs>
+            <rect x="22" y="22" width="56" height="56" rx="2" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="1"/>
+            <rect x="30" y="30" width="40" height="40" rx="1" fill="url(#px2g)" opacity="0.9"/>
+            <rect x="30" y="30" width="40" height="40" rx="1" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="0.3"/>
+          </svg>
+        </div>
+        <div class="meta">
+          <div class="opt">PX-02 · FRAMED FIELD</div>
+          <div class="name">The Aperture</div>
+          <div class="desc">A literal Skyspace frame. Color shifts inside the rectangle.</div>
+        </div>
+      </div>
+
+      <!-- 03: Refraction triangle -->
+      <div class="logo-cell">
+        <div class="canvas">
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="px3a" x1="0" x2="1" y1="0" y2="0">
+                <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.9"/>
+                <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0"/>
+              </linearGradient>
+              <linearGradient id="px3b" x1="0" x2="1" y1="0" y2="0.4">
+                <stop offset="0%" stop-color="#C24A6E"/>
+                <stop offset="33%" stop-color="#E0A862"/>
+                <stop offset="66%" stop-color="#5C9B7A"/>
+                <stop offset="100%" stop-color="#6E3FA0"/>
+              </linearGradient>
+            </defs>
+            <line x1="10" y1="50" x2="40" y2="50" stroke="url(#px3a)" stroke-width="1.5"/>
+            <polygon points="40,28 70,50 40,72" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="1"/>
+            <line x1="55" y1="40" x2="92" y2="32" stroke="url(#px3b)" stroke-width="1.5" opacity="0.9"/>
+            <line x1="55" y1="50" x2="92" y2="50" stroke="url(#px3b)" stroke-width="1.5" opacity="0.9"/>
+            <line x1="55" y1="60" x2="92" y2="68" stroke="url(#px3b)" stroke-width="1.5" opacity="0.9"/>
+          </svg>
+        </div>
+        <div class="meta">
+          <div class="opt">PX-03 · REFRACTION</div>
+          <div class="name">White → Spectrum</div>
+          <div class="desc">A ray enters white, exits as the 7 lenses. Literal but elegant.</div>
+        </div>
+      </div>
+
+      <!-- 04: Parallax shift -->
+      <div class="logo-cell">
+        <div class="canvas">
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="40" cy="50" r="22" fill="#3D5BC6" opacity="0.55"/>
+            <circle cx="50" cy="50" r="22" fill="#C24A6E" opacity="0.55" style="mix-blend-mode:screen"/>
+            <circle cx="60" cy="50" r="22" fill="#E0A862" opacity="0.55" style="mix-blend-mode:screen"/>
+          </svg>
+        </div>
+        <div class="meta">
+          <div class="opt">PX-04 · PARALLAX</div>
+          <div class="name">Three Views</div>
+          <div class="desc">Same shape, three viewpoints — additive blend = the brand.</div>
+        </div>
+      </div>
+
+      <!-- 05: Eye / iris -->
+      <div class="logo-cell">
+        <div class="canvas">
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <radialGradient id="px5g" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#0A0E14"/>
+                <stop offset="40%" stop-color="#0A0E14"/>
+                <stop offset="70%" stop-color="#6E3FA0"/>
+                <stop offset="100%" stop-color="#C24A6E"/>
+              </radialGradient>
+            </defs>
+            <ellipse cx="50" cy="50" rx="40" ry="22" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="0.7"/>
+            <circle cx="50" cy="50" r="22" fill="url(#px5g)"/>
+            <circle cx="50" cy="50" r="6" fill="#0A0E14"/>
+          </svg>
+        </div>
+        <div class="meta">
+          <div class="opt">PX-05 · IRIS</div>
+          <div class="name">The Eye</div>
+          <div class="desc">Aperture as iris. The brand <em>looks</em>. Could feel surveillant — risky.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════ 05 PRISMARIUM MARK ═══════════════════════ -->
+  <section id="prismarium">
+    <h2 class="section"><span class="num">05</span>Prismarium — the workshop</h2>
+    <p class="section-sub">
+      Wisdom platform. Where light is broken, examined, recombined.
+      Color anchor: <span class="pen-blue">Iris #6E3FA0</span>.
+    </p>
+
+    <div class="logo-lab">
+      <!-- 01 prism -->
+      <div class="logo-cell featured">
+        <div class="featured-tag">recommend</div>
+        <div class="canvas">
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="pr1g" x1="0" x2="0" y1="0" y2="1">
+                <stop offset="0%" stop-color="#B47AAA" stop-opacity="0.85"/>
+                <stop offset="100%" stop-color="#6E3FA0" stop-opacity="0.95"/>
+              </linearGradient>
+            </defs>
+            <polygon points="50,20 78,68 22,68" fill="url(#pr1g)" stroke="rgba(255,255,255,0.5)" stroke-width="0.8"/>
+            <line x1="14" y1="48" x2="36" y2="48" stroke="#F0EBE0" stroke-width="1" opacity="0.9"/>
+            <g opacity="0.85">
+              <line x1="64" y1="44" x2="92" y2="34" stroke="#C24A6E" stroke-width="1"/>
+              <line x1="65" y1="48" x2="92" y2="44" stroke="#D6794A" stroke-width="1"/>
+              <line x1="66" y1="52" x2="92" y2="54" stroke="#E0A862" stroke-width="1"/>
+              <line x1="65" y1="56" x2="92" y2="64" stroke="#5C9B7A" stroke-width="1"/>
+            </g>
+          </svg>
+        </div>
+        <div class="meta">
+          <div class="opt">PR-01 · PRISM</div>
+          <div class="name">The Workshop</div>
+          <div class="desc">Filled triangular prism · refracts a white ray into the lens spectrum.</div>
+        </div>
+      </div>
+
+      <!-- 02 dome -->
+      <div class="logo-cell">
+        <div class="canvas">
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <radialGradient id="pr2g" cx="50%" cy="100%" r="80%">
+                <stop offset="0%" stop-color="#B47AAA"/>
+                <stop offset="60%" stop-color="#6E3FA0"/>
+                <stop offset="100%" stop-color="#1A0F2A" stop-opacity="0"/>
+              </radialGradient>
+            </defs>
+            <path d="M 18 70 A 32 32 0 0 1 82 70 Z" fill="url(#pr2g)"/>
+            <line x1="14" y1="70" x2="86" y2="70" stroke="rgba(255,255,255,0.5)" stroke-width="0.6"/>
+            <circle cx="50" cy="70" r="2" fill="#F0EBE0"/>
+          </svg>
+        </div>
+        <div class="meta">
+          <div class="opt">PR-02 · DOME</div>
+          <div class="name">Skyspace dome</div>
+          <div class="desc">A hemispherical aperture. Looking up.</div>
+        </div>
+      </div>
+
+      <!-- 03 split prism -->
+      <div class="logo-cell">
+        <div class="canvas">
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <polygon points="50,18 76,50 50,82 24,50" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="0.8"/>
+            <polygon points="50,18 76,50 50,50" fill="#C24A6E" opacity="0.8"/>
+            <polygon points="76,50 50,82 50,50" fill="#E0A862" opacity="0.8"/>
+            <polygon points="50,82 24,50 50,50" fill="#5C9B7A" opacity="0.8"/>
+            <polygon points="24,50 50,18 50,50" fill="#3D5BC6" opacity="0.8"/>
+          </svg>
+        </div>
+        <div class="meta">
+          <div class="opt">PR-03 · DIAMOND</div>
+          <div class="name">Quartered prism</div>
+          <div class="desc">A 4-way split lens. Reads as a faceted gem.</div>
+        </div>
+      </div>
+
+      <!-- 04 layered triangles -->
+      <div class="logo-cell">
+        <div class="canvas">
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <polygon points="50,18 80,72 20,72" fill="#3D5BC6" opacity="0.55"/>
+            <polygon points="50,28 75,72 25,72" fill="#6E3FA0" opacity="0.6" style="mix-blend-mode:screen"/>
+            <polygon points="50,38 70,72 30,72" fill="#C24A6E" opacity="0.6" style="mix-blend-mode:screen"/>
+          </svg>
+        </div>
+        <div class="meta">
+          <div class="opt">PR-04 · STACK</div>
+          <div class="name">Stacked apertures</div>
+          <div class="desc">Three nested triangles · parallax depth.</div>
+        </div>
+      </div>
+
+      <!-- 05 ganzfeld P -->
+      <div class="logo-cell">
+        <div class="canvas">
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <radialGradient id="pr5g" cx="50%" cy="50%" r="60%">
+                <stop offset="0%" stop-color="#C09AC0"/>
+                <stop offset="100%" stop-color="#3A1F5C"/>
+              </radialGradient>
+            </defs>
+            <rect x="14" y="14" width="72" height="72" rx="36" fill="url(#pr5g)"/>
+            <text x="50" y="66" text-anchor="middle"
+                  font-family="Cinzel, serif" font-size="44" font-weight="600"
+                  fill="#F0EBE0" opacity="0.9">P</text>
+          </svg>
+        </div>
+        <div class="meta">
+          <div class="opt">PR-05 · GANZFELD</div>
+          <div class="name">P in the field</div>
+          <div class="desc">Letterform inside a Ganzfeld disc. Most "monogram-y".</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════ 06 KAIROS MARK ═══════════════════════ -->
+  <section id="kairos">
+    <h2 class="section"><span class="num">06</span>Kairos — the intelligence</h2>
+    <p class="section-sub">
+      AI insight engine. Color anchor: <span class="pen-blue">Glacial #4A8AB0</span> /
+      Cobalt void. Geometry: <span class="pen-blue">linear, rigorous, cool</span>.
+    </p>
+
+    <div class="logo-lab">
+      <!-- 01 vertical aperture -->
+      <div class="logo-cell featured">
+        <div class="featured-tag">recommend</div>
+        <div class="canvas">
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="ka1g" x1="0" x2="0" y1="0" y2="1">
+                <stop offset="0%" stop-color="#A8D0E0"/>
+                <stop offset="50%" stop-color="#4A8AB0"/>
+                <stop offset="100%" stop-color="#0F1424"/>
+              </linearGradient>
+            </defs>
+            <rect x="40" y="14" width="20" height="72" rx="2" fill="url(#ka1g)"/>
+            <rect x="40" y="14" width="20" height="72" rx="2" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="0.5"/>
+            <line x1="20" y1="50" x2="36" y2="50" stroke="rgba(255,255,255,0.4)" stroke-width="0.5"/>
+            <line x1="64" y1="50" x2="80" y2="50" stroke="rgba(255,255,255,0.4)" stroke-width="0.5"/>
+          </svg>
+        </div>
+        <div class="meta">
+          <div class="opt">KA-01 · SLIT</div>
+          <div class="name">Aperture slit</div>
+          <div class="desc">Vertical Skyspace · the moment Kairos opens. Reads precise.</div>
+        </div>
+      </div>
+
+      <!-- 02 constellation triangle -->
+      <div class="logo-cell">
+        <div class="canvas">
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <line x1="50" y1="22" x2="76" y2="68" stroke="#7DB4D0" stroke-width="0.6"/>
+            <line x1="76" y1="68" x2="24" y2="68" stroke="#7DB4D0" stroke-width="0.6"/>
+            <line x1="24" y1="68" x2="50" y2="22" stroke="#7DB4D0" stroke-width="0.6"/>
+            <circle cx="50" cy="22" r="3" fill="#A8D0E0"/>
+            <circle cx="76" cy="68" r="3" fill="#A8D0E0"/>
+            <circle cx="24" cy="68" r="3" fill="#A8D0E0"/>
+            <circle cx="50" cy="22" r="6" fill="none" stroke="#A8D0E0" stroke-width="0.4" opacity="0.5"/>
+            <circle cx="76" cy="68" r="6" fill="none" stroke="#A8D0E0" stroke-width="0.4" opacity="0.5"/>
+            <circle cx="24" cy="68" r="6" fill="none" stroke="#A8D0E0" stroke-width="0.4" opacity="0.5"/>
+          </svg>
+        </div>
+        <div class="meta">
+          <div class="opt">KA-02 · STARMAP</div>
+          <div class="name">Triangle of stars</div>
+          <div class="desc">Original constellation idea, retuned cooler.</div>
+        </div>
+      </div>
+
+      <!-- 03 horizon -->
+      <div class="logo-cell">
+        <div class="canvas">
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="ka3g" x1="0" x2="0" y1="0" y2="1">
+                <stop offset="0%" stop-color="#0F1424"/>
+                <stop offset="50%" stop-color="#3D5BC6"/>
+                <stop offset="100%" stop-color="#0F1424"/>
+              </linearGradient>
+            </defs>
+            <rect x="14" y="14" width="72" height="72" fill="url(#ka3g)" rx="4"/>
+            <line x1="14" y1="50" x2="86" y2="50" stroke="#A8D0E0" stroke-width="0.6" opacity="0.85"/>
+            <circle cx="50" cy="50" r="3" fill="#F0EBE0"/>
+          </svg>
+        </div>
+        <div class="meta">
+          <div class="opt">KA-03 · HORIZON</div>
+          <div class="name">The decisive moment</div>
+          <div class="desc">Kairos = "right time." Sky meets earth at a single point.</div>
+        </div>
+      </div>
+
+      <!-- 04 four points -->
+      <div class="logo-cell">
+        <div class="canvas">
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <line x1="50" y1="14" x2="50" y2="86" stroke="rgba(125,180,208,0.4)" stroke-width="0.5"/>
+            <line x1="14" y1="50" x2="86" y2="50" stroke="rgba(125,180,208,0.4)" stroke-width="0.5"/>
+            <circle cx="50" cy="50" r="14" fill="none" stroke="#7DB4D0" stroke-width="0.8"/>
+            <circle cx="50" cy="50" r="4" fill="#A8D0E0"/>
+          </svg>
+        </div>
+        <div class="meta">
+          <div class="opt">KA-04 · CROSSHAIR</div>
+          <div class="name">Targeted insight</div>
+          <div class="desc">Sextant-like · navigation, precision. Cold but readable.</div>
+        </div>
+      </div>
+
+      <!-- 05 K mark -->
+      <div class="logo-cell">
+        <div class="canvas">
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="ka5g" x1="0" x2="1" y1="0" y2="1">
+                <stop offset="0%" stop-color="#A8D0E0"/>
+                <stop offset="100%" stop-color="#3D5BC6"/>
+              </linearGradient>
+            </defs>
+            <rect x="22" y="22" width="56" height="56" rx="6" fill="none" stroke="rgba(125,180,208,0.4)" stroke-width="0.7"/>
+            <text x="50" y="65" text-anchor="middle"
+                  font-family="Space Grotesk, sans-serif" font-size="44" font-weight="700"
+                  fill="url(#ka5g)" letter-spacing="-2">K</text>
+          </svg>
+        </div>
+        <div class="meta">
+          <div class="opt">KA-05 · LETTERMARK</div>
+          <div class="name">K-monogram</div>
+          <div class="desc">Geometric K · for app icons / favicons.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════ 07 CHRONOS MARK ═══════════════════════ -->
+  <section id="chronos">
+    <h2 class="section"><span class="num">07</span>Chronos — the architect</h2>
+    <p class="section-sub">
+      Sacred geometry, time, structure. (Renamed from Stelloquy.)
+      Color anchor: <span class="pen-blue">Solar #E0A862 → Ember #C77A4A</span>.
+      Geometry: <span class="pen-blue">measured, eternal, slightly weighted</span>.
+    </p>
+
+    <div class="logo-lab">
+      <!-- 01 sundial / Roden -->
+      <div class="logo-cell featured">
+        <div class="featured-tag">recommend</div>
+        <div class="canvas">
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="ch1g" x1="0" x2="0" y1="0" y2="1">
+                <stop offset="0%" stop-color="#0F1424"/>
+                <stop offset="60%" stop-color="#8A4A3F"/>
+                <stop offset="100%" stop-color="#E0A862"/>
+              </linearGradient>
+            </defs>
+            <circle cx="50" cy="50" r="36" fill="url(#ch1g)"/>
+            <line x1="14" y1="58" x2="86" y2="58" stroke="rgba(240,235,224,0.7)" stroke-width="0.5"/>
+            <circle cx="50" cy="50" r="36" fill="none" stroke="rgba(240,235,224,0.3)" stroke-width="0.4"/>
+            <circle cx="50" cy="50" r="2" fill="#F0EBE0"/>
+            <line x1="50" y1="50" x2="50" y2="22" stroke="#F0EBE0" stroke-width="0.6"/>
+          </svg>
+        </div>
+        <div class="meta">
+          <div class="opt">CH-01 · SUN</div>
+          <div class="name">Roden Crater</div>
+          <div class="desc">Sun on horizon · solstice instrument. Most Turrell-direct.</div>
+        </div>
+      </div>
+
+      <!-- 02 nested squares -->
+      <div class="logo-cell">
+        <div class="canvas">
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <rect x="20" y="20" width="60" height="60" fill="none" stroke="#E0A862" stroke-width="0.7"/>
+            <rect x="28" y="28" width="44" height="44" fill="none" stroke="#C77A4A" stroke-width="0.7"/>
+            <rect x="36" y="36" width="28" height="28" fill="#8A4A3F" opacity="0.85"/>
+            <rect x="44" y="44" width="12" height="12" fill="#F0EBE0" opacity="0.85"/>
+          </svg>
+        </div>
+        <div class="meta">
+          <div class="opt">CH-02 · CHAMBER</div>
+          <div class="name">Concentric chambers</div>
+          <div class="desc">Roden's nested rooms. Architectural.</div>
+        </div>
+      </div>
+
+      <!-- 03 hexagon -->
+      <div class="logo-cell">
+        <div class="canvas">
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <polygon points="50,18 78,34 78,66 50,82 22,66 22,34" fill="none" stroke="#E0A862" stroke-width="0.8"/>
+            <polygon points="50,30 68,40 68,60 50,70 32,60 32,40" fill="#C77A4A" opacity="0.7"/>
+            <line x1="22" y1="34" x2="78" y2="66" stroke="rgba(240,235,224,0.3)" stroke-width="0.4"/>
+            <line x1="78" y1="34" x2="22" y2="66" stroke="rgba(240,235,224,0.3)" stroke-width="0.4"/>
+            <line x1="50" y1="18" x2="50" y2="82" stroke="rgba(240,235,224,0.3)" stroke-width="0.4"/>
+          </svg>
+        </div>
+        <div class="meta">
+          <div class="opt">CH-03 · HEX</div>
+          <div class="name">Sacred hex</div>
+          <div class="desc">Metatron echo · structural without being mystical.</div>
+        </div>
+      </div>
+
+      <!-- 04 hourglass aperture -->
+      <div class="logo-cell">
+        <div class="canvas">
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="ch4g" x1="0" x2="0" y1="0" y2="1">
+                <stop offset="0%" stop-color="#E0A862"/>
+                <stop offset="50%" stop-color="#8A4A3F"/>
+                <stop offset="100%" stop-color="#E0A862"/>
+              </linearGradient>
+            </defs>
+            <polygon points="22,18 78,18 50,50 78,82 22,82 50,50" fill="url(#ch4g)" opacity="0.85"/>
+            <polygon points="22,18 78,18 50,50 78,82 22,82 50,50" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="0.5"/>
+          </svg>
+        </div>
+        <div class="meta">
+          <div class="opt">CH-04 · HOURGLASS</div>
+          <div class="name">Time vessel</div>
+          <div class="desc">Two apertures kissing. Literal but warm.</div>
+        </div>
+      </div>
+
+      <!-- 05 long sun ray -->
+      <div class="logo-cell">
+        <div class="canvas">
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <radialGradient id="ch5g" cx="50%" cy="60%" r="50%">
+                <stop offset="0%" stop-color="#F0EBE0"/>
+                <stop offset="40%" stop-color="#E0A862"/>
+                <stop offset="100%" stop-color="#0F1424" stop-opacity="0"/>
+              </radialGradient>
+            </defs>
+            <ellipse cx="50" cy="60" rx="38" ry="38" fill="url(#ch5g)"/>
+            <line x1="14" y1="60" x2="86" y2="60" stroke="rgba(240,235,224,0.6)" stroke-width="0.5"/>
+          </svg>
+        </div>
+        <div class="meta">
+          <div class="opt">CH-05 · LIGHT WELL</div>
+          <div class="name">Sun pour</div>
+          <div class="desc">Pure Ganzfeld glow on a horizon line.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════ 08 STELLOQUY MASCOT ═══════════════════════ -->
+  <section id="stelloquy">
+    <h2 class="section"><span class="num">08</span>Stelloquy — the AI mascot</h2>
+    <p class="section-sub">
+      <em>"Conversation with the stars."</em> No longer a product — now a luminous voice
+      that lives inside Kairos &amp; Chronos.
+      Brief: a <span class="pen-blue">light-being</span>, not a creature. A friendly presence with no fixed form.
+    </p>
+
+    <h3 class="sub">Mascot directions</h3>
+    <div class="logo-lab">
+      <!-- 01 - orb -->
+      <div class="logo-cell featured">
+        <div class="featured-tag">recommend</div>
+        <div class="canvas">
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <radialGradient id="st1g" cx="50%" cy="40%" r="55%">
+                <stop offset="0%" stop-color="#F0EBE0" stop-opacity="0.95"/>
+                <stop offset="30%" stop-color="#E0A862" stop-opacity="0.8"/>
+                <stop offset="70%" stop-color="#6E3FA0" stop-opacity="0.5"/>
+                <stop offset="100%" stop-color="#0F1424" stop-opacity="0"/>
+              </radialGradient>
+            </defs>
+            <circle cx="50" cy="50" r="42" fill="url(#st1g)"/>
+            <circle cx="50" cy="46" r="2" fill="#F0EBE0"/>
+            <ellipse cx="46" cy="46" rx="0.8" ry="2.2" fill="#0F1424" opacity="0.5"/>
+            <ellipse cx="54" cy="46" rx="0.8" ry="2.2" fill="#0F1424" opacity="0.5"/>
+          </svg>
+        </div>
+        <div class="meta">
+          <div class="opt">ST-01 · ORB</div>
+          <div class="name">The Listener</div>
+          <div class="desc">Pure light-orb · hint of two pinpoint eyes. Friendly, ambient.</div>
+        </div>
+      </div>
+
+      <!-- 02 - constellation creature -->
+      <div class="logo-cell">
+        <div class="canvas">
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <line x1="35" y1="30" x2="65" y2="30" stroke="rgba(168,208,224,0.4)" stroke-width="0.4"/>
+            <line x1="65" y1="30" x2="72" y2="55" stroke="rgba(168,208,224,0.4)" stroke-width="0.4"/>
+            <line x1="72" y1="55" x2="55" y2="75" stroke="rgba(168,208,224,0.4)" stroke-width="0.4"/>
+            <line x1="55" y1="75" x2="40" y2="68" stroke="rgba(168,208,224,0.4)" stroke-width="0.4"/>
+            <line x1="40" y1="68" x2="28" y2="55" stroke="rgba(168,208,224,0.4)" stroke-width="0.4"/>
+            <line x1="28" y1="55" x2="35" y2="30" stroke="rgba(168,208,224,0.4)" stroke-width="0.4"/>
+            <line x1="35" y1="30" x2="40" y2="68" stroke="rgba(168,208,224,0.3)" stroke-width="0.3"/>
+            <line x1="65" y1="30" x2="55" y2="75" stroke="rgba(168,208,224,0.3)" stroke-width="0.3"/>
+            <circle cx="35" cy="30" r="2" fill="#F0EBE0"/>
+            <circle cx="65" cy="30" r="2" fill="#F0EBE0"/>
+            <circle cx="72" cy="55" r="2" fill="#A8D0E0"/>
+            <circle cx="55" cy="75" r="2" fill="#A8D0E0"/>
+            <circle cx="40" cy="68" r="2" fill="#A8D0E0"/>
+            <circle cx="28" cy="55" r="2" fill="#A8D0E0"/>
+            <circle cx="50" cy="50" r="3" fill="#E0A862"/>
+          </svg>
+        </div>
+        <div class="meta">
+          <div class="opt">ST-02 · CONSTELLATION</div>
+          <div class="name">The Speaker</div>
+          <div class="desc">Star-figure · "stelloquy" literally drawn. Cool, technical.</div>
+        </div>
+      </div>
+
+      <!-- 03 - dual aperture face -->
+      <div class="logo-cell">
+        <div class="canvas">
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <radialGradient id="st3g" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#6E3FA0" stop-opacity="0.9"/>
+                <stop offset="100%" stop-color="#0F1424" stop-opacity="0"/>
+              </radialGradient>
+            </defs>
+            <ellipse cx="50" cy="55" rx="36" ry="32" fill="url(#st3g)"/>
+            <ellipse cx="40" cy="48" rx="4" ry="6" fill="#A8D0E0"/>
+            <ellipse cx="60" cy="48" rx="4" ry="6" fill="#A8D0E0"/>
+            <path d="M 38 66 Q 50 72 62 66" fill="none" stroke="#E0A862" stroke-width="1.2" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="meta">
+          <div class="opt">ST-03 · FACE</div>
+          <div class="name">The Smile</div>
+          <div class="desc">Soft glow w/ aperture eyes &amp; warm smile. Most personality.</div>
+        </div>
+      </div>
+
+      <!-- 04 - cloud / ganzfeld -->
+      <div class="logo-cell">
+        <div class="canvas">
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <radialGradient id="st4g" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#FFD8B0" stop-opacity="0.9"/>
+                <stop offset="40%" stop-color="#C24A6E" stop-opacity="0.6"/>
+                <stop offset="100%" stop-color="#0F1424" stop-opacity="0"/>
+              </radialGradient>
+            </defs>
+            <ellipse cx="40" cy="55" rx="22" ry="22" fill="url(#st4g)"/>
+            <ellipse cx="60" cy="45" rx="18" ry="18" fill="url(#st4g)" opacity="0.85"/>
+            <ellipse cx="55" cy="62" rx="20" ry="14" fill="url(#st4g)" opacity="0.8"/>
+          </svg>
+        </div>
+        <div class="meta">
+          <div class="opt">ST-04 · CLOUD</div>
+          <div class="name">The Whisper</div>
+          <div class="desc">Diffuse cloud-form · no eyes. Maximally Turrell.</div>
+        </div>
+      </div>
+
+      <!-- 05 - geometric character -->
+      <div class="logo-cell">
+        <div class="canvas">
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="st5g" x1="0" x2="0" y1="0" y2="1">
+                <stop offset="0%" stop-color="#A8D0E0"/>
+                <stop offset="100%" stop-color="#3D5BC6"/>
+              </linearGradient>
+            </defs>
+            <polygon points="50,18 76,46 64,82 36,82 24,46" fill="url(#st5g)" opacity="0.85" stroke="rgba(255,255,255,0.4)" stroke-width="0.5"/>
+            <circle cx="42" cy="48" r="2" fill="#0F1424"/>
+            <circle cx="58" cy="48" r="2" fill="#0F1424"/>
+            <line x1="42" y1="62" x2="58" y2="62" stroke="#0F1424" stroke-width="0.8" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="meta">
+          <div class="opt">ST-05 · CRYSTAL</div>
+          <div class="name">The Crystal</div>
+          <div class="desc">Faceted gem with face. Most "character." Mascot-y.</div>
+        </div>
+      </div>
+    </div>
+
+    <h3 class="sub" style="margin-top:48px;">In context</h3>
+    <p class="section-sub" style="margin-bottom:14px;">
+      How the Listener (ST-01) shows up across surfaces.
+    </p>
+
+    <div class="mascot-grid">
+      <!-- chat -->
+      <div class="mascot-canvas" style="aspect-ratio: 1.6/1; padding: 18px;">
+        <div style="display:flex; gap:12px; align-items:flex-start;">
+          <div style="width:38px; height:38px; flex-shrink:0; border-radius:50%; background: radial-gradient(circle at 50% 40%, #F0EBE0 0%, #E0A862 30%, #6E3FA0 70%, transparent 100%); box-shadow: 0 0 18px rgba(180,140,200,0.5);"></div>
+          <div style="flex:1; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.1); border-radius:10px 10px 10px 2px; padding:10px 14px; font-family:'Cormorant Garamond', serif; font-size:14px; color:#F0EBE0; font-style:italic;">
+            "I've gathered three correspondences from the Hermetica. Shall I weight them by tradition or by date?"
+          </div>
+        </div>
+        <div style="margin-top:14px; display:flex; gap:8px; align-items:center;">
+          <div style="font-family:'Fira Mono', monospace; font-size:9px; letter-spacing:0.2em; color:rgba(255,255,255,0.4);">STELLOQUY · LISTENING</div>
+          <div style="display:flex; gap:3px;">
+            <span style="width:4px;height:4px;border-radius:50%;background:#A8D0E0;animation:pulse 1.4s infinite"></span>
+            <span style="width:4px;height:4px;border-radius:50%;background:#A8D0E0;animation:pulse 1.4s infinite .2s"></span>
+            <span style="width:4px;height:4px;border-radius:50%;background:#A8D0E0;animation:pulse 1.4s infinite .4s"></span>
+          </div>
+        </div>
+        <div class="mc-label">Chat</div>
+      </div>
+
+      <!-- loading -->
+      <div class="mascot-canvas" style="aspect-ratio: 1/1; display:flex; align-items:center; justify-content:center; flex-direction:column; gap: 18px;">
+        <div style="width:80px; height:80px; border-radius:50%;
+                    background: radial-gradient(circle at 50% 40%, #F0EBE0 0%, #E0A862 25%, #C24A6E 55%, #6E3FA0 85%, transparent 100%);
+                    box-shadow: 0 0 60px rgba(224,168,98,0.4), 0 0 100px rgba(110,63,160,0.3);
+                    animation: orb-breathe 4s ease-in-out infinite;"></div>
+        <div style="font-family:'Cormorant Garamond', serif; font-size:14px; font-style:italic; color:#A8D0E0;">
+          gathering the threads…
+        </div>
+        <div class="mc-label">Loading</div>
+      </div>
+
+      <!-- splash -->
+      <div class="mascot-canvas" style="aspect-ratio: 1/1; padding: 24px; display:flex; flex-direction:column; justify-content:flex-end;">
+        <div style="position:absolute; top:0;left:0;right:0;height:60%;
+                    background: radial-gradient(ellipse 80% 80% at 50% 100%, rgba(110,63,160,0.5) 0%, transparent 70%);"></div>
+        <div style="position:absolute; top:40%; left:50%; transform:translate(-50%,-50%);
+                    width:46px; height:46px; border-radius:50%;
+                    background: radial-gradient(circle at 50% 40%, #F0EBE0 0%, #E0A862 30%, #6E3FA0 70%, transparent 100%);
+                    box-shadow: 0 0 30px rgba(224,168,98,0.6);"></div>
+        <div style="position:relative; z-index:2;">
+          <div style="font-family:'Fira Mono',monospace; font-size:9px; letter-spacing:0.3em; color:rgba(168,208,224,0.6); margin-bottom:6px;">// STELLOQUY</div>
+          <div style="font-family:'Cinzel',serif; font-size:18px; color:#F0EBE0; line-height:1.2;">
+            Conversation<br/>with the stars.
+          </div>
+        </div>
+        <div class="mc-label">Splash</div>
+      </div>
+    </div>
+
+    <style>
+      @keyframes pulse { 0%,100%{opacity:0.3} 50%{opacity:1} }
+      @keyframes orb-breathe {
+        0%,100% { transform: scale(1); filter: hue-rotate(0deg); }
+        50%     { transform: scale(1.08); filter: hue-rotate(15deg); }
+      }
+    </style>
+
+    <div class="callout">
+      <strong>Personality brief:</strong> Stelloquy is curious, never authoritative.
+      Speaks in <em>questions and provisional answers</em>. Color shifts when "thinking" (cooler, blues),
+      warms when "speaking" (embers). Eyes are optional — lose them on enterprise surfaces, keep them in onboarding.
+    </div>
+  </section>
+
+  <!-- ═══════════════════════ FAMILY LOCKUP ═══════════════════════ -->
+  <section id="family">
+    <h2 class="section"><span class="num">09</span>Family lockup</h2>
+    <p class="section-sub">
+      All four marks on one wall. Same primitive — the <span class="pen-blue">aperture</span>
+      — recolored per product. Stelloquy hovers as the connecting presence.
+    </p>
+
+    <div class="family-row">
+      <div class="family-cell">
+        <div class="role">PARENT</div>
+        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <radialGradient id="fl-px-a"><stop offset="0%" stop-color="#7DB4D0"/><stop offset="100%" stop-color="#3D5BC6" stop-opacity="0"/></radialGradient>
+            <radialGradient id="fl-px-b"><stop offset="0%" stop-color="#C77A4A"/><stop offset="100%" stop-color="#8A4A3F" stop-opacity="0"/></radialGradient>
+            <radialGradient id="fl-px-c"><stop offset="0%" stop-color="#B47AAA"/><stop offset="100%" stop-color="#6E3FA0" stop-opacity="0"/></radialGradient>
+          </defs>
+          <circle cx="35" cy="42" r="22" fill="url(#fl-px-a)"/>
+          <circle cx="65" cy="42" r="22" fill="url(#fl-px-b)"/>
+          <circle cx="50" cy="62" r="22" fill="url(#fl-px-c)"/>
+        </svg>
+        <div class="label">Parallax</div>
+      </div>
+
+      <div class="family-cell">
+        <div class="role">WORKSHOP</div>
+        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="fl-pr" x1="0" x2="0" y1="0" y2="1">
+              <stop offset="0%" stop-color="#B47AAA"/><stop offset="100%" stop-color="#6E3FA0"/>
+            </linearGradient>
+          </defs>
+          <polygon points="50,20 78,68 22,68" fill="url(#fl-pr)" stroke="rgba(255,255,255,0.5)" stroke-width="0.8"/>
+          <line x1="14" y1="48" x2="36" y2="48" stroke="#F0EBE0" stroke-width="1"/>
+          <line x1="64" y1="44" x2="92" y2="34" stroke="#C24A6E" stroke-width="1"/>
+          <line x1="65" y1="48" x2="92" y2="44" stroke="#D6794A" stroke-width="1"/>
+          <line x1="66" y1="52" x2="92" y2="54" stroke="#E0A862" stroke-width="1"/>
+          <line x1="65" y1="56" x2="92" y2="64" stroke="#5C9B7A" stroke-width="1"/>
+        </svg>
+        <div class="label">Prismarium</div>
+      </div>
+
+      <div class="family-cell">
+        <div class="role">INTELLIGENCE</div>
+        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="fl-ka" x1="0" x2="0" y1="0" y2="1">
+              <stop offset="0%" stop-color="#A8D0E0"/>
+              <stop offset="50%" stop-color="#4A8AB0"/>
+              <stop offset="100%" stop-color="#0F1424"/>
+            </linearGradient>
+          </defs>
+          <rect x="40" y="14" width="20" height="72" rx="2" fill="url(#fl-ka)"/>
+          <rect x="40" y="14" width="20" height="72" rx="2" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="0.5"/>
+          <line x1="20" y1="50" x2="36" y2="50" stroke="rgba(255,255,255,0.4)" stroke-width="0.5"/>
+          <line x1="64" y1="50" x2="80" y2="50" stroke="rgba(255,255,255,0.4)" stroke-width="0.5"/>
+        </svg>
+        <div class="label">Kairos</div>
+      </div>
+
+      <div class="family-cell">
+        <div class="role">ARCHITECT</div>
+        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="fl-ch" x1="0" x2="0" y1="0" y2="1">
+              <stop offset="0%" stop-color="#0F1424"/>
+              <stop offset="60%" stop-color="#8A4A3F"/>
+              <stop offset="100%" stop-color="#E0A862"/>
+            </linearGradient>
+          </defs>
+          <circle cx="50" cy="50" r="36" fill="url(#fl-ch)"/>
+          <line x1="14" y1="58" x2="86" y2="58" stroke="rgba(240,235,224,0.7)" stroke-width="0.5"/>
+          <circle cx="50" cy="50" r="36" fill="none" stroke="rgba(240,235,224,0.3)" stroke-width="0.4"/>
+          <circle cx="50" cy="50" r="2" fill="#F0EBE0"/>
+          <line x1="50" y1="50" x2="50" y2="22" stroke="#F0EBE0" stroke-width="0.6"/>
+        </svg>
+        <div class="label">Chronos</div>
+      </div>
+    </div>
+
+    <p class="section-sub" style="margin-top:24px; font-style:italic;">
+      Stelloquy doesn't appear in the lockup as a peer mark — instead it inhabits the
+      products. Think of it as the voice the family speaks <em>through</em>.
+    </p>
+  </section>
+
+  <!-- footer -->
+  <p class="footer-note">
+    drafted on a Turrell afternoon · feedback welcome · circle the ones that sing
+  </p>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,1463 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Project Parallax — v2 · Skylrk-flavored direction</title>
+<link rel="stylesheet" href="tokens.css">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&family=Kalam:wght@300;400;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+
+  :root {
+    --paper:       #F4F1E8;
+    --paper-dark:  #E8E2D0;
+    --ink:         #1B1815;
+    --ink-soft:    #3A3530;
+    --ink-faint:   #8A847A;
+    --hand:        'Kalam', cursive;
+    --hand-bold:   'Caveat', cursive;
+    --accent-blue: #2E5BFF;
+    --margin-red:  #B43A2A;
+
+    /* New palette — Skylrk-flavored, brighter */
+    --sky-1:  #BEE3F7;   /* soft sky high */
+    --sky-2:  #7EC0E0;   /* aperture cyan-blue */
+    --sky-3:  #3D7AB0;   /* deeper sky */
+    --sky-4:  #1B3A66;   /* dusk depth */
+
+    --candy-cyan:    #2BD9E8;
+    --candy-aqua:    #7CECE0;
+    --candy-lime:    #C8E84B;
+    --candy-butter:  #F5D86C;
+    --candy-amber:   #F0A858;
+    --candy-coral:   #FF8B6E;     /* softer than hot pink */
+    --candy-lavender:#B8A8F0;
+    --candy-iris:    #7E5AD6;
+    --candy-cobalt:  #3F6AE8;
+
+    --bone:    #F2EFE6;
+    --linen:   #C8C2B6;
+    --ash:     #4A453F;
+    --void:    #0E1622;
+  }
+
+  body, html {
+    color: var(--ink) !important;
+  }
+  h1, h2, h3, h4, h5, h6, p { color: var(--ink); }
+  h1.cover-title, h2.section, h3.sub { color: var(--ink) !important; }
+  body {
+    background: var(--paper);
+    background-image:
+      linear-gradient(rgba(27,24,21,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(27,24,21,0.04) 1px, transparent 1px);
+    background-size: 28px 28px, 28px 28px;
+    color: var(--ink);
+    font-family: var(--hand);
+    font-size: 17px;
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  .page { max-width: 1280px; margin: 0 auto; padding: 64px 56px 120px; position: relative; }
+  .page::before {
+    content: ''; position: absolute; left: 92px; top: 0; bottom: 0;
+    width: 1px; background: var(--margin-red); opacity: 0.4;
+  }
+
+  h1.cover-title {
+    font-family: var(--hand-bold);
+    font-size: 76px; font-weight: 700; line-height: 1;
+    margin: 0 0 8px; transform: rotate(-1deg);
+  }
+  .cover-meta {
+    font-family: var(--hand); font-size: 15px; color: var(--ink-faint);
+    letter-spacing: 0.05em; margin: 0;
+  }
+  .cover-sub { font-size: 22px; color: var(--ink-soft); margin: 0 0 6px; }
+
+  h2.section {
+    font-family: var(--hand-bold);
+    font-size: 44px; font-weight: 700; line-height: 1;
+    margin: 80px 0 4px; transform: rotate(-0.5deg);
+  }
+  h2.section .num { color: var(--margin-red); font-size: 28px; margin-right: 12px; vertical-align: 8px; }
+  .section-sub { font-size: 18px; color: var(--ink-soft); margin: 0 0 32px; max-width: 780px; }
+  h3.sub { font-family: var(--hand-bold); font-size: 28px; margin: 36px 0 8px; transform: rotate(-0.3deg); }
+
+  .pen-blue { color: var(--accent-blue); }
+  .pen-red  { color: var(--margin-red); }
+
+  .callout {
+    border: 1.5px dashed var(--margin-red);
+    border-radius: 6px;
+    padding: 12px 16px;
+    background: rgba(180,58,42,0.04);
+    margin: 16px 0;
+    font-size: 15px; color: var(--ink-soft);
+  }
+  .callout strong { color: var(--margin-red); font-family: var(--hand-bold); font-weight: 700; }
+
+  .break {
+    display: flex; align-items: center; gap: 12px;
+    margin: 56px 0 24px; color: var(--ink-faint);
+    font-size: 13px; letter-spacing: 0.2em; text-transform: uppercase;
+  }
+  .break::before, .break::after {
+    content: ''; flex: 1; height: 1px;
+    background: repeating-linear-gradient(90deg, var(--ink-faint) 0 6px, transparent 6px 12px);
+    opacity: 0.5;
+  }
+
+  .cover-card {
+    border: 2px solid var(--ink); border-radius: 10px;
+    padding: 36px 40px; background: rgba(255,255,255,0.55);
+    position: relative; max-width: 920px;
+  }
+  .cover-stamp {
+    position: absolute; top: 24px; right: 32px;
+    font-size: 13px; color: var(--margin-red);
+    border: 1.5px dashed var(--margin-red);
+    padding: 6px 12px; border-radius: 4px;
+    transform: rotate(4deg); letter-spacing: 0.05em;
+  }
+  .cover-thesis { margin: 18px 0 0; font-size: 17px; line-height: 1.55; color: var(--ink-soft); max-width: 760px; }
+  .cover-thesis em { color: var(--accent-blue); font-style: normal; border-bottom: 1px solid var(--accent-blue); }
+
+  .quick-nav {
+    background: rgba(244,241,232,0.9); backdrop-filter: blur(4px);
+    border: 1.5px solid var(--ink); border-radius: 999px;
+    padding: 8px 18px; margin: 32px auto;
+    display: inline-flex; gap: 14px; font-size: 14px;
+    box-shadow: 1px 2px 0 rgba(27,24,21,0.1);
+  }
+  .quick-nav a { color: var(--ink-soft); text-decoration: none; padding: 2px 6px; border-radius: 3px; }
+  .quick-nav a:hover { color: var(--margin-red); background: rgba(180,58,42,0.08); }
+  .nav-wrap { text-align: center; }
+
+  /* ── Palette ── */
+  .palette-row {
+    display: grid; grid-template-columns: 200px 1fr; gap: 24px;
+    margin-bottom: 24px; align-items: start;
+  }
+  .palette-row .label-block { padding-top: 6px; }
+  .palette-row h4 { font-family: var(--hand-bold); font-size: 24px; margin: 0 0 4px; }
+  .palette-row p { font-size: 14px; color: var(--ink-soft); margin: 0; line-height: 1.4; }
+  .swatch-strip { display: flex; gap: 10px; flex-wrap: wrap; }
+  .swatch-chip {
+    width: 124px; border: 1.5px solid var(--ink);
+    border-radius: 4px; overflow: hidden; background: white;
+  }
+  .swatch-chip .col { height: 70px; box-shadow: inset 0 0 30px rgba(0,0,0,0.08); }
+  .swatch-chip .meta { padding: 6px 8px 8px; font-size: 12px; line-height: 1.25; }
+  .swatch-chip .name { font-family: var(--hand-bold); font-size: 15px; }
+  .swatch-chip .hex { color: var(--ink-faint); font-size: 11px; letter-spacing: 0.05em; font-family: 'Fira Mono', monospace; }
+
+  /* ── 7 Lens grid ── */
+  .lens-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 10px; margin-top: 20px; }
+  .lens-card {
+    border: 1.5px solid var(--ink); border-radius: 6px;
+    overflow: hidden; background: white;
+  }
+  .lens-card .col { height: 110px; box-shadow: inset 0 0 30px rgba(0,0,0,0.08); }
+  .lens-card .meta { padding: 8px 10px 10px; font-size: 13px; line-height: 1.3; }
+  .lens-card .num { color: var(--margin-red); font-family: 'Fira Mono', monospace; font-size: 11px; }
+  .lens-card .name { font-family: var(--hand-bold); font-size: 16px; margin: 2px 0; }
+  .lens-card .lens { color: var(--ink-soft); font-size: 12px; }
+  .lens-card .hex { margin-top: 4px; font-family: 'Fira Mono', monospace; font-size: 10px; color: var(--ink-faint); }
+
+  /* ── Logo lab ── */
+  .logo-lab { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; margin-top: 20px; }
+  .logo-cell {
+    border: 1.5px solid var(--ink); border-radius: 6px;
+    background: rgba(255,255,255,0.55); overflow: hidden;
+    position: relative;
+  }
+  .logo-cell .canvas {
+    aspect-ratio: 1 / 1;
+    background: linear-gradient(135deg, #FAF6EC 0%, #E5EEF5 100%);
+    display: flex; align-items: center; justify-content: center;
+    position: relative; overflow: hidden;
+  }
+  .logo-cell .canvas.dark {
+    background: radial-gradient(ellipse at 50% 0%, #2A4068 0%, #0E1622 70%);
+  }
+  .logo-cell .canvas svg { width: 78%; height: 78%; }
+  .logo-cell .meta { padding: 8px 10px 10px; font-size: 13px; line-height: 1.3; background: rgba(255,255,255,0.6); }
+  .logo-cell .opt { font-family: 'Fira Mono', monospace; font-size: 10px; color: var(--margin-red); letter-spacing: 0.05em; }
+  .logo-cell .name { font-family: var(--hand-bold); font-size: 16px; margin: 2px 0; }
+  .logo-cell .desc { color: var(--ink-soft); font-size: 12px; line-height: 1.3; }
+  .logo-cell.featured .canvas { box-shadow: inset 0 0 0 2px var(--margin-red); }
+  .featured-tag {
+    position: absolute; top: 6px; right: 8px;
+    background: var(--margin-red); color: var(--paper);
+    font-size: 11px; padding: 2px 8px; border-radius: 3px;
+    letter-spacing: 0.05em; transform: rotate(3deg); z-index: 2;
+  }
+
+  /* ── 3D vs Flat row ── */
+  .modes-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; margin-top: 16px; }
+  .mode-cell {
+    border: 1.5px solid var(--ink); border-radius: 6px;
+    overflow: hidden;
+  }
+  .mode-cell .canvas {
+    aspect-ratio: 1.4 / 1;
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+  }
+  .mode-cell .label {
+    padding: 8px 12px; font-size: 13px;
+    background: rgba(255,255,255,0.6);
+    font-family: var(--hand-bold); font-size: 16px;
+  }
+  .mode-cell .label small {
+    display: block;
+    font-family: var(--hand);
+    color: var(--ink-soft);
+    font-size: 12px;
+  }
+
+  /* ── Family lockup ── */
+  .family-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; margin-top: 20px; }
+  .family-cell {
+    border: 1.5px solid var(--ink); border-radius: 8px;
+    aspect-ratio: 1 / 1.15; position: relative; overflow: hidden;
+  }
+  .family-cell svg { position: absolute; inset: 14% 14% 30% 14%; width: 72%; height: 56%; }
+  .family-cell .label {
+    position: absolute; bottom: 12px; left: 0; right: 0;
+    text-align: center;
+    font-family: 'Cinzel', serif; font-size: 13px;
+    letter-spacing: 0.3em; text-transform: uppercase;
+  }
+  .family-cell .role {
+    position: absolute; top: 12px; left: 0; right: 0;
+    text-align: center;
+    font-family: 'Fira Mono', monospace; font-size: 9px;
+    letter-spacing: 0.3em; text-transform: uppercase;
+    opacity: 0.5;
+  }
+
+  /* ── Background drift demo ── */
+  .drift-stage {
+    position: relative;
+    height: 380px; border-radius: 8px; border: 1.5px solid var(--ink);
+    overflow: hidden; margin-top: 16px;
+    background: #0E1622;
+  }
+  .drift-layer {
+    position: absolute; inset: -10%;
+    border-radius: inherit;
+  }
+  .drift-l1 {
+    background: radial-gradient(ellipse 70% 50% at 30% 30%, var(--candy-cobalt) 0%, transparent 60%);
+    animation: drift1 28s ease-in-out infinite alternate;
+  }
+  .drift-l2 {
+    background: radial-gradient(ellipse 60% 60% at 70% 70%, var(--candy-coral) 0%, transparent 60%);
+    animation: drift2 34s ease-in-out infinite alternate;
+    mix-blend-mode: screen;
+  }
+  .drift-l3 {
+    background: radial-gradient(ellipse 50% 40% at 50% 50%, var(--candy-butter) 0%, transparent 60%);
+    animation: drift3 22s ease-in-out infinite alternate;
+    mix-blend-mode: screen;
+    opacity: 0.7;
+  }
+  .drift-l4 {
+    background: radial-gradient(ellipse 90% 60% at 50% 100%, var(--candy-iris) 0%, transparent 70%);
+    animation: drift4 40s ease-in-out infinite alternate;
+    mix-blend-mode: screen;
+    opacity: 0.8;
+  }
+  .drift-grain {
+    position: absolute; inset: 0;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence baseFrequency='0.9'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='0.4'/></svg>");
+    mix-blend-mode: overlay; opacity: 0.18; pointer-events: none;
+  }
+  .drift-text {
+    position: absolute; bottom: 24px; left: 28px;
+    font-family: 'Cinzel', serif; color: rgba(255,255,255,0.92);
+  }
+  .drift-text .eyebrow {
+    font-family: 'Fira Mono', monospace; font-size: 10px;
+    letter-spacing: 0.3em; opacity: 0.7;
+  }
+  .drift-text .big { font-size: 44px; font-weight: 600; line-height: 1; margin-top: 10px; }
+  .drift-text .small {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic; font-size: 16px;
+    margin-top: 8px; opacity: 0.85;
+  }
+
+  @keyframes drift1 {
+    0%   { transform: translate(0,0) scale(1); }
+    100% { transform: translate(15%,10%) scale(1.2); }
+  }
+  @keyframes drift2 {
+    0%   { transform: translate(0,0) scale(1); }
+    100% { transform: translate(-12%,-8%) scale(1.15); }
+  }
+  @keyframes drift3 {
+    0%   { transform: translate(0,0) scale(1); opacity: 0.55; }
+    100% { transform: translate(8%,-12%) scale(0.85); opacity: 0.85; }
+  }
+  @keyframes drift4 {
+    0%   { transform: translate(0,0) scale(1); }
+    100% { transform: translate(-8%,5%) scale(1.1); }
+  }
+
+  /* ── Time-aware Chronos demo ── */
+  .chronos-stage {
+    position: relative;
+    height: 400px; border-radius: 8px; border: 1.5px solid var(--ink);
+    overflow: hidden; margin-top: 16px;
+    background: #0E1622; color: white;
+    transition: background 1.4s ease;
+  }
+  .chronos-sky {
+    position: absolute; inset: 0;
+    transition: background 1.4s ease, opacity 1.4s ease;
+  }
+  .chronos-ui {
+    position: relative; z-index: 2;
+    padding: 28px 32px;
+    display: flex; flex-direction: column; gap: 20px;
+    height: 100%;
+    justify-content: space-between;
+  }
+  .chronos-ui-top {
+    display: flex; justify-content: space-between; align-items: flex-start;
+  }
+  .chronos-ui .eyebrow {
+    font-family: 'Fira Mono', monospace; font-size: 10px;
+    letter-spacing: 0.3em; opacity: 0.7;
+  }
+  .chronos-ui .label-time {
+    font-family: 'Cinzel', serif; font-size: 36px; line-height: 1;
+    margin-top: 8px; font-weight: 600;
+  }
+  .chronos-ui .meta {
+    font-family: 'Cormorant Garamond', serif; font-style: italic;
+    font-size: 18px; opacity: 0.85; margin-top: 6px;
+  }
+  .chronos-event {
+    border-left: 2px solid currentColor;
+    padding: 8px 14px;
+    font-family: 'Fira Mono', monospace;
+    font-size: 11px; letter-spacing: 0.2em;
+    align-self: flex-start;
+    background: rgba(255,255,255,0.06);
+    backdrop-filter: blur(8px);
+  }
+  .chronos-controls {
+    display: flex; gap: 8px; margin-top: 16px;
+  }
+  .chronos-controls button {
+    font-family: 'Fira Mono', monospace; font-size: 10px;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    padding: 8px 14px; border-radius: 4px; cursor: pointer;
+    border: 1px solid var(--ink); background: white; color: var(--ink);
+    transition: all 0.2s;
+  }
+  .chronos-controls button:hover { background: var(--ink); color: white; }
+  .chronos-controls button.active {
+    background: var(--margin-red); color: white; border-color: var(--margin-red);
+  }
+  .moon-disc {
+    position: absolute;
+    width: 80px; height: 80px;
+    border-radius: 50%;
+    transition: all 1.4s ease;
+  }
+
+  /* ── Afterimage demo ── */
+  .after-grid { display: grid; grid-template-columns: 1.4fr 1fr; gap: 18px; margin-top: 16px; }
+  .after-stage {
+    background: var(--bone);
+    border: 1.5px solid var(--ink); border-radius: 8px;
+    aspect-ratio: 16 / 10;
+    display: flex; align-items: center; justify-content: center;
+    position: relative; overflow: hidden;
+  }
+  .after-ring {
+    width: 120px; height: 120px; border-radius: 50%;
+    background: var(--candy-coral);
+    position: relative;
+    transition: background 0.3s ease;
+    cursor: crosshair;
+  }
+  .after-ring::after {
+    content: ''; position: absolute; inset: -16px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    transition: all 1.4s ease;
+  }
+  .after-ring.active {
+    background: var(--candy-aqua);
+    transform: scale(1.05);
+  }
+  .after-ring.active::after {
+    border-color: var(--candy-coral);
+    box-shadow: 0 0 60px rgba(255,139,110,0.5);
+    transform: scale(1.6);
+    opacity: 0;
+  }
+  .after-explainer {
+    border: 1.5px solid var(--ink); border-radius: 8px;
+    padding: 18px 20px; background: white;
+  }
+  .after-explainer h4 { font-family: var(--hand-bold); font-size: 22px; margin: 0 0 8px; }
+  .after-explainer p { font-size: 14px; line-height: 1.5; color: var(--ink-soft); margin: 0 0 10px; }
+  .after-explainer .pair {
+    display: flex; gap: 10px; align-items: center;
+    margin: 10px 0; font-family: 'Fira Mono', monospace;
+    font-size: 11px; color: var(--ink-soft);
+  }
+  .after-explainer .swatchlet { width: 28px; height: 28px; border-radius: 50%; border: 1px solid var(--ink); }
+  .after-explainer .arrow { color: var(--margin-red); font-size: 18px; }
+
+  /* Hover demo for buttons */
+  .after-btn-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+  .after-btn {
+    padding: 10px 20px; border-radius: 4px;
+    font-family: 'Fira Mono', monospace; font-size: 11px;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    border: 1.5px solid; cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+    background: transparent;
+  }
+  .after-btn.cyan { color: var(--candy-cyan); border-color: var(--candy-cyan); }
+  .after-btn.cyan:hover { background: var(--candy-cyan); color: var(--candy-coral); box-shadow: 0 0 30px rgba(43,217,232,0.4); }
+  .after-btn.lime { color: var(--candy-lime); border-color: var(--candy-lime); background:#1a1f0e; }
+  .after-btn.lime:hover { background: var(--candy-lime); color: var(--candy-iris); box-shadow: 0 0 30px rgba(200,232,75,0.4); }
+  .after-btn.coral { color: var(--candy-coral); border-color: var(--candy-coral); background:#1a0e10; }
+  .after-btn.coral:hover { background: var(--candy-coral); color: var(--candy-aqua); box-shadow: 0 0 30px rgba(255,139,110,0.4); }
+
+  /* ── Wordmark explorations ── */
+  .wm-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 16px; }
+  .wm-cell {
+    border: 1.5px solid var(--ink); border-radius: 8px;
+    overflow: hidden;
+  }
+  .wm-canvas {
+    background: var(--void); color: white;
+    padding: 30px 32px;
+    display: flex; align-items: center; justify-content: center;
+    min-height: 110px;
+  }
+  .wm-canvas.light {
+    background: linear-gradient(135deg, #DCE9F2, #BEE3F7);
+    color: var(--void);
+  }
+  .wm-meta { padding: 10px 14px; background: rgba(255,255,255,0.5); font-size: 13px; }
+  .wm-meta .opt { font-family: 'Fira Mono', monospace; font-size: 10px; color: var(--margin-red); letter-spacing: 0.05em; }
+  .wm-meta .name { font-family: var(--hand-bold); font-size: 16px; margin: 2px 0; }
+  .wm-meta .desc { font-size: 12px; color: var(--ink-soft); }
+
+  .wm-parallax {
+    font-family: 'Cinzel', serif;
+    font-size: 38px; font-weight: 600; letter-spacing: 0.15em;
+    position: relative;
+  }
+  .wm-parallax-shift {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 38px; font-weight: 600; letter-spacing: -0.02em;
+    position: relative; display: inline-block;
+  }
+  .wm-parallax-shift .l1, .wm-parallax-shift .l2 {
+    position: absolute; inset: 0;
+  }
+  .wm-parallax-shift .l1 { color: var(--candy-cyan); transform: translate(-3px, -2px); mix-blend-mode: screen; }
+  .wm-parallax-shift .l2 { color: var(--candy-coral); transform: translate(3px, 2px); mix-blend-mode: screen; }
+  .wm-parallax-shift .l0 { color: white; position: relative; }
+
+  /* ── Mascot orb sky variant ── */
+  .orb-compare { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 16px; }
+  .orb-cell {
+    border: 1.5px solid var(--ink); border-radius: 8px; overflow: hidden;
+    background: var(--void);
+    aspect-ratio: 1.3 / 1; position: relative;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .orb-warm {
+    width: 110px; height: 110px; border-radius: 50%;
+    background: radial-gradient(circle at 50% 40%, #F0EBE0 0%, #E0A862 25%, #C24A6E 55%, #6E3FA0 85%, transparent 100%);
+    box-shadow: 0 0 60px rgba(224,168,98,0.4), 0 0 100px rgba(110,63,160,0.3);
+    animation: orb-breathe-w 5s ease-in-out infinite;
+  }
+  .orb-cool {
+    width: 110px; height: 110px; border-radius: 50%;
+    background: radial-gradient(circle at 50% 40%, #F2FAFF 0%, var(--candy-aqua) 25%, var(--candy-cyan) 55%, var(--candy-cobalt) 85%, transparent 100%);
+    box-shadow: 0 0 60px rgba(43,217,232,0.4), 0 0 100px rgba(63,106,232,0.3);
+    animation: orb-breathe-c 5s ease-in-out infinite;
+  }
+  @keyframes orb-breathe-w {
+    0%,100% { transform: scale(1); filter: hue-rotate(0deg); }
+    50%     { transform: scale(1.08); filter: hue-rotate(15deg); }
+  }
+  @keyframes orb-breathe-c {
+    0%,100% { transform: scale(1); filter: hue-rotate(0deg); }
+    50%     { transform: scale(1.08); filter: hue-rotate(-12deg); }
+  }
+  .orb-cell .lab {
+    position: absolute; bottom: 12px; left: 16px;
+    font-family: 'Fira Mono', monospace; font-size: 10px;
+    letter-spacing: 0.3em; color: rgba(255,255,255,0.5);
+    text-transform: uppercase;
+  }
+
+  /* ── Merch ── */
+  .merch-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 16px; }
+  .merch-cell {
+    border: 1.5px solid var(--ink); border-radius: 8px;
+    aspect-ratio: 1/1;
+    position: relative; overflow: hidden;
+  }
+  .merch-tee {
+    background: var(--candy-cyan);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .merch-tee svg { width: 50%; height: 50%; }
+  .merch-pin {
+    background: var(--bone);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 14px;
+  }
+  .merch-pin .pin-shape {
+    width: 100px; height: 100px; border-radius: 50%;
+    background: var(--candy-coral);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2), inset 0 -4px 8px rgba(0,0,0,0.15), inset 0 4px 6px rgba(255,255,255,0.4);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .merch-pin .pin-shape svg { width: 60%; height: 60%; }
+  .merch-mono {
+    background: var(--ink);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .merch-mono svg { width: 60%; height: 60%; }
+  .merch-cell .lab {
+    position: absolute; top: 10px; left: 12px;
+    font-family: 'Fira Mono', monospace; font-size: 10px;
+    letter-spacing: 0.2em; color: rgba(0,0,0,0.5);
+    text-transform: uppercase;
+  }
+  .merch-cell.merch-mono .lab { color: rgba(255,255,255,0.5); }
+
+  @media (max-width: 1100px) {
+    .logo-lab { grid-template-columns: repeat(3, 1fr); }
+    .lens-grid { grid-template-columns: repeat(4, 1fr); }
+    .family-row { grid-template-columns: repeat(2, 1fr); }
+    .after-grid, .orb-compare, .merch-grid, .modes-row { grid-template-columns: 1fr; }
+    .wm-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <section class="cover">
+    <p class="cover-meta">SKETCHBOOK — VOL. 02 · ROUND 2 · APR 2026</p>
+    <h1 class="cover-title">Project Parallax — v2</h1>
+    <p class="cover-sub">Brighter, dreamier, more iconic. Same Turrell DNA — re-tuned for <span class="pen-blue">merch + memorability</span>.</p>
+
+    <div class="cover-card" style="margin-top:24px;">
+      <span class="cover-stamp">v2 · ROUND 2</span>
+      <h3 class="sub" style="margin-top:0;">What changed</h3>
+      <p class="cover-thesis">
+        <em>Backgrounds:</em> moved from "midnight scholar" to <em>Aten Reign</em> — slow color cycles
+        through full spectrum, with multi-ambient backgrounds tuned per product.
+      </p>
+      <p class="cover-thesis">
+        <em>Accents:</em> brighter candy palette — kept your cyan, added lime, butter,
+        coral, lavender. Dropped hot pink. Bright, but with breath in them.
+      </p>
+      <p class="cover-thesis">
+        <em>Marks:</em> Parallax mark now <em>literally shows the parallax phenomenon</em>
+        — a near object misaligning against a far one. Built to stick. Designed for merch:
+        works at 12mm, in monochrome, in single-color, and as outline-only.
+      </p>
+      <p class="cover-thesis">
+        <em>Demos:</em> live background drift · interactive afterimage · time-aware Chronos.
+      </p>
+    </div>
+  </section>
+
+  <div class="nav-wrap">
+    <nav class="quick-nav">
+      <a href="#palette">Palette</a>
+      <a href="#lenses">Lenses</a>
+      <a href="#parallax">Parallax</a>
+      <a href="#prismarium">Prismarium</a>
+      <a href="#kairos">Kairos</a>
+      <a href="#chronos">Chronos</a>
+      <a href="#stelloquy">Stelloquy</a>
+      <a href="#wordmarks">Wordmarks</a>
+      <a href="#drift">Drift</a>
+      <a href="#chronos-demo">Time</a>
+      <a href="#afterimage">Afterimage</a>
+      <a href="#merch">Merch</a>
+      <a href="#family">Family</a>
+    </nav>
+  </div>
+
+  <!-- ═══════════════════════ PALETTE V2 ═══════════════════════ -->
+  <section id="palette">
+    <h2 class="section"><span class="num">01</span>Palette v2 — daylight Skyspace</h2>
+    <p class="section-sub">
+      Brighter base, candy accents, kept your <span class="pen-blue">cyan as the
+      brand-true interactive color</span>. No hot pink. A balance of bright + muted +
+      mixed — tuneable per surface.
+    </p>
+
+    <div class="palette-row">
+      <div class="label-block"><h4>Skies</h4><p>Atmospheric backgrounds — used as page fields, hero gradients, brand surfaces.</p></div>
+      <div class="swatch-strip">
+        <div class="swatch-chip"><div class="col" style="background:var(--sky-1)"></div><div class="meta"><div class="name">High sky</div><div class="hex">#BEE3F7</div></div></div>
+        <div class="swatch-chip"><div class="col" style="background:var(--sky-2)"></div><div class="meta"><div class="name">Aperture</div><div class="hex">#7EC0E0</div></div></div>
+        <div class="swatch-chip"><div class="col" style="background:var(--sky-3)"></div><div class="meta"><div class="name">Deep sky</div><div class="hex">#3D7AB0</div></div></div>
+        <div class="swatch-chip"><div class="col" style="background:var(--sky-4)"></div><div class="meta"><div class="name">Dusk</div><div class="hex">#1B3A66</div></div></div>
+        <div class="swatch-chip"><div class="col" style="background:var(--void)"></div><div class="meta"><div class="name">Void</div><div class="hex">#0E1622</div></div></div>
+      </div>
+    </div>
+
+    <div class="palette-row">
+      <div class="label-block"><h4>Candy accents</h4><p>The "evoke something" colors. Used for interactive elements, lenses, mascot, merch.</p></div>
+      <div class="swatch-strip">
+        <div class="swatch-chip"><div class="col" style="background:var(--candy-cyan)"></div><div class="meta"><div class="name">Cyan</div><div class="hex">#2BD9E8</div></div></div>
+        <div class="swatch-chip"><div class="col" style="background:var(--candy-aqua)"></div><div class="meta"><div class="name">Aqua</div><div class="hex">#7CECE0</div></div></div>
+        <div class="swatch-chip"><div class="col" style="background:var(--candy-lime)"></div><div class="meta"><div class="name">Lime</div><div class="hex">#C8E84B</div></div></div>
+        <div class="swatch-chip"><div class="col" style="background:var(--candy-butter)"></div><div class="meta"><div class="name">Butter</div><div class="hex">#F5D86C</div></div></div>
+        <div class="swatch-chip"><div class="col" style="background:var(--candy-amber)"></div><div class="meta"><div class="name">Amber</div><div class="hex">#F0A858</div></div></div>
+        <div class="swatch-chip"><div class="col" style="background:var(--candy-coral)"></div><div class="meta"><div class="name">Coral</div><div class="hex">#FF8B6E</div></div></div>
+        <div class="swatch-chip"><div class="col" style="background:var(--candy-lavender)"></div><div class="meta"><div class="name">Lavender</div><div class="hex">#B8A8F0</div></div></div>
+        <div class="swatch-chip"><div class="col" style="background:var(--candy-iris)"></div><div class="meta"><div class="name">Iris</div><div class="hex">#7E5AD6</div></div></div>
+        <div class="swatch-chip"><div class="col" style="background:var(--candy-cobalt)"></div><div class="meta"><div class="name">Cobalt</div><div class="hex">#3F6AE8</div></div></div>
+      </div>
+    </div>
+
+    <div class="palette-row">
+      <div class="label-block"><h4>Inks</h4><p>Type. Soft warm whites and a near-black void. No pure white, no pure black.</p></div>
+      <div class="swatch-strip">
+        <div class="swatch-chip"><div class="col" style="background:var(--bone)"></div><div class="meta"><div class="name">Bone</div><div class="hex">#F2EFE6</div></div></div>
+        <div class="swatch-chip"><div class="col" style="background:var(--linen)"></div><div class="meta"><div class="name">Linen</div><div class="hex">#C8C2B6</div></div></div>
+        <div class="swatch-chip"><div class="col" style="background:var(--ash)"></div><div class="meta"><div class="name">Ash</div><div class="hex">#4A453F</div></div></div>
+      </div>
+    </div>
+
+    <div class="callout">
+      <strong>Per-product surfaces:</strong> Prismarium = iris/lavender field · Kairos = aperture/cobalt field ·
+      Chronos = butter/amber/dusk field. Marketing site uses the Aten Reign cycle through all of them.
+    </div>
+  </section>
+
+  <!-- ═══════════════════════ LENSES V2 ═══════════════════════ -->
+  <section id="lenses">
+    <h2 class="section"><span class="num">02</span>7-lens spectrum, candy-tuned</h2>
+    <p class="section-sub">
+      Kept all 7 — you mentioned future Prismarium products and we want headroom.
+      Brighter than v1, but still flow as a sunset/spectrum, not a rainbow flag.
+    </p>
+
+    <div class="lens-grid">
+      <div class="lens-card"><div class="col" style="background:var(--candy-coral)"></div><div class="meta"><div class="num">L01</div><div class="name">Coral</div><div class="lens">Scientific</div><div class="hex">#FF8B6E</div></div></div>
+      <div class="lens-card"><div class="col" style="background:var(--candy-amber)"></div><div class="meta"><div class="num">L02</div><div class="name">Amber</div><div class="lens">Psychological</div><div class="hex">#F0A858</div></div></div>
+      <div class="lens-card"><div class="col" style="background:var(--candy-butter)"></div><div class="meta"><div class="num">L03</div><div class="name">Butter</div><div class="lens">Philosophical</div><div class="hex">#F5D86C</div></div></div>
+      <div class="lens-card"><div class="col" style="background:var(--candy-lime)"></div><div class="meta"><div class="num">L04</div><div class="name">Lime</div><div class="lens">Religious</div><div class="hex">#C8E84B</div></div></div>
+      <div class="lens-card"><div class="col" style="background:var(--candy-cyan)"></div><div class="meta"><div class="num">L05</div><div class="name">Cyan</div><div class="lens">Historical</div><div class="hex">#2BD9E8</div></div></div>
+      <div class="lens-card"><div class="col" style="background:var(--candy-cobalt)"></div><div class="meta"><div class="num">L06</div><div class="name">Cobalt</div><div class="lens">Symbolic</div><div class="hex">#3F6AE8</div></div></div>
+      <div class="lens-card"><div class="col" style="background:var(--candy-iris)"></div><div class="meta"><div class="num">L07</div><div class="name">Iris</div><div class="lens">Mathematical</div><div class="hex">#7E5AD6</div></div></div>
+    </div>
+  </section>
+
+  <div class="break">marks · iconic + merch-ready</div>
+
+  <!-- ═══════════════════════ PARALLAX V2 ═══════════════════════ -->
+  <section id="parallax">
+    <h2 class="section"><span class="num">03</span>Project Parallax — the iconic mark</h2>
+    <p class="section-sub">
+      Brief: <em>literally show parallax</em>. A near object misaligning against a far one
+      depending on viewpoint. Built to stick in heads. Also has to read at 12mm, in 1 color, and as outline.
+    </p>
+
+    <div class="logo-lab">
+      <!-- 01 — twin disc shift (RECOMMEND) -->
+      <div class="logo-cell featured">
+        <div class="featured-tag">recommend</div>
+        <div class="canvas">
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="38" cy="50" r="22" fill="#3F6AE8"/>
+            <circle cx="58" cy="50" r="22" fill="#FF8B6E" style="mix-blend-mode:multiply"/>
+          </svg>
+        </div>
+        <div class="meta">
+          <div class="opt">PX-01 · DOUBLE VISION</div>
+          <div class="name">Two views, one subject</div>
+          <div class="desc">Two offset circles. The brain sees ONE object in 3D — that's parallax. Iconic, simple, works at 12mm.</div>
+        </div>
+      </div>
+
+      <!-- 02 — same shape, three offsets (cyan ⊃ pop) -->
+      <div class="logo-cell">
+        <div class="canvas">
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="34" cy="50" r="20" fill="none" stroke="#1B3A66" stroke-width="2.5"/>
+            <circle cx="50" cy="50" r="20" fill="none" stroke="#2BD9E8" stroke-width="2.5"/>
+            <circle cx="66" cy="50" r="20" fill="none" stroke="#FF8B6E" stroke-width="2.5"/>
+          </svg>
+        </div>
+        <div class="meta">
+          <div class="opt">PX-02 · TRIPLE OFFSET</div>
+          <div class="name">Three viewpoints</div>
+          <div class="desc">The same circle from 3 vantage points. Reads as motion, depth.</div>
+        </div>
+      </div>
+
+      <!-- 03 — eye + dot near/far -->
+      <div class="logo-cell">
+        <div class="canvas">
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="20" cy="50" r="4" fill="#1B3A66"/>
+            <line x1="22" y1="50" x2="80" y2="34" stroke="#1B3A66" stroke-width="1.5" stroke-dasharray="3 3"/>
+            <line x1="22" y1="50" x2="80" y2="66" stroke="#1B3A66" stroke-width="1.5" stroke-dasharray="3 3"/>
+            <circle cx="60" cy="42" r="6" fill="#FF8B6E"/>
+            <circle cx="80" cy="50" r="10" fill="none" stroke="#2BD9E8" stroke-width="2"/>
+          </svg>
+        </div>
+        <div class="meta">
+          <div class="opt">PX-03 · SIGHTLINE</div>
+          <div class="name">Eye → near → far</div>
+          <div class="desc">Diagrammatic — like a textbook diagram of parallax. Educational, clear.</div>
+        </div>
+      </div>
+
+      <!-- 04 — chromatic aberration P -->
+      <div class="logo-cell">
+        <div class="canvas">
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <text x="50" y="68" text-anchor="middle" font-family="Cinzel, serif" font-size="62" font-weight="700"
+                  fill="#2BD9E8" transform="translate(-3,-2)" style="mix-blend-mode:multiply">P</text>
+            <text x="50" y="68" text-anchor="middle" font-family="Cinzel, serif" font-size="62" font-weight="700"
+                  fill="#FF8B6E" transform="translate(3,2)" style="mix-blend-mode:multiply">P</text>
+            <text x="50" y="68" text-anchor="middle" font-family="Cinzel, serif" font-size="62" font-weight="700"
+                  fill="#1B3A66">P</text>
+          </svg>
+        </div>
+        <div class="meta">
+          <div class="opt">PX-04 · CHROMATIC P</div>
+          <div class="name">P, doubled</div>
+          <div class="desc">Stereoscopic letterform — same character, three offsets. Strong wordmark seed.</div>
+        </div>
+      </div>
+
+      <!-- 05 — moving star (parallax astronomy) -->
+      <div class="logo-cell">
+        <div class="canvas">
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="22" cy="22" r="2" fill="#1B3A66" opacity="0.4"/>
+            <circle cx="78" cy="28" r="2" fill="#1B3A66" opacity="0.4"/>
+            <circle cx="20" cy="78" r="2" fill="#1B3A66" opacity="0.4"/>
+            <circle cx="80" cy="80" r="2" fill="#1B3A66" opacity="0.4"/>
+            <circle cx="44" cy="50" r="5" fill="#FF8B6E"/>
+            <circle cx="58" cy="50" r="5" fill="#2BD9E8"/>
+            <line x1="44" y1="50" x2="58" y2="50" stroke="#1B3A66" stroke-width="0.8" stroke-dasharray="2 2"/>
+          </svg>
+        </div>
+        <div class="meta">
+          <div class="opt">PX-05 · STAR PARALLAX</div>
+          <div class="name">Stellar shift</div>
+          <div class="desc">How astronomers measure distance to stars. Most-on-brand for "stars" theme.</div>
+        </div>
+      </div>
+    </div>
+
+    <h3 class="sub" style="margin-top:36px;">PX-01 across modes</h3>
+    <p class="section-sub" style="margin-bottom:0;">The recommend, tested at the four merch constraints.</p>
+    <div class="modes-row">
+      <div class="mode-cell">
+        <div class="canvas" style="background: linear-gradient(135deg, #DCE9F2, #BEE3F7);">
+          <svg viewBox="0 0 100 100" width="50%" height="50%" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="38" cy="50" r="22" fill="#3F6AE8"/>
+            <circle cx="58" cy="50" r="22" fill="#FF8B6E" style="mix-blend-mode:multiply"/>
+          </svg>
+        </div>
+        <div class="label">3D / hero<small>Color, on light</small></div>
+      </div>
+      <div class="mode-cell">
+        <div class="canvas" style="background:var(--ink);">
+          <svg viewBox="0 0 100 100" width="50%" height="50%" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="38" cy="50" r="22" fill="none" stroke="#F2EFE6" stroke-width="3"/>
+            <circle cx="58" cy="50" r="22" fill="none" stroke="#F2EFE6" stroke-width="3"/>
+          </svg>
+        </div>
+        <div class="label">Outline / 1-color<small>Embroidery, line tattoo</small></div>
+      </div>
+      <div class="mode-cell">
+        <div class="canvas" style="background:var(--bone);">
+          <svg viewBox="0 0 100 100" width="22%" height="22%" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="38" cy="50" r="22" fill="#1B3A66"/>
+            <circle cx="58" cy="50" r="22" fill="#1B3A66" opacity="0.5"/>
+          </svg>
+        </div>
+        <div class="label">12mm favicon<small>Reads at micro size</small></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════ PRISMARIUM V2 ═══════════════════════ -->
+  <section id="prismarium">
+    <h2 class="section"><span class="num">04</span>Prismarium — brighter</h2>
+    <p class="section-sub">
+      Workshop / wisdom platform. Color anchor: <span class="pen-blue">Iris #7E5AD6 + Lavender #B8A8F0</span>.
+      Room left for sub-products under the Prismarium umbrella.
+    </p>
+
+    <div class="logo-lab">
+      <div class="logo-cell featured">
+        <div class="featured-tag">recommend</div>
+        <div class="canvas">
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <polygon points="50,18 80,72 20,72" fill="#7E5AD6" stroke="#1B3A66" stroke-width="2"/>
+            <line x1="6" y1="46" x2="34" y2="46" stroke="#1B3A66" stroke-width="2"/>
+            <g stroke-width="2" stroke-linecap="round">
+              <line x1="62" y1="44" x2="94" y2="32" stroke="#FF8B6E"/>
+              <line x1="63" y1="48" x2="94" y2="44" stroke="#F5D86C"/>
+              <line x1="64" y1="52" x2="94" y2="56" stroke="#C8E84B"/>
+              <line x1="63" y1="56" x2="94" y2="68" stroke="#2BD9E8"/>
+            </g>
+          </svg>
+        </div>
+        <div class="meta">
+          <div class="opt">PR-01 · PRISM</div>
+          <div class="name">Bright workshop</div>
+          <div class="desc">Solid iris triangle · candy spectrum out. Outlined for merch readability.</div>
+        </div>
+      </div>
+
+      <div class="logo-cell">
+        <div class="canvas">
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <polygon points="50,18 76,50 50,82 24,50" fill="none" stroke="#1B3A66" stroke-width="2"/>
+            <polygon points="50,18 76,50 50,50" fill="#FF8B6E"/>
+            <polygon points="76,50 50,82 50,50" fill="#F5D86C"/>
+            <polygon points="50,82 24,50 50,50" fill="#C8E84B"/>
+            <polygon points="24,50 50,18 50,50" fill="#7E5AD6"/>
+          </svg>
+        </div>
+        <div class="meta">
+          <div class="opt">PR-02 · DIAMOND</div>
+          <div class="name">Quartered prism</div>
+          <div class="desc">Faceted gem · maps cleanly to 4 sub-products if needed.</div>
+        </div>
+      </div>
+
+      <div class="logo-cell">
+        <div class="canvas">
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="50" cy="50" r="34" fill="#7E5AD6"/>
+            <circle cx="50" cy="50" r="22" fill="#B8A8F0"/>
+            <circle cx="50" cy="50" r="10" fill="#F2EFE6"/>
+          </svg>
+        </div>
+        <div class="meta">
+          <div class="opt">PR-03 · GANZFELD</div>
+          <div class="name">Concentric field</div>
+          <div class="desc">Pure Turrell Ganzfeld · most "field-y" but still icon-friendly.</div>
+        </div>
+      </div>
+
+      <div class="logo-cell">
+        <div class="canvas">
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <polygon points="50,18 80,72 20,72" fill="#B8A8F0" opacity="0.55"/>
+            <polygon points="50,32 76,72 24,72" fill="#7E5AD6" opacity="0.7"/>
+            <polygon points="50,46 70,72 30,72" fill="#1B3A66"/>
+          </svg>
+        </div>
+        <div class="meta">
+          <div class="opt">PR-04 · STACK</div>
+          <div class="name">Layered prisms</div>
+          <div class="desc">Depth without strokes · feels dimensional.</div>
+        </div>
+      </div>
+
+      <div class="logo-cell">
+        <div class="canvas">
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <path d="M 18 70 A 32 32 0 0 1 82 70 Z" fill="#7E5AD6"/>
+            <line x1="14" y1="70" x2="86" y2="70" stroke="#1B3A66" stroke-width="2"/>
+            <circle cx="50" cy="70" r="3" fill="#F5D86C"/>
+            <circle cx="50" cy="50" r="2" fill="#F2EFE6" opacity="0.6"/>
+            <circle cx="38" cy="58" r="1.4" fill="#F2EFE6" opacity="0.5"/>
+            <circle cx="62" cy="56" r="1.4" fill="#F2EFE6" opacity="0.5"/>
+          </svg>
+        </div>
+        <div class="meta">
+          <div class="opt">PR-05 · DOME</div>
+          <div class="name">Skyspace dome</div>
+          <div class="desc">Looking up · contemplative.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════ KAIROS V2 ═══════════════════════ -->
+  <section id="kairos">
+    <h2 class="section"><span class="num">05</span>Kairos — brighter</h2>
+    <p class="section-sub">
+      Intelligence engine. Color anchor: <span class="pen-blue">Cyan #2BD9E8 + Cobalt #3F6AE8</span>.
+    </p>
+
+    <div class="logo-lab">
+      <div class="logo-cell featured">
+        <div class="featured-tag">recommend</div>
+        <div class="canvas">
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <rect x="20" y="20" width="60" height="60" rx="6" fill="#3F6AE8"/>
+            <rect x="42" y="14" width="16" height="72" rx="2" fill="#2BD9E8"/>
+            <line x1="50" y1="50" x2="50" y2="50" stroke="#F2EFE6" stroke-width="3"/>
+          </svg>
+        </div>
+        <div class="meta">
+          <div class="opt">KA-01 · SLIT</div>
+          <div class="name">The aperture</div>
+          <div class="desc">Cobalt frame · cyan slit of light · the moment of insight.</div>
+        </div>
+      </div>
+
+      <div class="logo-cell">
+        <div class="canvas">
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <line x1="50" y1="22" x2="76" y2="68" stroke="#1B3A66" stroke-width="1.5"/>
+            <line x1="76" y1="68" x2="24" y2="68" stroke="#1B3A66" stroke-width="1.5"/>
+            <line x1="24" y1="68" x2="50" y2="22" stroke="#1B3A66" stroke-width="1.5"/>
+            <circle cx="50" cy="22" r="5" fill="#2BD9E8"/>
+            <circle cx="76" cy="68" r="5" fill="#2BD9E8"/>
+            <circle cx="24" cy="68" r="5" fill="#2BD9E8"/>
+          </svg>
+        </div>
+        <div class="meta">
+          <div class="opt">KA-02 · TRIANGLE</div>
+          <div class="name">Star triangle</div>
+          <div class="desc">Refined original constellation idea · brighter cyan.</div>
+        </div>
+      </div>
+
+      <div class="logo-cell">
+        <div class="canvas">
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="50" cy="50" r="34" fill="#3F6AE8"/>
+            <line x1="14" y1="50" x2="86" y2="50" stroke="#2BD9E8" stroke-width="2.5"/>
+            <circle cx="50" cy="50" r="4" fill="#F2EFE6"/>
+          </svg>
+        </div>
+        <div class="meta">
+          <div class="opt">KA-03 · HORIZON</div>
+          <div class="name">Decisive moment</div>
+          <div class="desc">Sky meets earth at a single point · "kairos" = right time.</div>
+        </div>
+      </div>
+
+      <div class="logo-cell">
+        <div class="canvas">
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="50" cy="50" r="34" fill="none" stroke="#1B3A66" stroke-width="2"/>
+            <line x1="50" y1="14" x2="50" y2="86" stroke="#1B3A66" stroke-width="1.5"/>
+            <line x1="14" y1="50" x2="86" y2="50" stroke="#1B3A66" stroke-width="1.5"/>
+            <circle cx="50" cy="50" r="14" fill="#2BD9E8"/>
+            <circle cx="50" cy="50" r="3" fill="#F2EFE6"/>
+          </svg>
+        </div>
+        <div class="meta">
+          <div class="opt">KA-04 · CROSSHAIR</div>
+          <div class="name">Targeted insight</div>
+          <div class="desc">Sextant + targeting reticle · navigation.</div>
+        </div>
+      </div>
+
+      <div class="logo-cell">
+        <div class="canvas">
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <text x="50" y="68" text-anchor="middle" font-family="Space Grotesk, sans-serif"
+                  font-size="56" font-weight="700" fill="#2BD9E8" letter-spacing="-3">K</text>
+            <line x1="22" y1="76" x2="78" y2="76" stroke="#3F6AE8" stroke-width="2.5"/>
+          </svg>
+        </div>
+        <div class="meta">
+          <div class="opt">KA-05 · LETTERMARK</div>
+          <div class="name">K-monogram</div>
+          <div class="desc">App icon / favicon. Underline = horizon.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════ CHRONOS V2 ═══════════════════════ -->
+  <section id="chronos">
+    <h2 class="section"><span class="num">06</span>Chronos — brighter</h2>
+    <p class="section-sub">
+      Architect / time / structure. Color anchor: <span class="pen-blue">Butter #F5D86C + Amber #F0A858</span>.
+      The warm, sunlit member of the family.
+    </p>
+
+    <div class="logo-lab">
+      <div class="logo-cell featured">
+        <div class="featured-tag">recommend</div>
+        <div class="canvas">
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="50" cy="55" r="32" fill="#F0A858"/>
+            <line x1="14" y1="60" x2="86" y2="60" stroke="#1B3A66" stroke-width="2.5"/>
+            <circle cx="50" cy="50" r="2.5" fill="#1B3A66"/>
+            <line x1="50" y1="50" x2="50" y2="30" stroke="#1B3A66" stroke-width="1.5"/>
+          </svg>
+        </div>
+        <div class="meta">
+          <div class="opt">CH-01 · SUN</div>
+          <div class="name">Roden sun</div>
+          <div class="desc">Sun on horizon · sundial gnomon. Warmest, most iconic.</div>
+        </div>
+      </div>
+
+      <div class="logo-cell">
+        <div class="canvas">
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <rect x="18" y="18" width="64" height="64" fill="none" stroke="#1B3A66" stroke-width="2"/>
+            <rect x="28" y="28" width="44" height="44" fill="#F0A858"/>
+            <rect x="38" y="38" width="24" height="24" fill="#F5D86C"/>
+            <rect x="46" y="46" width="8" height="8" fill="#F2EFE6"/>
+          </svg>
+        </div>
+        <div class="meta">
+          <div class="opt">CH-02 · CHAMBER</div>
+          <div class="name">Concentric rooms</div>
+          <div class="desc">Roden's nested chambers · architectural.</div>
+        </div>
+      </div>
+
+      <div class="logo-cell">
+        <div class="canvas">
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <polygon points="50,16 80,34 80,66 50,84 20,66 20,34" fill="#F5D86C" stroke="#1B3A66" stroke-width="2"/>
+            <polygon points="50,30 68,40 68,60 50,70 32,60 32,40" fill="#F0A858"/>
+            <line x1="20" y1="34" x2="80" y2="66" stroke="#1B3A66" stroke-width="1" opacity="0.4"/>
+            <line x1="80" y1="34" x2="20" y2="66" stroke="#1B3A66" stroke-width="1" opacity="0.4"/>
+            <line x1="50" y1="16" x2="50" y2="84" stroke="#1B3A66" stroke-width="1" opacity="0.4"/>
+          </svg>
+        </div>
+        <div class="meta">
+          <div class="opt">CH-03 · HEX</div>
+          <div class="name">Sacred hex</div>
+          <div class="desc">Sacred geometry without mysticism.</div>
+        </div>
+      </div>
+
+      <div class="logo-cell">
+        <div class="canvas">
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <polygon points="22,18 78,18 50,50 78,82 22,82 50,50" fill="#F0A858" stroke="#1B3A66" stroke-width="2"/>
+            <line x1="22" y1="18" x2="78" y2="18" stroke="#1B3A66" stroke-width="2"/>
+            <line x1="22" y1="82" x2="78" y2="82" stroke="#1B3A66" stroke-width="2"/>
+          </svg>
+        </div>
+        <div class="meta">
+          <div class="opt">CH-04 · HOURGLASS</div>
+          <div class="name">Time vessel</div>
+          <div class="desc">Two apertures kissing · literal.</div>
+        </div>
+      </div>
+
+      <div class="logo-cell">
+        <div class="canvas">
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <line x1="14" y1="68" x2="86" y2="68" stroke="#1B3A66" stroke-width="2"/>
+            <circle cx="50" cy="68" r="22" fill="#F5D86C"/>
+            <circle cx="50" cy="68" r="22" fill="none" stroke="#F0A858" stroke-width="3" opacity="0.7"/>
+            <line x1="38" y1="40" x2="62" y2="40" stroke="#F5D86C" stroke-width="1" opacity="0.6"/>
+            <line x1="34" y1="46" x2="66" y2="46" stroke="#F5D86C" stroke-width="1" opacity="0.4"/>
+          </svg>
+        </div>
+        <div class="meta">
+          <div class="opt">CH-05 · LIGHT WELL</div>
+          <div class="name">Sun pour</div>
+          <div class="desc">Pure Ganzfeld glow · soft, warm.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════ STELLOQUY COMPARE ═══════════════════════ -->
+  <section id="stelloquy">
+    <h2 class="section"><span class="num">07</span>Stelloquy — warm vs cool</h2>
+    <p class="section-sub">
+      You loved the warm orb. Here it is alongside the <em>cool sky-orb</em> for comparison.
+      Both breathe over ~5s.
+    </p>
+
+    <div class="orb-compare">
+      <div class="orb-cell">
+        <div class="orb-warm"></div>
+        <div class="lab">ST-A · WARM (v1)</div>
+      </div>
+      <div class="orb-cell">
+        <div class="orb-cool"></div>
+        <div class="lab">ST-B · COOL SKY (new)</div>
+      </div>
+    </div>
+
+    <div class="callout">
+      <strong>My take:</strong> the warm orb has more <em>personality</em> (sun-y, friendly).
+      The cool orb feels more <em>technological</em> (calm intelligence). A fix:
+      let Stelloquy <em>shift</em> — cool while listening, warms while speaking.
+      Color = mood.
+    </div>
+  </section>
+
+  <!-- ═══════════════════════ WORDMARKS ═══════════════════════ -->
+  <section id="wordmarks">
+    <h2 class="section"><span class="num">08</span>Wordmark explorations</h2>
+    <p class="section-sub">
+      A <em>wordmark</em> = the brand name set as a logo (like SKYLRK).
+      A <em>symbol</em> = the icon-only mark (the little circle/sun/triangle).
+      You'll usually use them together. Here are wordmark studies for each brand.
+    </p>
+
+    <div class="wm-grid">
+      <div class="wm-cell">
+        <div class="wm-canvas">
+          <span class="wm-parallax-shift">
+            <span class="l1">PARALLAX</span>
+            <span class="l2">PARALLAX</span>
+            <span class="l0">PARALLAX</span>
+          </span>
+        </div>
+        <div class="wm-meta">
+          <div class="opt">WM-01 · PARALLAX</div>
+          <div class="name">Stereoscopic shift</div>
+          <div class="desc">Wordmark literally shows parallax · cyan/coral fringes. Space Grotesk.</div>
+        </div>
+      </div>
+
+      <div class="wm-cell">
+        <div class="wm-canvas light">
+          <span style="font-family:'Cinzel',serif; font-weight:600; font-size:36px; letter-spacing:0.3em;">PRISMARIUM</span>
+        </div>
+        <div class="wm-meta">
+          <div class="opt">WM-02 · PRISMARIUM</div>
+          <div class="name">Engraved Cinzel</div>
+          <div class="desc">Tracked-out Cinzel · ceremonial · pairs with prism mark.</div>
+        </div>
+      </div>
+
+      <div class="wm-cell">
+        <div class="wm-canvas">
+          <span style="font-family:'Space Grotesk',sans-serif; font-weight:500; font-size:42px; letter-spacing:-0.03em;">
+            <span style="color:var(--candy-cyan);">k</span><span style="color:white;">airos</span>
+          </span>
+        </div>
+        <div class="wm-meta">
+          <div class="opt">WM-03 · KAIROS</div>
+          <div class="name">Lowercase, cyan k</div>
+          <div class="desc">Modern, soft · matches the intelligence personality.</div>
+        </div>
+      </div>
+
+      <div class="wm-cell">
+        <div class="wm-canvas">
+          <span style="font-family:'Cinzel',serif; font-weight:400; font-size:36px; letter-spacing:0.4em; color:var(--candy-butter);">CHRONOS</span>
+        </div>
+        <div class="wm-meta">
+          <div class="opt">WM-04 · CHRONOS</div>
+          <div class="name">Wide-set Cinzel</div>
+          <div class="desc">Butter on dusk · wide tracking suggests time dilation.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="break">live demos</div>
+
+  <!-- ═══════════════════════ BACKGROUND DRIFT ═══════════════════════ -->
+  <section id="drift">
+    <h2 class="section"><span class="num">09</span>Background drift — Aten Reign cycle</h2>
+    <p class="section-sub">
+      Live. Watch for ~30 seconds. Four candy fields drift independently, mixing on screen.
+      Never repeats exactly. <span class="pen-blue">This is what a brand surface feels like</span> —
+      not a static background image.
+    </p>
+
+    <div class="drift-stage">
+      <div class="drift-layer drift-l1"></div>
+      <div class="drift-layer drift-l2"></div>
+      <div class="drift-layer drift-l3"></div>
+      <div class="drift-layer drift-l4"></div>
+      <div class="drift-grain"></div>
+      <div class="drift-text">
+        <div class="eyebrow">// PROJECT PARALLAX</div>
+        <div class="big">Seeing things from<br/>different perspectives.</div>
+        <div class="small">A breathing brand surface · Aten Reign cycle</div>
+      </div>
+    </div>
+
+    <div class="callout">
+      <strong>How it deploys:</strong> the cycle slows on product surfaces (calmer), speeds up on the
+      marketing site (alive). On Chronos, it sync's with local time. On Kairos, with response latency
+      (when the AI is "thinking," it shifts cooler).
+    </div>
+  </section>
+
+  <!-- ═══════════════════════ TIME-AWARE CHRONOS ═══════════════════════ -->
+  <section id="chronos-demo">
+    <h2 class="section"><span class="num">10</span>Time-aware Chronos — all three layers</h2>
+    <p class="section-sub">
+      Time-of-day palette · astronomical events · local time ambient. Click the buttons to scrub
+      through the day. The whole UI re-tunes.
+    </p>
+
+    <div class="chronos-stage" id="chronosStage">
+      <div class="chronos-sky" id="chronosSky"></div>
+      <div class="moon-disc" id="moonDisc" style="top:32px; right:60px; opacity:0;"></div>
+      <div class="chronos-ui">
+        <div class="chronos-ui-top">
+          <div>
+            <div class="eyebrow">// CHRONOS · LOCAL TIME</div>
+            <div class="label-time" id="chronosTime">06:14</div>
+            <div class="meta" id="chronosMeta">civil dawn — venus rising in the east</div>
+          </div>
+          <div class="chronos-event" id="chronosEvent">SOLSTICE · 12 DAYS</div>
+        </div>
+        <div class="chronos-controls">
+          <button data-mode="dawn" class="active">Dawn</button>
+          <button data-mode="noon">Noon</button>
+          <button data-mode="dusk">Dusk</button>
+          <button data-mode="night">Night</button>
+          <button data-mode="solstice">Solstice</button>
+          <button data-mode="fullmoon">Full Moon</button>
+        </div>
+      </div>
+    </div>
+
+    <p class="section-sub" style="margin-top:14px;">
+      <strong>Three layers in action:</strong> (1) the sky reads time-of-day · (2) the badge announces
+      celestial events · (3) the ambient orb at top-right is the moon, brightening at full-moon mode.
+    </p>
+  </section>
+
+  <!-- ═══════════════════════ AFTERIMAGE DEMO ═══════════════════════ -->
+  <section id="afterimage">
+    <h2 class="section"><span class="num">11</span>Retinal afterimage — interactive</h2>
+    <p class="section-sub">
+      Stare at the coral disc for ~10 seconds, then click. The disc swaps to its complement.
+      In the brand, this is how <em>focus rings</em> behave: the focus color is the
+      complement of what your eye is on. Buttons below show this as a hover state.
+    </p>
+
+    <div class="after-grid">
+      <div class="after-stage" id="afterStage">
+        <div class="after-ring" id="afterRing"></div>
+      </div>
+      <div class="after-explainer">
+        <h4>How it works</h4>
+        <p>Stare at a saturated color, look away — the brain shows you its complement (afterimage).
+          We use this to make focus states feel <em>alive</em>: the focus halo is the complement
+          of the button color.</p>
+        <div class="pair">
+          <div class="swatchlet" style="background:var(--candy-coral)"></div>
+          <span class="arrow">→</span>
+          <div class="swatchlet" style="background:var(--candy-aqua)"></div>
+          <span>coral → aqua</span>
+        </div>
+        <div class="pair">
+          <div class="swatchlet" style="background:var(--candy-cyan)"></div>
+          <span class="arrow">→</span>
+          <div class="swatchlet" style="background:var(--candy-coral)"></div>
+          <span>cyan → coral</span>
+        </div>
+        <div class="pair">
+          <div class="swatchlet" style="background:var(--candy-lime)"></div>
+          <span class="arrow">→</span>
+          <div class="swatchlet" style="background:var(--candy-iris)"></div>
+          <span>lime → iris</span>
+        </div>
+        <div class="after-btn-row">
+          <button class="after-btn cyan">Hover me</button>
+          <button class="after-btn lime">Hover me</button>
+          <button class="after-btn coral">Hover me</button>
+        </div>
+        <p style="margin-top:12px; font-size:13px; color:var(--ink-faint);">
+          The hover invert isn't subtle — it's the point. It mimics what your retina actually does.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════ MERCH ═══════════════════════ -->
+  <section id="merch">
+    <h2 class="section"><span class="num">12</span>Merch — testing the marks</h2>
+    <p class="section-sub">
+      The Parallax double-disc on a tee, the Chronos sun as a pin, the Prismarium prism as embroidered (1-color).
+      All four merch constraints respected.
+    </p>
+
+    <div class="merch-grid">
+      <div class="merch-cell merch-tee">
+        <span class="lab">tee · cyan</span>
+        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="38" cy="50" r="22" fill="#1B3A66"/>
+          <circle cx="58" cy="50" r="22" fill="#FF8B6E" style="mix-blend-mode:multiply"/>
+        </svg>
+      </div>
+      <div class="merch-cell merch-pin">
+        <span class="lab">enamel pin</span>
+        <div class="pin-shape">
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="50" cy="55" r="32" fill="#F5D86C"/>
+            <line x1="14" y1="60" x2="86" y2="60" stroke="#1B3A66" stroke-width="3"/>
+            <circle cx="50" cy="50" r="3" fill="#1B3A66"/>
+          </svg>
+        </div>
+      </div>
+      <div class="merch-cell merch-mono">
+        <span class="lab">embroidery · 1-color</span>
+        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+          <polygon points="50,18 80,72 20,72" fill="none" stroke="#F2EFE6" stroke-width="3"/>
+          <line x1="6" y1="46" x2="34" y2="46" stroke="#F2EFE6" stroke-width="3"/>
+          <line x1="62" y1="44" x2="94" y2="32" stroke="#F2EFE6" stroke-width="2"/>
+          <line x1="63" y1="48" x2="94" y2="44" stroke="#F2EFE6" stroke-width="2"/>
+          <line x1="64" y1="52" x2="94" y2="56" stroke="#F2EFE6" stroke-width="2"/>
+          <line x1="63" y1="56" x2="94" y2="68" stroke="#F2EFE6" stroke-width="2"/>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════ FAMILY V2 ═══════════════════════ -->
+  <section id="family">
+    <h2 class="section"><span class="num">13</span>Family lockup v2</h2>
+    <p class="section-sub">
+      All four marks. Brighter, but each in its own atmospheric ground.
+      Stelloquy hovers between them as the connecting voice.
+    </p>
+
+    <div class="family-row">
+      <div class="family-cell" style="background: linear-gradient(160deg, #BEE3F7 0%, #7EC0E0 100%);">
+        <div class="role">PARENT</div>
+        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="38" cy="50" r="22" fill="#3F6AE8"/>
+          <circle cx="58" cy="50" r="22" fill="#FF8B6E" style="mix-blend-mode:multiply"/>
+        </svg>
+        <div class="label" style="color:#1B3A66;">Parallax</div>
+      </div>
+      <div class="family-cell" style="background: linear-gradient(160deg, #B8A8F0 0%, #7E5AD6 60%, #3D2A6E 100%);">
+        <div class="role" style="color:white;">WORKSHOP</div>
+        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+          <polygon points="50,18 80,72 20,72" fill="#F2EFE6" stroke="#1B3A66" stroke-width="2"/>
+          <line x1="6" y1="46" x2="34" y2="46" stroke="#1B3A66" stroke-width="2"/>
+          <line x1="62" y1="44" x2="94" y2="32" stroke="#FF8B6E" stroke-width="2"/>
+          <line x1="63" y1="48" x2="94" y2="44" stroke="#F5D86C" stroke-width="2"/>
+          <line x1="64" y1="52" x2="94" y2="56" stroke="#C8E84B" stroke-width="2"/>
+          <line x1="63" y1="56" x2="94" y2="68" stroke="#2BD9E8" stroke-width="2"/>
+        </svg>
+        <div class="label" style="color:white;">Prismarium</div>
+      </div>
+      <div class="family-cell" style="background: linear-gradient(160deg, #7EC0E0 0%, #3F6AE8 100%);">
+        <div class="role" style="color:white;">INTELLIGENCE</div>
+        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+          <rect x="20" y="20" width="60" height="60" rx="6" fill="#1B3A66"/>
+          <rect x="42" y="14" width="16" height="72" rx="2" fill="#2BD9E8"/>
+        </svg>
+        <div class="label" style="color:white;">Kairos</div>
+      </div>
+      <div class="family-cell" style="background: linear-gradient(160deg, #F5D86C 0%, #F0A858 50%, #8A4A3F 100%);">
+        <div class="role" style="color:#1B3A66;">ARCHITECT</div>
+        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="50" cy="55" r="32" fill="#1B3A66"/>
+          <line x1="14" y1="60" x2="86" y2="60" stroke="#1B3A66" stroke-width="2.5"/>
+          <circle cx="50" cy="50" r="3" fill="#F2EFE6"/>
+          <line x1="50" y1="50" x2="50" y2="30" stroke="#F2EFE6" stroke-width="1.5"/>
+        </svg>
+        <div class="label" style="color:#1B3A66;">Chronos</div>
+      </div>
+    </div>
+  </section>
+
+  <p style="margin-top:80px; border-top: 1px dashed var(--ink-faint); padding-top:18px; text-align:center; color:var(--ink-faint); font-size:14px;">
+    v2 · circle what sings · cross out what doesn't
+  </p>
+
+</div>
+
+<script>
+  // Time-aware Chronos demo
+  (function(){
+    const stage = document.getElementById('chronosStage');
+    const sky = document.getElementById('chronosSky');
+    const time = document.getElementById('chronosTime');
+    const meta = document.getElementById('chronosMeta');
+    const event = document.getElementById('chronosEvent');
+    const moon = document.getElementById('moonDisc');
+    const buttons = document.querySelectorAll('.chronos-controls button');
+
+    const states = {
+      dawn:     { sky: 'linear-gradient(180deg, #FFB89E 0%, #F5D86C 30%, #BEE3F7 70%, #7EC0E0 100%)',
+                  time: '06:14', meta: 'civil dawn — venus rising in the east',
+                  event: 'SOLSTICE · 12 DAYS', textColor:'#1B3A66', moon: { opacity: 0 } },
+      noon:     { sky: 'linear-gradient(180deg, #7EC0E0 0%, #BEE3F7 60%, #F2EFE6 100%)',
+                  time: '12:42', meta: 'high sun — apogee at 73° altitude',
+                  event: 'SUMMER WINDOW · DAY 4', textColor:'#1B3A66', moon: { opacity: 0 } },
+      dusk:     { sky: 'linear-gradient(180deg, #7E5AD6 0%, #FF8B6E 50%, #F0A858 80%, #8A4A3F 100%)',
+                  time: '20:08', meta: 'civil dusk — saturn-jupiter conjunction',
+                  event: 'CONJUNCTION · TONIGHT', textColor:'#F2EFE6', moon: { opacity: 0.4, bg: 'radial-gradient(circle at 35% 35%, #F2EFE6, #C8C2B6)' } },
+      night:    { sky: 'linear-gradient(180deg, #0E1622 0%, #1B3A66 50%, #2A1F4A 100%)',
+                  time: '23:47', meta: 'astronomical night — orion meridian',
+                  event: 'MERIDIAN · ORION', textColor:'#F2EFE6', moon: { opacity: 0.6, bg: 'radial-gradient(circle at 35% 35%, #F2EFE6, #7EC0E0 60%, transparent)' } },
+      solstice: { sky: 'radial-gradient(ellipse at 50% 80%, #F5D86C 0%, #F0A858 30%, #FF8B6E 60%, #7E5AD6 100%)',
+                  time: '21 JUN', meta: 'solstice — longest day · roden crater open',
+                  event: '◇ SOLSTICE TODAY', textColor:'#F2EFE6', moon: { opacity: 0 } },
+      fullmoon: { sky: 'linear-gradient(180deg, #1B3A66 0%, #3F6AE8 50%, #1B3A66 100%)',
+                  time: '02:14', meta: 'full moon — perigee tide rising',
+                  event: '◯ FULL MOON · PERIGEE', textColor:'#F2EFE6',
+                  moon: { opacity: 1, bg: 'radial-gradient(circle at 35% 35%, #F2EFE6, #BEE3F7 60%, rgba(190,227,247,0))', shadow: '0 0 60px rgba(190,227,247,0.6)' } }
+    };
+
+    function apply(mode){
+      const s = states[mode];
+      sky.style.background = s.sky;
+      time.textContent = s.time;
+      meta.textContent = s.meta;
+      event.textContent = s.event;
+      stage.style.color = s.textColor;
+      moon.style.opacity = s.moon.opacity;
+      if (s.moon.bg) moon.style.background = s.moon.bg;
+      moon.style.boxShadow = s.moon.shadow || 'none';
+    }
+
+    buttons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        buttons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        apply(btn.dataset.mode);
+      });
+    });
+    apply('dawn');
+  })();
+
+  // Afterimage interactive
+  (function(){
+    const ring = document.getElementById('afterRing');
+    let timer = null;
+    ring.addEventListener('mousedown', () => {
+      ring.classList.add('active');
+      clearTimeout(timer);
+      timer = setTimeout(() => ring.classList.remove('active'), 2200);
+    });
+    ring.addEventListener('click', () => {
+      ring.classList.add('active');
+      clearTimeout(timer);
+      timer = setTimeout(() => ring.classList.remove('active'), 2200);
+    });
+  })();
+</script>
+
+</body>
+</html>

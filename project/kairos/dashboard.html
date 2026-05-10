@@ -1,0 +1,479 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dashboard — Kairos</title>
+<link rel="stylesheet" href="kairos.css">
+<style>
+.page-header { padding: 64px 0 48px; }
+
+/* Sidebar shell */
+.app-shell {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 0;
+  min-height: 100vh;
+}
+
+@media (max-width: 860px) { .app-shell { grid-template-columns: 1fr; } }
+
+.sidebar {
+  border-right: 1px solid var(--rule);
+  background: rgba(13,13,18,0.88);
+  padding: 24px 0;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+}
+
+.sidebar-brand {
+  padding: 0 18px 20px;
+  border-bottom: 1px solid var(--rule);
+  margin-bottom: 12px;
+}
+
+.sidebar-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sidebar-logo-icon {
+  width: 36px; height: 36px;
+  border-radius: 10px;
+  border: 1px solid rgba(153,102,255,0.25);
+  background: rgba(153,102,255,0.1);
+  display: flex; align-items: center; justify-content: center;
+}
+
+.sidebar-wordmark { font-family: var(--f-display); font-size: 20px; letter-spacing: 0.1em; color: var(--bone); }
+.sidebar-tagline  { font-size: 10px; color: var(--bone-faint); margin-top: 2px; }
+.sidebar-tagline span { color: rgba(200,168,255,0.7); }
+
+.nav-list { list-style: none; padding: 0 10px; display: flex; flex-direction: column; gap: 2px; }
+
+.nav-item a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid transparent;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--bone-dim);
+  transition: all 0.15s;
+}
+
+.nav-item a:hover { background: rgba(255,255,255,0.04); color: var(--bone); border-color: var(--rule); }
+.nav-item.active a { background: rgba(153,102,255,0.12); border-color: rgba(153,102,255,0.3); color: var(--bone); }
+
+.nav-icon {
+  width: 30px; height: 30px;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(10,10,14,0.6);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+
+.nav-item.active .nav-icon {
+  border-color: rgba(153,102,255,0.3);
+  background: rgba(153,102,255,0.12);
+}
+
+.nav-accent {
+  width: 3px; height: 24px;
+  border-radius: 2px;
+  background: transparent;
+  flex-shrink: 0;
+}
+
+.nav-item.active .nav-accent { background: rgba(153,102,255,0.8); }
+
+.nav-detail { flex: 1; min-width: 0; }
+.nav-label  { font-size: 13px; font-weight: 600; }
+.nav-sub    { font-size: 10px; color: var(--bone-faint); margin-top: 1px; }
+.nav-item.active .nav-sub { color: rgba(200,168,255,0.6); }
+
+/* Main content */
+.main-content {
+  padding: 28px 32px 80px;
+  min-height: 100vh;
+  overflow-y: auto;
+}
+
+/* Dashboard cards */
+.hero-bar {
+  border: 1px solid rgba(153,102,255,0.2);
+  border-radius: 18px;
+  background: linear-gradient(135deg, rgba(17,17,24,0.98), rgba(13,13,18,0.96));
+  padding: 28px 32px;
+  margin-bottom: 16px;
+  box-shadow: 0 0 60px rgba(153,102,255,0.05);
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-bar::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 60% 70% at 0% 0%, rgba(153,102,255,0.1), transparent 60%),
+              radial-gradient(ellipse 40% 50% at 100% 100%, rgba(184,153,255,0.05), transparent 50%);
+  pointer-events: none;
+}
+
+.dashboard-grid {
+  display: grid;
+  gap: 12px;
+}
+
+.lane-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 12px;
+}
+
+.lane-card {
+  border: 1px solid var(--rule);
+  border-radius: 16px;
+  padding: 20px 22px;
+  position: relative;
+}
+
+.lane-card.primary { border-color: rgba(153,102,255,0.28); background: rgba(153,102,255,0.07); }
+.lane-card.tending { border-color: rgba(124,236,224,0.2); background: rgba(124,236,224,0.05); }
+.lane-card.depth   { background: rgba(13,13,18,0.6); }
+
+.lane-percent {
+  font-family: var(--f-mono);
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  color: var(--bone-faint);
+  padding: 3px 10px;
+  border-radius: 100px;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(0,0,0,0.25);
+}
+
+.lane-value { font-size: 22px; font-weight: 700; color: var(--bone); margin: 10px 0 8px; line-height: 1.1; }
+.lane-body  { font-size: 12px; line-height: 1.62; color: var(--bone-dim); padding-top: 12px; border-top: 1px solid var(--rule); }
+
+/* Week pulse */
+.week-pulse {
+  border: 1px solid var(--rule);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.pulse-header {
+  padding: 16px 22px;
+  border-bottom: 1px solid var(--rule);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.pulse-days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0;
+}
+
+.pulse-day {
+  padding: 14px 8px 12px;
+  border-right: 1px solid var(--rule);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.pulse-day:last-child { border-right: none; }
+.pulse-day.today { background: rgba(153,102,255,0.07); }
+
+.pd-name  { font-family: var(--f-mono); font-size: 8px; letter-spacing: 0.14em; color: var(--bone-faint); text-transform: uppercase; }
+.pd-num   { font-size: 18px; font-weight: 600; color: var(--bone); }
+.pd-month { font-size: 10px; color: var(--bone-faint); }
+.pd-moon  { font-size: 14px; margin-top: 4px; }
+.pd-note  { font-size: 9px; line-height: 1.5; color: var(--bone-faint); margin-top: 6px; text-align: center; }
+
+.pd-bars { width: 100%; display: flex; flex-direction: column; gap: 3px; margin-top: 6px; padding: 0 2px; }
+.pd-bar  { height: 3px; border-radius: 2px; background: rgba(255,255,255,0.06); overflow: hidden; }
+.pd-fill { height: 100%; border-radius: 2px; }
+
+/* Q section */
+.q-card {
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid rgba(153,102,255,0.28);
+  background: rgba(153,102,255,0.05);
+}
+
+.q-header { padding: 20px 24px; border-bottom: 1px solid var(--rule); }
+.q-body   { padding: 22px 24px; }
+
+/* Life areas */
+.areas-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px;
+}
+
+.area-card {
+  border: 1px solid var(--rule);
+  border-radius: 14px;
+  padding: 16px 18px;
+  background: rgba(10,10,14,0.5);
+  transition: border-color 0.2s, background 0.2s;
+  cursor: pointer;
+}
+
+.area-card:hover {
+  border-color: rgba(153,102,255,0.35);
+  background: rgba(153,102,255,0.06);
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="wrap">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">
+        <svg class="nav-logo-mark" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="7" fill="#0A0A0E"/><polygon points="14,3.5 3.5,24.5 24.5,24.5" fill="#9966FF" opacity="0.85"/><circle cx="14" cy="3.5" r="1.2" fill="#e0ccff" opacity="0.9"/></svg>
+        KAIROS
+      </a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="blueprint.html">Blueprint</a></li>
+        <li><a href="oracle.html">Oracle</a></li>
+        <li><a href="pricing.html">Pricing</a></li>
+      </ul>
+      <a href="pricing.html" class="nav-cta btn-sm">Join beta</a>
+    </div>
+  </div>
+</nav>
+
+<!-- Feature intro -->
+<div style="background:rgba(153,102,255,0.04);border-bottom:1px solid var(--rule);padding:18px 0;">
+  <div class="wrap">
+    <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+      <span class="pill pill-violet"><span class="pill-dot"></span>Demo · Dashboard</span>
+      <p class="body-sm" style="color:var(--bone-faint);">This is a live mockup of the Kairos dashboard. All data is from a fictional user's real natal chart.</p>
+    </div>
+  </div>
+</div>
+
+<!-- App shell -->
+<div class="app-shell">
+
+  <!-- Sidebar -->
+  <nav class="sidebar">
+    <div class="sidebar-brand">
+      <div class="sidebar-logo">
+        <div class="sidebar-logo-icon">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><polygon points="9,2 2,16 16,16" fill="#9966FF" opacity="0.8"/><circle cx="9" cy="2" r="1" fill="#e0ccff"/></svg>
+        </div>
+        <div>
+          <div class="sidebar-wordmark">Life OS</div>
+          <div class="sidebar-tagline"><span>Kairos</span> · Personalized planning</div>
+        </div>
+      </div>
+    </div>
+
+    <ul class="nav-list">
+      <li class="nav-item active">
+        <a href="dashboard.html">
+          <span class="nav-accent"></span>
+          <span class="nav-icon"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7L7 2L12 7" stroke="#9966FF" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/><rect x="4" y="7" width="6" height="5" rx="1" stroke="#9966FF" stroke-width="1.2"/></svg></span>
+          <span class="nav-detail"><span class="nav-label">Dashboard</span><br><span class="nav-sub"><span style="color:rgba(200,168,255,0.6)">Life OS</span> home</span></span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="#"><span class="nav-accent"></span>
+          <span class="nav-icon"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="2" y="2" width="10" height="10" rx="2" stroke="#b899ff" stroke-width="1.2"/><line x1="2" y1="5.5" x2="12" y2="5.5" stroke="#b899ff" stroke-width="0.9" opacity="0.5"/></svg></span>
+          <span class="nav-detail"><span class="nav-label">Cosmic Plan</span><br><span class="nav-sub">Your year map</span></span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="blueprint.html"><span class="nav-accent"></span>
+          <span class="nav-icon"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="2" y="2" width="10" height="10" rx="1.5" stroke="#7cece0" stroke-width="1.2"/><line x1="4" y1="5.5" x2="10" y2="5.5" stroke="#7cece0" stroke-width="0.9" opacity="0.55"/><line x1="4" y1="8" x2="8" y2="8" stroke="#7cece0" stroke-width="0.9" opacity="0.4"/></svg></span>
+          <span class="nav-detail"><span class="nav-label">Blueprint</span><br><span class="nav-sub">Celestial architecture</span></span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="#"><span class="nav-accent"></span>
+          <span class="nav-icon"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="4.5" stroke="#9966FF" stroke-width="1.2"/><path d="M5 7h4M7 5v4" stroke="#9966FF" stroke-width="1" opacity="0.6"/></svg></span>
+          <span class="nav-detail"><span class="nav-label">Areas</span><br><span class="nav-sub">Chart-specific paths</span></span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="#"><span class="nav-accent"></span>
+          <span class="nav-icon"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="3" y="2" width="8" height="10" rx="1.5" stroke="#FF9B2B" stroke-width="1.2"/><line x1="5" y1="5.5" x2="9" y2="5.5" stroke="#FF9B2B" stroke-width="0.9" opacity="0.55"/><line x1="5" y1="8" x2="8" y2="8" stroke="#FF9B2B" stroke-width="0.9" opacity="0.4"/></svg></span>
+          <span class="nav-detail"><span class="nav-label">Journal</span><br><span class="nav-sub">History and entries</span></span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="oracle.html"><span class="nav-accent"></span>
+          <span class="nav-icon"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="4.5" stroke="#b899ff" stroke-width="1.2"/><circle cx="7" cy="7" r="1.8" fill="#b899ff" opacity="0.5"/><circle cx="7" cy="7" r="0.7" fill="#fff" opacity="0.9"/></svg></span>
+          <span class="nav-detail"><span class="nav-label">Oracle</span><br><span class="nav-sub">Guidance channel</span></span>
+        </a>
+      </li>
+    </ul>
+
+    <div style="margin-top:auto;padding:20px 18px 0;border-top:1px solid var(--rule);margin-top:32px;">
+      <p class="kicker" style="margin-bottom:6px;">Custom Year</p>
+      <p class="body-sm" style="font-size:11px;">Birth chart first · customization next</p>
+    </div>
+  </nav>
+
+  <!-- Main content -->
+  <main class="main-content">
+    <!-- Hero bar -->
+    <div class="hero-bar" style="position:relative;">
+      <div style="display:grid;grid-template-columns:1.4fr 0.6fr;gap:24px;align-items:start;position:relative;z-index:1;">
+        <div>
+          <p class="kicker" style="margin-bottom:10px;">Kairos Life OS · 2026</p>
+          <h1 style="font-family:var(--f-display);font-size:clamp(22px,3vw,36px);letter-spacing:0.06em;color:var(--bone);line-height:1.1;margin-bottom:14px;">Alex, your year runs on timing first and customization second.</h1>
+          <p class="body-sm" style="max-width:560px;">The Year of Deliberate Expression — Saturn's trine to your Midheaven opens the year with structural clarity, and Jupiter's conjunction to your natal Moon brings an expansive Q2 unlike anything in the last 12 years.</p>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <div class="panel-soft" style="border-radius:12px;padding:14px 16px;border:1px solid var(--rule);">
+            <p class="kicker" style="margin-bottom:7px;">Today</p>
+            <p style="font-size:13px;font-weight:600;color:var(--bone);">🌙 Moon in Cancer 22°</p>
+            <p class="body-sm" style="margin-top:4px;">Sun in Taurus 2° · 4 active transits</p>
+          </div>
+          <div class="panel-soft" style="border-radius:12px;padding:14px 16px;border:1px solid var(--rule);">
+            <p class="kicker" style="margin-bottom:7px;">Year words</p>
+            <p style="font-size:13px;font-weight:600;color:var(--bone);">Expression + Renewal</p>
+            <p class="body-sm" style="margin-top:4px;">Astrological: Renewal · Personal: Expression</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Three lanes -->
+    <div class="lane-row" style="margin-bottom:12px;">
+      <div class="lane-card primary">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:6px;">
+          <p class="kicker" style="color:rgba(200,168,255,0.75);">Primary lane</p>
+          <span class="lane-percent">60%</span>
+        </div>
+        <p class="lane-value">Creative Projects</p>
+        <p class="lane-body">Saturn's structural backing and Jupiter's expansive reach are active simultaneously — a combination that appears rarely. What you build here is built to last and built to grow.</p>
+      </div>
+      <div class="lane-card tending">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:6px;">
+          <p class="kicker" style="color:rgba(124,236,224,0.65);">Tending</p>
+          <span class="lane-percent">30%</span>
+        </div>
+        <p class="lane-value">Restoration rhythm</p>
+        <p class="lane-body">The Moon transiting Cancer activates your natal Moon. Your tending lane this week: rest, nourishment, and the conditions that make sustained creative work possible.</p>
+      </div>
+      <div class="lane-card depth">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:6px;">
+          <p class="kicker">Depth</p>
+          <span class="lane-percent">10%</span>
+        </div>
+        <p class="lane-value">Philosophy + music</p>
+        <p class="lane-body">The study focus named during onboarding. The depth lane accumulates slowly at the edge of attention — not a project to complete, but an orientation that compounds across the year.</p>
+      </div>
+    </div>
+
+    <!-- Week Pulse -->
+    <div class="week-pulse" style="margin-bottom:12px;">
+      <div class="pulse-header">
+        <div>
+          <p class="kicker" style="margin-bottom:4px;">The Week Pulse</p>
+          <p style="font-family:var(--f-display);font-size:20px;letter-spacing:0.06em;color:var(--bone);">Week of April 21 — Jupiter window</p>
+        </div>
+        <span class="pill pill-violet">Primary lane rhythm</span>
+      </div>
+      <div class="pulse-days">
+        <div class="pulse-day"><span class="pd-name">Mon</span><span class="pd-num">21</span><span class="pd-month">Apr</span><span class="pd-moon">🌙</span><div class="pd-bars"><div class="pd-bar"><div class="pd-fill" style="width:72%;background:var(--k);"></div></div><div class="pd-bar"><div class="pd-fill" style="width:24%;background:var(--plum);"></div></div><div class="pd-bar"><div class="pd-fill" style="width:40%;background:var(--moss);"></div></div></div><span class="pd-note">Sharp comm.</span></div>
+        <div class="pulse-day today"><span class="pd-name">Tue</span><span class="pd-num">22</span><span class="pd-month">Apr</span><span class="pd-moon">🌙</span><div class="pd-bars"><div class="pd-bar"><div class="pd-fill" style="width:68%;background:var(--k);"></div></div><div class="pd-bar"><div class="pd-fill" style="width:28%;background:var(--plum);"></div></div><div class="pd-bar"><div class="pd-fill" style="width:62%;background:var(--moss);"></div></div></div><span class="pd-note">Your moon active.</span></div>
+        <div class="pulse-day"><span class="pd-name">Wed</span><span class="pd-num">23</span><span class="pd-month">Apr</span><span class="pd-moon">🌒</span><div class="pd-bars"><div class="pd-bar"><div class="pd-fill" style="width:55%;background:var(--k);"></div></div><div class="pd-bar"><div class="pd-fill" style="width:35%;background:var(--plum);"></div></div><div class="pd-bar"><div class="pd-fill" style="width:58%;background:var(--moss);"></div></div></div><span class="pd-note">Jupiter △ Venus.</span></div>
+        <div class="pulse-day"><span class="pd-name">Thu</span><span class="pd-num">24</span><span class="pd-month">Apr</span><span class="pd-moon">🌒</span><div class="pd-bars"><div class="pd-bar"><div class="pd-fill" style="width:85%;background:var(--k);"></div></div><div class="pd-bar"><div class="pd-fill" style="width:18%;background:var(--plum);"></div></div><div class="pd-bar"><div class="pd-fill" style="width:85%;background:var(--moss);"></div></div></div><span class="pd-note">First Quarter exact.</span></div>
+        <div class="pulse-day"><span class="pd-name">Fri</span><span class="pd-num">25</span><span class="pd-month">Apr</span><span class="pd-moon">🌓</span><div class="pd-bars"><div class="pd-bar"><div class="pd-fill" style="width:65%;background:var(--k);"></div></div><div class="pd-bar"><div class="pd-fill" style="width:22%;background:var(--plum);"></div></div><div class="pd-bar"><div class="pd-fill" style="width:65%;background:var(--moss);"></div></div></div><span class="pd-note">Mercury ✶ Jupiter.</span></div>
+        <div class="pulse-day"><span class="pd-name">Sat</span><span class="pd-num">26</span><span class="pd-month">Apr</span><span class="pd-moon">🌔</span><div class="pd-bars"><div class="pd-bar"><div class="pd-fill" style="width:38%;background:var(--k);"></div></div><div class="pd-bar"><div class="pd-fill" style="width:48%;background:var(--plum);"></div></div><div class="pd-bar"><div class="pd-fill" style="width:48%;background:var(--moss);"></div></div></div><span class="pd-note">Integration.</span></div>
+        <div class="pulse-day"><span class="pd-name">Sun</span><span class="pd-num">27</span><span class="pd-month">Apr</span><span class="pd-moon">🌔</span><div class="pd-bars"><div class="pd-bar"><div class="pd-fill" style="width:22%;background:var(--k);"></div></div><div class="pd-bar"><div class="pd-fill" style="width:55%;background:var(--plum);"></div></div><div class="pd-bar"><div class="pd-fill" style="width:40%;background:var(--moss);"></div></div></div><span class="pd-note">Rest.</span></div>
+      </div>
+      <div style="padding:12px 22px;border-top:1px solid var(--rule);display:flex;gap:14px;flex-wrap:wrap;">
+        <span style="display:flex;align-items:center;gap:7px;font-size:10px;color:var(--bone-faint);"><span style="display:inline-block;width:18px;height:3px;border-radius:2px;background:var(--k);"></span>Activation</span>
+        <span style="display:flex;align-items:center;gap:7px;font-size:10px;color:var(--bone-faint);"><span style="display:inline-block;width:18px;height:3px;border-radius:2px;background:var(--plum);"></span>Review</span>
+        <span style="display:flex;align-items:center;gap:7px;font-size:10px;color:var(--bone-faint);"><span style="display:inline-block;width:18px;height:3px;border-radius:2px;background:var(--moss);"></span>Lunar charge</span>
+      </div>
+    </div>
+
+    <!-- Q2 highlight -->
+    <div class="q-card" style="margin-bottom:12px;">
+      <div class="q-header">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
+          <p class="kicker" style="color:rgba(200,168,255,0.7);">Q2 · Apr–Jun</p>
+          <span class="pill pill-violet" style="font-size:8px;"><span class="pill-dot"></span>Now</span>
+        </div>
+        <p style="font-family:var(--f-display);font-size:22px;letter-spacing:0.07em;color:var(--bone);">The Expanding Heart</p>
+      </div>
+      <div class="q-body">
+        <p class="body-sm" style="max-width:700px;margin-bottom:18px;">Jupiter's conjunction to your natal Moon (Cancer) makes this the most emotionally generative quarter of 2026. What you begin here has room to grow in ways that slower seasons simply cannot offer. The creative work of Q1 now finds its audience.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px;">
+          <span class="pill">Creative Projects</span>
+          <span class="pill">Relationships</span>
+          <span class="pill">Personal Growth</span>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+          <div class="panel-inline" style="padding:14px 16px;border:1px solid var(--rule);">
+            <p class="kicker" style="margin-bottom:8px;color:rgba(200,168,255,0.65);">Activation windows</p>
+            <div style="display:flex;flex-direction:column;gap:5px;">
+              <p style="font-size:11px;color:var(--bone-dim);"><span style="color:var(--bone);font-weight:600;">Apr 4 – May 18</span> — Jupiter–Moon peak; initiate and share</p>
+              <p style="font-size:11px;color:var(--bone-dim);"><span style="color:var(--bone);font-weight:600;">May 28 – Jun 14</span> — Venus in Gemini trine natal Mercury</p>
+            </div>
+          </div>
+          <div class="panel-inline" style="padding:14px 16px;border:1px solid var(--rule);">
+            <p class="kicker" style="margin-bottom:8px;color:rgba(124,236,224,0.6);">Rest periods</p>
+            <p style="font-size:11px;color:var(--bone-dim);"><span style="color:var(--bone);font-weight:600;">May 18 – May 28</span> — Mercury retrograde shadow; review, don't launch</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Life areas -->
+    <div style="margin-bottom:4px;"><p class="eyebrow-dim">Top life areas activated this week</p></div>
+    <div class="areas-grid">
+      <div class="area-card">
+        <p class="kicker" style="margin-bottom:8px;color:rgba(200,168,255,0.65);">Most activated</p>
+        <p style="font-size:15px;font-weight:700;color:var(--bone);margin-bottom:6px;">🎨 Creative Projects</p>
+        <p class="body-sm">The timing supports visible output. Jupiter's transit amplifies reach.</p>
+        <p style="font-size:11px;font-style:italic;color:var(--bone-faint);margin-top:10px;padding-top:10px;border-top:1px solid var(--rule);">"What specific piece of creative work is ready to be seen right now?"</p>
+      </div>
+      <div class="area-card">
+        <p class="kicker" style="margin-bottom:8px;">Active</p>
+        <p style="font-size:15px;font-weight:700;color:var(--bone);margin-bottom:6px;">🌱 Personal Growth</p>
+        <p class="body-sm">Saturn this quarter invites structural honesty.</p>
+        <p style="font-size:11px;font-style:italic;color:var(--bone-faint);margin-top:10px;padding-top:10px;border-top:1px solid var(--rule);">"What pattern is ready to be named and consciously replaced?"</p>
+      </div>
+      <div class="area-card">
+        <p class="kicker" style="margin-bottom:8px;">Active</p>
+        <p style="font-size:15px;font-weight:700;color:var(--bone);margin-bottom:6px;">💛 Relationships</p>
+        <p class="body-sm">Jupiter through your 7th house brings expansive connection.</p>
+        <p style="font-size:11px;font-style:italic;color:var(--bone-faint);margin-top:10px;padding-top:10px;border-top:1px solid var(--rule);">"What relationship needs your full, undivided attention this month?"</p>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- Bottom CTA -->
+<div style="background:rgba(153,102,255,0.04);border-top:1px solid var(--rule);padding:40px 0;text-align:center;">
+  <div class="wrap">
+    <p class="display-md" style="margin-bottom:12px;">Your dashboard would be built from your chart.</p>
+    <p class="body-lg" style="max-width:480px;margin:0 auto 28px;">This is a demo. When you sign up, Kairos generates a blueprint from your actual birth data and the real 2026 ephemeris.</p>
+    <a href="pricing.html" class="btn-primary">Join the Founding Beta</a>
+  </div>
+</div>
+
+</body>
+</html>

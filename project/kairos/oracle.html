@@ -1,0 +1,349 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Oracle — Kairos</title>
+<link rel="stylesheet" href="kairos.css">
+<style>
+.app-shell { display: grid; grid-template-columns: 220px 1fr; min-height: 100vh; }
+@media (max-width: 860px) { .app-shell { grid-template-columns: 1fr; } }
+
+.sidebar { border-right: 1px solid var(--rule); background: rgba(13,13,18,0.88); padding: 24px 0; position: sticky; top: 0; height: 100vh; overflow-y: auto; }
+.sidebar-brand { padding: 0 18px 20px; border-bottom: 1px solid var(--rule); margin-bottom: 12px; }
+.sidebar-logo { display: flex; align-items: center; gap: 10px; }
+.sidebar-logo-icon { width: 36px; height: 36px; border-radius: 10px; border: 1px solid rgba(153,102,255,0.25); background: rgba(153,102,255,0.1); display: flex; align-items: center; justify-content: center; }
+.sidebar-wordmark { font-family: var(--f-display); font-size: 20px; letter-spacing: 0.1em; color: var(--bone); }
+.sidebar-tagline { font-size: 10px; color: var(--bone-faint); margin-top: 2px; }
+.sidebar-tagline span { color: rgba(200,168,255,0.7); }
+.nav-list { list-style: none; padding: 0 10px; display: flex; flex-direction: column; gap: 2px; }
+.nav-item a { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 12px; border: 1px solid transparent; font-size: 14px; font-weight: 500; color: var(--bone-dim); transition: all 0.15s; }
+.nav-item a:hover { background: rgba(255,255,255,0.04); color: var(--bone); border-color: var(--rule); }
+.nav-item.active a { background: rgba(184,153,255,0.1); border-color: rgba(184,153,255,0.28); color: var(--bone); }
+.nav-icon { width: 30px; height: 30px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.08); background: rgba(10,10,14,0.6); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.nav-item.active .nav-icon { border-color: rgba(184,153,255,0.3); background: rgba(184,153,255,0.1); }
+.nav-accent { width: 3px; height: 24px; border-radius: 2px; background: transparent; flex-shrink: 0; }
+.nav-item.active .nav-accent { background: rgba(184,153,255,0.85); }
+.nav-detail { flex: 1; min-width: 0; }
+.nav-label { font-size: 13px; font-weight: 600; }
+.nav-sub { font-size: 10px; color: var(--bone-faint); margin-top: 1px; }
+.nav-item.active .nav-sub { color: rgba(184,153,255,0.65); }
+
+.main-content { padding: 28px 32px 40px; display: flex; flex-direction: column; height: calc(100vh - 57px); /* below demo banner */ }
+
+/* Oracle header card */
+.oracle-header { border: 1px solid rgba(184,153,255,0.2); border-radius: 16px; background: rgba(184,153,255,0.04); padding: 22px 28px; margin-bottom: 16px; flex-shrink: 0; }
+
+/* Context panel + chat — two column */
+.oracle-layout { display: grid; grid-template-columns: 1fr 300px; gap: 14px; flex: 1; min-height: 0; }
+@media (max-width: 1000px) { .oracle-layout { grid-template-columns: 1fr; } }
+
+/* Chat pane */
+.chat-pane { display: flex; flex-direction: column; border: 1px solid var(--rule); border-radius: 16px; overflow: hidden; min-height: 0; }
+.chat-body  { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 16px; }
+.chat-input-row { border-top: 1px solid var(--rule); padding: 14px 16px; flex-shrink: 0; background: rgba(10,10,14,0.7); }
+
+/* Messages */
+.msg { display: flex; flex-direction: column; gap: 6px; }
+.msg.user  { align-items: flex-end; }
+.msg.oracle { align-items: flex-start; }
+
+.msg-bubble {
+  max-width: 82%;
+  padding: 13px 16px;
+  border-radius: 14px;
+  font-size: 13px;
+  line-height: 1.68;
+}
+
+.msg.user .msg-bubble {
+  background: rgba(153,102,255,0.18);
+  border: 1px solid rgba(153,102,255,0.32);
+  color: var(--bone);
+  border-radius: 14px 14px 4px 14px;
+}
+
+.msg.oracle .msg-bubble {
+  background: rgba(17,17,24,0.9);
+  border: 1px solid rgba(255,255,255,0.08);
+  color: var(--bone-dim);
+  border-radius: 4px 14px 14px 14px;
+}
+
+.msg-source {
+  font-family: var(--f-mono);
+  font-size: 8px;
+  letter-spacing: 0.18em;
+  color: rgba(184,153,255,0.55);
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.msg-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 8px; }
+.msg-tag {
+  font-family: var(--f-mono);
+  font-size: 8px;
+  letter-spacing: 0.12em;
+  padding: 3px 8px;
+  border-radius: 100px;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(10,10,14,0.6);
+  color: var(--bone-faint);
+}
+
+/* Suggested prompts */
+.suggested-row { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 16px; }
+.suggestion {
+  padding: 7px 14px;
+  border-radius: 100px;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(10,10,14,0.6);
+  font-size: 12px;
+  color: var(--bone-dim);
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+}
+.suggestion:hover { border-color: rgba(153,102,255,0.4); background: rgba(153,102,255,0.07); color: var(--bone); }
+
+/* Input */
+.chat-input {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 100px;
+  background: rgba(10,10,14,0.8);
+  padding: 10px 14px 10px 18px;
+}
+
+.chat-input input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-size: 13px;
+  color: var(--bone);
+  font-family: var(--f-body);
+}
+
+.chat-input input::placeholder { color: var(--bone-faint); }
+
+.chat-send {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: var(--k);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: opacity 0.15s;
+}
+.chat-send:hover { opacity: 0.82; }
+
+/* Context panel */
+.context-pane { display: flex; flex-direction: column; gap: 10px; overflow-y: auto; }
+
+.ctx-card { border: 1px solid var(--rule); border-radius: 14px; padding: 16px 18px; }
+.ctx-card.chart  { border-color: rgba(153,102,255,0.22); background: rgba(153,102,255,0.05); }
+.ctx-card.goals  { border-color: rgba(124,236,224,0.18); background: rgba(124,236,224,0.04); }
+.ctx-card.memory { border-color: rgba(184,153,255,0.18); background: rgba(184,153,255,0.04); }
+
+.ctx-label { font-family: var(--f-mono); font-size: 8px; letter-spacing: 0.22em; color: var(--bone-faint); text-transform: uppercase; margin-bottom: 8px; }
+.ctx-val   { font-size: 14px; font-weight: 600; color: var(--bone); margin-bottom: 4px; }
+.ctx-sub   { font-size: 11px; color: var(--bone-dim); }
+
+.ctx-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 10px; }
+.ctx-tag  { font-size: 10px; padding: 3px 9px; border-radius: 100px; border: 1px solid var(--rule); background: rgba(10,10,14,0.5); color: var(--bone-dim); }
+
+.ctx-goal-list { display: flex; flex-direction: column; gap: 5px; margin-top: 6px; }
+.ctx-goal      { font-size: 12px; color: var(--bone); }
+
+.ctx-count { font-family: var(--f-display); font-size: 28px; font-weight: 500; letter-spacing: 0.06em; color: var(--bone); }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="wrap">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">
+        <svg class="nav-logo-mark" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="7" fill="#0A0A0E"/><polygon points="14,3.5 3.5,24.5 24.5,24.5" fill="#9966FF" opacity="0.85"/><circle cx="14" cy="3.5" r="1.2" fill="#e0ccff" opacity="0.9"/></svg>
+        KAIROS
+      </a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="dashboard.html">Dashboard</a></li>
+        <li><a href="blueprint.html">Blueprint</a></li>
+        <li><a href="pricing.html">Pricing</a></li>
+      </ul>
+      <a href="pricing.html" class="nav-cta btn-sm">Join beta</a>
+    </div>
+  </div>
+</nav>
+
+<div style="background:rgba(184,153,255,0.03);border-bottom:1px solid var(--rule);padding:14px 0;">
+  <div class="wrap">
+    <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+      <span class="pill" style="border-color:rgba(184,153,255,0.3);color:rgba(184,153,255,0.7);background:rgba(184,153,255,0.07);">Demo · Oracle</span>
+      <p class="body-sm" style="color:var(--bone-faint);">A sample conversation grounded in Alex's chart, goals, and journal memory. The Oracle already knows your context before you ask.</p>
+    </div>
+  </div>
+</div>
+
+<div class="app-shell">
+  <!-- Sidebar -->
+  <nav class="sidebar">
+    <div class="sidebar-brand">
+      <div class="sidebar-logo">
+        <div class="sidebar-logo-icon">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><polygon points="9,2 2,16 16,16" fill="#9966FF" opacity="0.8"/><circle cx="9" cy="2" r="1" fill="#e0ccff"/></svg>
+        </div>
+        <div>
+          <div class="sidebar-wordmark">Life OS</div>
+          <div class="sidebar-tagline"><span>Kairos</span> · Personalized planning</div>
+        </div>
+      </div>
+    </div>
+    <ul class="nav-list">
+      <li class="nav-item"><a href="dashboard.html"><span class="nav-accent"></span><span class="nav-icon"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7L7 2L12 7" stroke="#9966FF" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/><rect x="4" y="7" width="6" height="5" rx="1" stroke="#9966FF" stroke-width="1.2"/></svg></span><span class="nav-detail"><span class="nav-label">Dashboard</span><br><span class="nav-sub">Life OS home</span></span></a></li>
+      <li class="nav-item"><a href="blueprint.html"><span class="nav-accent"></span><span class="nav-icon"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="2" y="2" width="10" height="10" rx="1.5" stroke="#7cece0" stroke-width="1.2"/><line x1="4" y1="5.5" x2="10" y2="5.5" stroke="#7cece0" stroke-width="0.9" opacity="0.55"/></svg></span><span class="nav-detail"><span class="nav-label">Blueprint</span><br><span class="nav-sub">Celestial architecture</span></span></a></li>
+      <li class="nav-item"><a href="#"><span class="nav-accent"></span><span class="nav-icon"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="3" y="2" width="8" height="10" rx="1.5" stroke="#FF9B2B" stroke-width="1.2"/></svg></span><span class="nav-detail"><span class="nav-label">Journal</span><br><span class="nav-sub">History and entries</span></span></a></li>
+      <li class="nav-item active"><a href="oracle.html"><span class="nav-accent"></span><span class="nav-icon"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="4.5" stroke="#b899ff" stroke-width="1.2"/><circle cx="7" cy="7" r="1.8" fill="#b899ff" opacity="0.5"/><circle cx="7" cy="7" r="0.7" fill="#fff" opacity="0.9"/></svg></span><span class="nav-detail"><span class="nav-label">Oracle</span><br><span class="nav-sub">Guidance channel</span></span></a></li>
+    </ul>
+  </nav>
+
+  <main class="main-content">
+    <!-- Oracle header -->
+    <div class="oracle-header">
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;">
+        <div>
+          <p class="kicker" style="color:rgba(184,153,255,0.7);margin-bottom:6px;">Oracle</p>
+          <h1 style="font-family:var(--f-display);font-size:clamp(18px,2.4vw,26px);letter-spacing:0.07em;color:var(--bone);line-height:1.1;margin-bottom:6px;">Guidance grounded in your chart and the current sky.</h1>
+          <p class="body-sm">Ask about the year, this week, a transit, your journal patterns, or where to direct your energy.</p>
+        </div>
+        <div class="panel-soft" style="border-radius:12px;padding:12px 16px;border:1px solid var(--rule);flex-shrink:0;">
+          <p class="kicker" style="margin-bottom:4px;">Apr 22, 2026</p>
+          <p style="font-size:12px;color:var(--bone-dim);">Moon in Cancer 22° · Jupiter window active</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main oracle layout -->
+    <div class="oracle-layout">
+
+      <!-- Chat pane -->
+      <div class="chat-pane">
+        <div class="chat-body">
+          <!-- Suggested prompts shown when empty -->
+          <div>
+            <p class="kicker" style="margin-bottom:12px;color:var(--bone-faint);">Try asking</p>
+            <div class="suggested-row">
+              <span class="suggestion">What should I focus on this week?</span>
+              <span class="suggestion">What patterns are showing up in my journal?</span>
+              <span class="suggestion">Where is my energy best spent right now?</span>
+            </div>
+          </div>
+
+          <!-- Sample conversation -->
+          <div class="msg user">
+            <div class="msg-bubble">I've been feeling pulled in two directions about my creative work. Should I focus on one thing or keep both going?</div>
+          </div>
+
+          <div class="msg oracle">
+            <div class="msg-source">Oracle · grounded in your chart, your goals, and your memory</div>
+            <div class="msg-bubble">
+              <p style="margin-bottom:10px;">Your chart has something specific to say about this moment. Saturn trine your Midheaven — which is exact right now — typically asks for consolidation rather than expansion. The Saturn instinct in this transit is to pick the lane with the strongest foundation, not the brightest promise.</p>
+              <p style="margin-bottom:10px;">That said, your Jupiter–Moon conjunction active through June is one of the more expansive configurations in your chart, and it has a Cancer flavor — which means emotional truth matters more than strategic logic in this window. The question isn't which direction is smarter.</p>
+              <p>It's which one you'd grieve losing. You wrote in your Year Vision that you wanted to stop holding back on work you actually care about. Given that — I'd start there.</p>
+              <div class="msg-tags">
+                <span class="msg-tag">Saturn △ Midheaven</span>
+                <span class="msg-tag">Jupiter ☌ Moon</span>
+                <span class="msg-tag">Year Vision</span>
+                <span class="msg-tag">Journal · Mar 4</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="msg user">
+            <div class="msg-bubble">That resonates. The work I'd grieve losing is the writing. What does my chart say about the timing for putting it out into the world?</div>
+          </div>
+
+          <div class="msg oracle">
+            <div class="msg-source">Oracle · chart + transits + memory</div>
+            <div class="msg-bubble">
+              <p style="margin-bottom:10px;">The timing right now is unusually good for exactly that. Jupiter conjunct your natal Moon reaches its first exact moment on April 28 — six days from now. In Cancer, this transit tends to amplify emotional resonance and reach. Work that comes from a genuine place, shared during this window, lands differently than it would at other times.</p>
+              <p style="margin-bottom:10px;">The First Quarter Moon is also exact today in Leo — your 10th house. That's a visibility signal. First Quarter asks for courageous action, not more preparation.</p>
+              <p>The window between now and May 18 is the most activated period of Q2. After that, Mercury's retrograde shadow asks for review rather than launch. If the writing is ready, or close to ready, this is the moment your chart is offering.</p>
+              <div class="msg-tags">
+                <span class="msg-tag">Jupiter ☌ Moon · Apr 28</span>
+                <span class="msg-tag">First Quarter Moon · Leo 10H</span>
+                <span class="msg-tag">Activation window Apr–May 18</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="chat-input-row">
+          <div class="chat-input">
+            <input type="text" placeholder="Ask the Oracle anything…" />
+            <button class="chat-send">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+          </div>
+          <p style="font-size:10px;color:var(--bone-faint);margin-top:8px;text-align:center;">Sources shown — Oracle cites which chart data, goals, and journal entries it drew from.</p>
+        </div>
+      </div>
+
+      <!-- Context panel -->
+      <div class="context-pane">
+        <p class="kicker" style="color:var(--bone-faint);">What the Oracle carries in</p>
+
+        <div class="ctx-card chart">
+          <div class="ctx-label">Natal chart · permanent</div>
+          <div class="ctx-val">Libra Sun · Scorpio Rising</div>
+          <div class="ctx-sub">Cancer Moon · House 9</div>
+          <div class="ctx-tags">
+            <span class="ctx-tag">Mercury in Virgo</span>
+            <span class="ctx-tag">Venus in Scorpio</span>
+            <span class="ctx-tag">Mars in Gemini</span>
+            <span class="ctx-tag">Jupiter in Cancer</span>
+            <span class="ctx-tag">Saturn in Cap</span>
+          </div>
+        </div>
+
+        <div class="ctx-card" style="border-color:rgba(153,102,255,0.2);background:rgba(153,102,255,0.04);">
+          <div class="ctx-label">Active transits · today</div>
+          <div class="ctx-goal-list">
+            <div class="ctx-goal" style="font-size:11px;">Jupiter ☌ natal Moon — exact Apr 28</div>
+            <div class="ctx-goal" style="font-size:11px;">Saturn △ natal Midheaven — holds through May</div>
+            <div class="ctx-goal" style="font-size:11px;">First Quarter Moon in Leo 10H</div>
+            <div class="ctx-goal" style="font-size:11px;">Sun in Taurus 2° · 4 transits active</div>
+          </div>
+        </div>
+
+        <div class="ctx-card goals">
+          <div class="ctx-label">Your goals · from onboarding</div>
+          <div class="ctx-goal-list">
+            <div class="ctx-goal">🎨 Creative Projects</div>
+            <div class="ctx-goal">🌱 Personal Growth</div>
+            <div class="ctx-goal">💛 Relationships</div>
+            <div class="ctx-goal">📚 Philosophy + music</div>
+            <div class="ctx-goal">💰 Financial</div>
+          </div>
+        </div>
+
+        <div class="ctx-card memory">
+          <div class="ctx-label">Journal memory · your choice</div>
+          <div class="ctx-count">3</div>
+          <div class="ctx-sub" style="margin-top:4px;">entries added to Oracle memory</div>
+          <p style="font-size:11px;color:var(--bone-faint);margin-top:10px;line-height:1.6;">A reflection on creative block (Feb), a note about a relationship shift (Mar), and a goal clarification (Apr).</p>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+</body>
+</html>

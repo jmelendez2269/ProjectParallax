@@ -1,0 +1,1715 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Project Parallax — Brand Exploration v10</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Cinzel:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Fira+Mono:wght@400;500&display=swap');
+
+:root {
+  /* canvas */
+  --void:    #0A0A0E;
+  --void2:   #0D0D12;
+  --void3:   #111118;
+  --bone:    #F2EFE6;
+  --bone-dim:rgba(242,239,230,0.6);
+  --bone-faint:rgba(242,239,230,0.28);
+  --rule:    rgba(255,255,255,0.07);
+
+  /* product */
+  --kairos:  #9966FF;
+  --kairos-s:rgba(153,102,255,0.15);
+  --prism:   #4EE7FD;
+  --prism-s: rgba(78,231,253,0.15);
+  --chronos: #FF9B2B;
+  --chronos-s:rgba(255,155,43,0.15);
+
+  /* 7 lens — neon cathedral (vivid) */
+  --l1: #FF3DAD;
+  --l2: #A040FF;
+  --l3: #3060FF;
+  --l4: #22D3EE;
+  --l5: #28E090;
+  --l6: #FFD040;
+  --l7: #FF6850;
+
+  /* 7 lens — muted / tonal */
+  --m1: #FF8BD4;
+  --m2: #B8A8F0;
+  --m3: #7CECE0;
+  --m4: #2BD9E8;
+  --m5: #C8E84B;
+  --m6: #F5D86C;
+  --m7: #F0A858;
+
+  /* type */
+  --f-display: 'Cinzel', serif;
+  --f-body: 'Space Grotesk', sans-serif;
+  --f-italic: 'Cormorant Garamond', serif;
+  --f-mono: 'Fira Mono', monospace;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--void);
+  color: var(--bone);
+  font-family: var(--f-body);
+  font-size: 16px;
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+
+.page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 80px 56px 120px;
+}
+
+/* ── COVER ── */
+.cover {
+  padding: 80px 0 96px;
+  border-bottom: 1px solid var(--rule);
+  margin-bottom: 0;
+}
+
+.cover-eyebrow {
+  font-family: var(--f-mono);
+  font-size: 10px;
+  letter-spacing: 0.4em;
+  color: var(--prism);
+  margin-bottom: 20px;
+}
+
+.cover-title {
+  font-family: var(--f-display);
+  font-weight: 600;
+  font-size: clamp(40px, 6vw, 80px);
+  letter-spacing: 0.12em;
+  line-height: 0.95;
+  color: var(--bone);
+  margin-bottom: 24px;
+}
+
+.cover-sub {
+  font-family: var(--f-italic);
+  font-style: italic;
+  font-size: 22px;
+  color: var(--bone-dim);
+  line-height: 1.5;
+  max-width: 640px;
+  margin-bottom: 36px;
+}
+
+.cover-meta-row {
+  display: flex;
+  gap: 32px;
+  flex-wrap: wrap;
+}
+
+.cover-meta-item {
+  font-family: var(--f-mono);
+  font-size: 9px;
+  letter-spacing: 0.25em;
+  color: var(--bone-faint);
+}
+
+.cover-meta-item span {
+  color: var(--bone-dim);
+}
+
+/* ── SECTION ── */
+.section {
+  padding: 80px 0 0;
+  border-top: 1px solid var(--rule);
+  margin-top: 80px;
+}
+
+.section-eyebrow {
+  font-family: var(--f-mono);
+  font-size: 10px;
+  letter-spacing: 0.38em;
+  color: var(--prism);
+  margin-bottom: 12px;
+}
+
+.section-title {
+  font-family: var(--f-display);
+  font-weight: 500;
+  font-size: clamp(28px, 3.5vw, 48px);
+  letter-spacing: 0.1em;
+  line-height: 1.05;
+  margin-bottom: 12px;
+  color: var(--bone);
+}
+
+.section-sub {
+  font-family: var(--f-italic);
+  font-style: italic;
+  font-size: 18px;
+  color: var(--bone-dim);
+  line-height: 1.6;
+  max-width: 700px;
+  margin-bottom: 48px;
+}
+
+.note {
+  border: 1px solid rgba(78,231,253,0.2);
+  border-radius: 10px;
+  padding: 16px 20px;
+  background: rgba(78,231,253,0.04);
+  font-size: 14px;
+  color: var(--bone-dim);
+  line-height: 1.65;
+  margin-top: 24px;
+}
+
+.note strong { color: var(--prism); }
+
+/* ── LOGO CARDS ── */
+.logo-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.logo-card {
+  border: 1px solid var(--rule);
+  border-radius: 16px;
+  overflow: hidden;
+  background: #000;
+  transition: border-color 0.3s, transform 0.3s;
+}
+
+.logo-card:hover { transform: translateY(-4px); }
+.logo-card.kairos:hover { border-color: var(--kairos); }
+.logo-card.prism:hover  { border-color: var(--prism); }
+.logo-card.chronos:hover{ border-color: var(--chronos); }
+.logo-card.parallax:hover{ border-color: rgba(153,102,255,0.5); }
+
+.logo-img-wrap {
+  aspect-ratio: 1/1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.logo-img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.logo-meta {
+  padding: 16px 20px;
+  border-top: 1px solid var(--rule);
+}
+
+.logo-name {
+  font-family: var(--f-display);
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.25em;
+  margin-bottom: 4px;
+}
+
+.logo-strap {
+  font-family: var(--f-mono);
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  color: var(--bone-faint);
+}
+
+/* ── PARALLAX LOCKUPS ── */
+.lockup-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-top: 8px;
+}
+
+.lockup-card {
+  border: 1px solid var(--rule);
+  border-radius: 16px;
+  overflow: hidden;
+  background: #000;
+}
+
+.lockup-canvas {
+  aspect-ratio: 4/3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding: 32px;
+}
+
+.lockup-canvas img {
+  object-fit: contain;
+  display: block;
+}
+
+.lockup-wordmark {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  text-align: center;
+}
+
+.lockup-eyebrow {
+  font-family: var(--f-mono);
+  font-size: 8px;
+  letter-spacing: 0.5em;
+  color: var(--bone-faint);
+}
+
+.lockup-name {
+  font-family: var(--f-display);
+  font-weight: 600;
+  font-size: 28px;
+  letter-spacing: 0.32em;
+  color: var(--bone);
+  line-height: 1;
+}
+
+.lockup-horiz {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.lockup-vrule {
+  width: 1px;
+  height: 48px;
+  background: rgba(242,239,230,0.2);
+}
+
+.lockup-meta {
+  padding: 14px 18px;
+  border-top: 1px solid var(--rule);
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.lockup-code {
+  font-family: var(--f-mono);
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  color: var(--prism);
+}
+
+.lockup-desc {
+  font-size: 13px;
+  color: var(--bone-dim);
+}
+
+/* ── STELLOQUY ── */
+.orb-row {
+  display: flex;
+  gap: 48px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
+
+.orb-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+}
+
+.orb-large {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+}
+
+.orb-medium {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+}
+
+.orb-speaking {
+  background: radial-gradient(circle at 50% 38%, #ffffff 0%, #c8a8ff 14%, #9966FF 42%, #4EE7FD 78%, transparent 100%);
+  box-shadow: 0 0 60px rgba(153,102,255,0.5), 0 0 120px rgba(78,231,253,0.2);
+  animation: orb-pulse 5s ease-in-out infinite;
+}
+
+.orb-listening {
+  background: radial-gradient(circle at 50% 38%, #ffffff 0%, #a8f5ff 14%, #4EE7FD 45%, #1A6AE8 82%, transparent 100%);
+  box-shadow: 0 0 60px rgba(78,231,253,0.4), 0 0 100px rgba(26,106,232,0.2);
+  animation: orb-breathe 6s ease-in-out infinite;
+}
+
+.orb-thinking {
+  background: radial-gradient(circle at 50% 38%, #ffffff 0%, #ffd090 14%, #FF9B2B 45%, #cc5500 82%, transparent 100%);
+  box-shadow: 0 0 60px rgba(255,155,43,0.4), 0 0 100px rgba(153,102,255,0.15);
+  animation: orb-think 4s ease-in-out infinite;
+}
+
+@keyframes orb-pulse  { 0%,100%{transform:scale(1);   filter:brightness(1)}   50%{transform:scale(1.07);filter:brightness(1.12)} }
+@keyframes orb-breathe{ 0%,100%{transform:scale(1);   filter:brightness(1)}   50%{transform:scale(0.95);filter:brightness(0.92)} }
+@keyframes orb-think  { 0%,100%{transform:scale(1);   filter:brightness(1)}   33%{transform:scale(1.04)} 66%{transform:scale(0.97)} }
+
+.orb-label {
+  font-family: var(--f-mono);
+  font-size: 9px;
+  letter-spacing: 0.25em;
+  color: var(--bone-faint);
+  text-align: center;
+}
+
+.orb-state-tag {
+  font-family: var(--f-mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  padding: 4px 12px;
+  border-radius: 100px;
+  border: 1px solid;
+  display: inline-block;
+}
+
+/* ── 7 LENS SPECTRUM ── */
+.lens-section { margin-top: 8px; }
+
+.lens-register {
+  border: 1px solid var(--rule);
+  border-radius: 16px;
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+
+.lens-header {
+  padding: 16px 20px 12px;
+  border-bottom: 1px solid var(--rule);
+  background: rgba(255,255,255,0.02);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.lens-register-name {
+  font-family: var(--f-mono);
+  font-size: 10px;
+  letter-spacing: 0.3em;
+  color: var(--prism);
+}
+
+.lens-register-note {
+  font-size: 13px;
+  color: var(--bone-dim);
+}
+
+.lens-swatches {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0;
+}
+
+.lens-swatch {
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid var(--rule);
+}
+
+.lens-swatch:last-child { border-right: none; }
+
+.swatch-color {
+  height: 80px;
+}
+
+.swatch-info {
+  padding: 10px 12px;
+  border-top: 1px solid var(--rule);
+  background: var(--void2);
+}
+
+.swatch-name {
+  font-family: var(--f-mono);
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  color: var(--bone-dim);
+  margin-bottom: 3px;
+}
+
+.swatch-hex {
+  font-family: var(--f-mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: var(--bone);
+  font-weight: 500;
+}
+
+.lens-gradient-bar {
+  height: 4px;
+  width: 100%;
+  border-radius: 0 0 16px 16px;
+}
+
+/* ── PALETTE RECONCILIATION ── */
+.palette-compare {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.palette-card {
+  border: 1px solid var(--rule);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.palette-card.active {
+  border-color: var(--prism);
+}
+
+.palette-card-header {
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--rule);
+  background: rgba(255,255,255,0.02);
+}
+
+.palette-card-title {
+  font-family: var(--f-mono);
+  font-size: 10px;
+  letter-spacing: 0.3em;
+  color: var(--prism);
+  margin-bottom: 4px;
+}
+
+.palette-card-desc {
+  font-size: 13px;
+  color: var(--bone-dim);
+}
+
+.palette-swatches {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.palette-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 18px;
+  border-bottom: 1px solid var(--rule);
+  transition: background 0.15s;
+}
+
+.palette-row:last-child { border-bottom: none; }
+.palette-row:hover { background: rgba(255,255,255,0.03); }
+
+.palette-chip {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+
+.palette-info { flex: 1; }
+
+.palette-role {
+  font-family: var(--f-mono);
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  color: var(--bone-faint);
+  margin-bottom: 2px;
+}
+
+.palette-hex {
+  font-family: var(--f-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--bone);
+}
+
+.palette-tag {
+  font-family: var(--f-mono);
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  padding: 3px 10px;
+  border-radius: 100px;
+  border: 1px solid;
+}
+
+.palette-tag.canonical { border-color: rgba(78,231,253,0.4); color: var(--prism); }
+.palette-tag.old       { border-color: rgba(242,239,230,0.15); color: var(--bone-faint); }
+.palette-tag.new       { border-color: rgba(153,102,255,0.4); color: var(--kairos); }
+
+/* product assignment table */
+.product-assign {
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap: 16px;
+  margin-top: 8px;
+}
+
+.assign-card {
+  border: 1px solid var(--rule);
+  border-radius: 16px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.assign-swatch {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+}
+
+.assign-product {
+  font-family: var(--f-display);
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: 0.25em;
+}
+
+.assign-color {
+  font-family: var(--f-mono);
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  color: var(--bone-faint);
+}
+
+.assign-desc {
+  font-size: 14px;
+  color: var(--bone-dim);
+  line-height: 1.55;
+}
+
+/* ── TYPOGRAPHY ── */
+.type-section { display: flex; flex-direction: column; gap: 2px; }
+
+.type-card {
+  border: 1px solid var(--rule);
+  border-radius: 16px;
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+
+.type-card-header {
+  padding: 12px 20px;
+  border-bottom: 1px solid var(--rule);
+  background: rgba(255,255,255,0.02);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.type-label {
+  font-family: var(--f-mono);
+  font-size: 9px;
+  letter-spacing: 0.28em;
+  color: var(--prism);
+}
+
+.type-meta {
+  font-family: var(--f-mono);
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  color: var(--bone-faint);
+}
+
+.type-sample {
+  padding: 28px 28px;
+}
+
+.type-scale {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.type-scale-row {
+  display: flex;
+  align-items: baseline;
+  gap: 20px;
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--rule);
+}
+
+.type-scale-row:last-child { border-bottom: none; }
+
+.type-scale-size {
+  font-family: var(--f-mono);
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  color: var(--bone-faint);
+  width: 52px;
+  flex-shrink: 0;
+}
+
+/* ── BUTTONS ── */
+.btn-showcase {
+  border: 1px solid var(--rule);
+  border-radius: 16px;
+  padding: 28px;
+  background: var(--void2);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.ds-btn {
+  font-family: var(--f-display);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding: 10px 24px;
+  border-radius: 100px;
+  cursor: pointer;
+  background: transparent;
+  border: 1.5px solid;
+  transition: all 0.22s ease;
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.ds-btn-kairos  { color: var(--kairos); border-color: rgba(153,102,255,0.5); }
+.ds-btn-kairos:hover  { border-color: var(--kairos); box-shadow: 0 0 24px rgba(153,102,255,0.3); color: #fff; }
+.ds-btn-prism   { color: var(--prism);  border-color: rgba(78,231,253,0.5); }
+.ds-btn-prism:hover   { border-color: var(--prism);  box-shadow: 0 0 24px rgba(78,231,253,0.3); color: #fff; }
+.ds-btn-chronos { color: var(--chronos);border-color: rgba(255,155,43,0.5); }
+.ds-btn-chronos:hover { border-color: var(--chronos);box-shadow: 0 0 24px rgba(255,155,43,0.25); color: #fff; }
+.ds-btn-bone    { color: rgba(242,239,230,0.6); border-color: rgba(242,239,230,0.18); }
+.ds-btn-bone:hover    { border-color: rgba(242,239,230,0.5); color: var(--bone); }
+.ds-btn-danger  { color: #f87171; border-color: rgba(248,113,113,0.4); font-family: var(--f-body); font-size: 13px; letter-spacing: 0.04em; }
+.ds-btn-danger:hover  { border-color: #f87171; }
+
+.btn-row-label {
+  font-family: var(--f-mono);
+  font-size: 9px;
+  letter-spacing: 0.25em;
+  color: var(--bone-faint);
+  width: 100%;
+  margin-bottom: -4px;
+}
+
+/* ── DRIFT ── */
+.drift-wrap {
+  position: relative;
+  height: 320px;
+  border-radius: 16px;
+  border: 1px solid var(--rule);
+  overflow: hidden;
+  margin-top: 8px;
+}
+
+.drift-l {
+  position: absolute;
+  inset: -20%;
+  border-radius: 50%;
+}
+
+.drift-l1 { background: radial-gradient(ellipse 60% 50% at 25% 25%, rgba(153,102,255,0.55) 0%, transparent 60%); animation: d1 32s ease-in-out infinite alternate; }
+.drift-l2 { background: radial-gradient(ellipse 55% 55% at 75% 70%, rgba(78,231,253,0.38) 0%, transparent 60%); animation: d2 38s ease-in-out infinite alternate; mix-blend-mode: screen; }
+.drift-l3 { background: radial-gradient(ellipse 45% 40% at 50% 50%, rgba(255,155,43,0.18) 0%, transparent 60%); animation: d3 24s ease-in-out infinite alternate; mix-blend-mode: screen; }
+.drift-veil { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 40%, rgba(10,10,14,0.1) 0%, rgba(10,10,14,0.65) 100%); }
+
+@keyframes d1 { 0%{transform:translate(0,0) scale(1)} 100%{transform:translate(12%,8%) scale(1.15)} }
+@keyframes d2 { 0%{transform:translate(0,0) scale(1)} 100%{transform:translate(-10%,-8%) scale(1.12)} }
+@keyframes d3 { 0%{transform:translate(0,0) scale(1)} 100%{transform:translate(6%,-10%) scale(0.9)} }
+
+.drift-content {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  text-align: center;
+  z-index: 2;
+}
+
+.drift-eyebrow {
+  font-family: var(--f-mono);
+  font-size: 10px;
+  letter-spacing: 0.4em;
+  color: var(--prism);
+  opacity: 0.8;
+}
+
+.drift-headline {
+  font-family: var(--f-display);
+  font-weight: 600;
+  font-size: 48px;
+  letter-spacing: 0.14em;
+  line-height: 0.95;
+  color: var(--bone);
+  text-shadow: 0 0 80px rgba(153,102,255,0.5);
+}
+
+.drift-strap {
+  font-family: var(--f-italic);
+  font-style: italic;
+  font-size: 18px;
+  color: var(--bone-dim);
+}
+
+/* ── SYSTEM TABLE ── */
+.sys-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  margin-top: 8px;
+}
+
+.sys-table thead tr {
+  border-bottom: 1px solid var(--rule);
+}
+
+.sys-table th {
+  font-family: var(--f-mono);
+  font-size: 9px;
+  letter-spacing: 0.28em;
+  color: var(--prism);
+  text-align: left;
+  padding: 10px 16px;
+  font-weight: 400;
+}
+
+.sys-table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--rule);
+  color: var(--bone-dim);
+  vertical-align: top;
+}
+
+.sys-table tr:last-child td { border-bottom: none; }
+.sys-table tr:hover td { background: rgba(255,255,255,0.02); }
+
+.sys-table td:first-child { color: var(--bone); }
+
+.sys-tag {
+  font-family: var(--f-mono);
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  padding: 3px 10px;
+  border-radius: 100px;
+  border: 1px solid rgba(78,231,253,0.3);
+  color: var(--prism);
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.status-live { border-color: rgba(78,231,253,0.35); color: var(--prism); }
+.status-soon { border-color: rgba(255,155,43,0.35); color: var(--chronos); }
+.status-locked { border-color: rgba(153,102,255,0.35); color: var(--kairos); }
+
+/* ── FOOTER ── */
+.doc-footer {
+  margin-top: 96px;
+  padding-top: 32px;
+  border-top: 1px solid var(--rule);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.doc-footer-text {
+  font-family: var(--f-mono);
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  color: var(--bone-faint);
+}
+
+/* ── NAV ── */
+.doc-nav {
+  position: fixed;
+  top: 32px;
+  right: 40px;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: flex-end;
+}
+
+.doc-nav a {
+  font-family: var(--f-mono);
+  font-size: 8px;
+  letter-spacing: 0.2em;
+  color: var(--bone-faint);
+  text-decoration: none;
+  transition: color 0.2s;
+  padding: 2px 0;
+}
+
+.doc-nav a:hover { color: var(--prism); }
+
+@media(max-width: 900px) {
+  .page { padding: 48px 24px 80px; }
+  .logo-grid { grid-template-columns: repeat(2,1fr); }
+  .lockup-grid { grid-template-columns: 1fr; }
+  .palette-compare { grid-template-columns: 1fr; }
+  .product-assign { grid-template-columns: 1fr; }
+  .lens-swatches { grid-template-columns: repeat(4,1fr); }
+  .doc-nav { display: none; }
+}
+</style>
+</head>
+<body>
+
+<nav class="doc-nav">
+  <a href="#cover">Cover</a>
+  <a href="#family">01 Family</a>
+  <a href="#parallax">02 Parallax</a>
+  <a href="#products">03 Products</a>
+  <a href="#stelloquy">04 Stelloquy</a>
+  <a href="#spectrum">05 7 Lenses</a>
+  <a href="#palette">06 Palette</a>
+  <a href="#type">07 Type</a>
+  <a href="#buttons">08 Buttons</a>
+  <a href="#drift">09 Drift</a>
+  <a href="#system">10 System</a>
+</nav>
+
+<div class="page">
+
+<!-- ── COVER ── -->
+<div class="cover" id="cover">
+  <div class="cover-eyebrow">PROJECT PARALLAX — BRAND EXPLORATION</div>
+  <h1 class="cover-title">v10</h1>
+  <p class="cover-sub">Aligned to Landing Page 3. Neon Cathedral spectrum. New Parallax mark. Updated Stelloquy. Dark void format.</p>
+  <div class="cover-meta-row">
+    <div class="cover-meta-item">VERSION <span>10 · MAY 2026</span></div>
+    <div class="cover-meta-item">STATUS <span>LOGOS LOCKED · PALETTE ALIGNED</span></div>
+    <div class="cover-meta-item">CHANGES <span>07 LENS SPECTRUM · STELLOQUY · NEW PX MARK · DARK FORMAT</span></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════
+     01 · THE FAMILY
+══════════════════════════════════════════════════════════════ -->
+<div class="section" id="family">
+  <div class="section-eyebrow">01 · THE FAMILY</div>
+  <h2 class="section-title">All four marks. Approved.</h2>
+  <p class="section-sub">Kairos · Prismarium · Chronos · Project Parallax. All final as of May 2026.</p>
+
+  <div class="logo-grid">
+    <div class="logo-card kairos">
+      <div class="logo-img-wrap" style="background:#0A0010;">
+        <img src="logos/kairos-correct.png" alt="Kairos">
+      </div>
+      <div class="logo-meta">
+        <div class="logo-name" style="color:var(--kairos);">KAIROS</div>
+        <div class="logo-strap">PERSONAL TIMING · AVAILABLE NOW</div>
+      </div>
+    </div>
+    <div class="logo-card prism">
+      <div class="logo-img-wrap" style="background:#020D14;">
+        <img src="logos/prismarium-correct.png" alt="Prismarium">
+      </div>
+      <div class="logo-meta">
+        <div class="logo-name" style="color:var(--prism);">PRISMARIUM</div>
+        <div class="logo-strap">KNOWLEDGE SYNTHESIS · AVAILABLE NOW</div>
+      </div>
+    </div>
+    <div class="logo-card chronos">
+      <div class="logo-img-wrap" style="background:#000;">
+        <img src="logos/chronos-correct.png" alt="Chronos">
+      </div>
+      <div class="logo-meta">
+        <div class="logo-name" style="color:var(--chronos);">CHRONOS</div>
+        <div class="logo-strap">PATTERN RESEARCH · COMING SOON</div>
+      </div>
+    </div>
+    <div class="logo-card parallax">
+      <div class="logo-img-wrap" style="background:#0A0A0E;">
+        <img src="logos/parallax-correct.png" alt="Project Parallax">
+      </div>
+      <div class="logo-meta">
+        <div class="logo-name" style="background:linear-gradient(90deg,var(--kairos),var(--prism));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">PROJECT PARALLAX</div>
+        <div class="logo-strap">PARENT BRAND · MASTER MARK</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="note">
+    <strong>LOGOS LOCKED ✓</strong> — All four marks approved May 2026. No further exploration on mark shapes. These are the canonical files: <code style="font-family:var(--f-mono);font-size:11px;">logos/kairos-correct.png · prismarium-correct.png · chronos-correct.png · parallax-correct.png</code>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════
+     02 · PROJECT PARALLAX MASTER MARK
+══════════════════════════════════════════════════════════════ -->
+<div class="section" id="parallax">
+  <div class="section-eyebrow">02 · PROJECT PARALLAX</div>
+  <h2 class="section-title">The parent mark. Three lockups.</h2>
+  <p class="section-sub">Merkaba · dual interlocking triangles · spectrum gradient. How it sits in different contexts.</p>
+
+  <div class="lockup-grid">
+    <!-- Mark only -->
+    <div class="lockup-card">
+      <div class="lockup-canvas" style="background:#000; flex-direction:column; gap:0;">
+        <img src="logos/parallax-correct.png" style="width:160px; height:160px;" alt="Parallax mark">
+      </div>
+      <div class="lockup-meta">
+        <div class="lockup-code">PX-01 · MARK ONLY</div>
+        <div class="lockup-desc">Standalone symbol. App icons, favicons, small contexts.</div>
+      </div>
+    </div>
+
+    <!-- Mark + vertical wordmark -->
+    <div class="lockup-card">
+      <div class="lockup-canvas" style="background:#000;">
+        <img src="logos/parallax-correct.png" style="width:96px; height:96px;" alt="Parallax mark">
+        <div class="lockup-wordmark">
+          <span class="lockup-eyebrow">— PROJECT —</span>
+          <span class="lockup-name">PARALLAX</span>
+        </div>
+      </div>
+      <div class="lockup-meta">
+        <div class="lockup-code">PX-02 · VERTICAL LOCKUP</div>
+        <div class="lockup-desc">Hero contexts. About pages. Cover usage.</div>
+      </div>
+    </div>
+
+    <!-- Mark + horizontal wordmark -->
+    <div class="lockup-card">
+      <div class="lockup-canvas" style="background:#000;">
+        <div class="lockup-horiz">
+          <img src="logos/parallax-correct.png" style="width:64px; height:64px;" alt="Parallax mark">
+          <div class="lockup-vrule"></div>
+          <div class="lockup-wordmark" style="align-items:flex-start; text-align:left;">
+            <span class="lockup-eyebrow" style="letter-spacing:0.4em;">— PROJECT —</span>
+            <span class="lockup-name" style="font-size:22px; letter-spacing:0.28em;">PARALLAX</span>
+          </div>
+        </div>
+      </div>
+      <div class="lockup-meta">
+        <div class="lockup-code">PX-03 · HORIZONTAL LOCKUP</div>
+        <div class="lockup-desc">Nav bar. Footer. Horizontal applications.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- On light background -->
+  <div style="margin-top:16px; display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+    <div class="lockup-card">
+      <div class="lockup-canvas" style="background:#F2EFE6; height:160px;">
+        <div class="lockup-horiz">
+          <img src="logos/parallax-correct.png" style="width:52px; height:52px;" alt="Parallax mark">
+          <div class="lockup-vrule" style="background:rgba(10,10,14,0.2);"></div>
+          <div class="lockup-wordmark" style="align-items:flex-start; text-align:left;">
+            <span class="lockup-eyebrow" style="color:rgba(10,10,14,0.4);">— PROJECT —</span>
+            <span class="lockup-name" style="color:#0A0A0E; font-size:18px; letter-spacing:0.28em;">PARALLAX</span>
+          </div>
+        </div>
+      </div>
+      <div class="lockup-meta">
+        <div class="lockup-code">PX-04 · ON BONE · LIGHT CONTEXTS</div>
+        <div class="lockup-desc">Light backgrounds. The spectrum mark reads on bone.</div>
+      </div>
+    </div>
+    <div class="lockup-card">
+      <div class="lockup-canvas" style="background: radial-gradient(ellipse at 40% 40%, rgba(153,102,255,0.3) 0%, transparent 60%), radial-gradient(ellipse at 70% 70%, rgba(78,231,253,0.2) 0%, transparent 60%), #0A0A0E; height:160px;">
+        <div class="lockup-horiz">
+          <img src="logos/parallax-correct.png" style="width:52px; height:52px;" alt="Parallax mark">
+          <div class="lockup-vrule"></div>
+          <div class="lockup-wordmark" style="align-items:flex-start; text-align:left;">
+            <span class="lockup-eyebrow">— PROJECT —</span>
+            <span class="lockup-name" style="font-size:18px; letter-spacing:0.28em;">PARALLAX</span>
+          </div>
+        </div>
+      </div>
+      <div class="lockup-meta">
+        <div class="lockup-code">PX-05 · ON DRIFT SURFACE</div>
+        <div class="lockup-desc">On the animated nebula background. Hero usage.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════
+     03 · PRODUCT MARKS
+══════════════════════════════════════════════════════════════ -->
+<div class="section" id="products">
+  <div class="section-eyebrow">03 · PRODUCT MARKS</div>
+  <h2 class="section-title">Three siblings. One continuum.</h2>
+  <p class="section-sub">Each mark stands alone. All three share sacred geometry as their foundation and the void as their canvas.</p>
+
+  <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:16px;">
+    <!-- Kairos -->
+    <div style="border:1px solid rgba(153,102,255,0.3); border-radius:16px; overflow:hidden;">
+      <div style="background:#0A0010; aspect-ratio:1/1; display:flex; align-items:center; justify-content:center; padding:40px;">
+        <img src="logos/kairos-correct.png" style="width:100%; height:100%; object-fit:contain;" alt="Kairos">
+      </div>
+      <div style="padding:20px 22px; border-top:1px solid rgba(153,102,255,0.2); background:rgba(153,102,255,0.04);">
+        <div style="font-family:var(--f-display); font-weight:600; font-size:16px; letter-spacing:0.25em; color:var(--kairos); margin-bottom:6px;">KAIROS</div>
+        <div style="font-family:var(--f-mono); font-size:9px; letter-spacing:0.18em; color:var(--bone-faint); margin-bottom:10px;">PERSONAL TIMING · VIOLET #9966FF</div>
+        <p style="font-size:13px; color:var(--bone-dim); line-height:1.6;">Triangle + orbital rings + vertex nodes. Purple grounds the introspective, personal quality of timing work.</p>
+      </div>
+    </div>
+    <!-- Prismarium -->
+    <div style="border:1px solid rgba(78,231,253,0.3); border-radius:16px; overflow:hidden;">
+      <div style="background:#020D14; aspect-ratio:1/1; display:flex; align-items:center; justify-content:center; padding:40px;">
+        <img src="logos/prismarium-correct.png" style="width:100%; height:100%; object-fit:contain;" alt="Prismarium">
+      </div>
+      <div style="padding:20px 22px; border-top:1px solid rgba(78,231,253,0.2); background:rgba(78,231,253,0.04);">
+        <div style="font-family:var(--f-display); font-weight:600; font-size:16px; letter-spacing:0.25em; color:var(--prism); margin-bottom:6px;">PRISMARIUM</div>
+        <div style="font-family:var(--f-mono); font-size:9px; letter-spacing:0.18em; color:var(--bone-faint); margin-bottom:10px;">KNOWLEDGE SYNTHESIS · CYAN #4EE7FD</div>
+        <p style="font-size:13px; color:var(--bone-dim); line-height:1.6;">Star tetrahedron · dual interlocking triangles · cyan glass. Light refracting through multiple lenses to reveal convergence.</p>
+      </div>
+    </div>
+    <!-- Chronos -->
+    <div style="border:1px solid rgba(255,155,43,0.3); border-radius:16px; overflow:hidden;">
+      <div style="background:#000; aspect-ratio:1/1; display:flex; align-items:center; justify-content:center; padding:40px;">
+        <img src="logos/chronos-correct.png" style="width:100%; height:100%; object-fit:contain;" alt="Chronos">
+      </div>
+      <div style="padding:20px 22px; border-top:1px solid rgba(255,155,43,0.2); background:rgba(255,155,43,0.04);">
+        <div style="font-family:var(--f-display); font-weight:600; font-size:16px; letter-spacing:0.25em; color:var(--chronos); margin-bottom:6px;">CHRONOS</div>
+        <div style="font-family:var(--f-mono); font-size:9px; letter-spacing:0.18em; color:var(--bone-faint); margin-bottom:10px;">PATTERN RESEARCH · AMBER #FF9B2B</div>
+        <p style="font-size:13px; color:var(--bone-dim); line-height:1.6;">Clock compass + triangle + golden ratio. Amber gold maps to historical pattern research — ancient, archival, archetype.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════
+     04 · STELLOQUY
+══════════════════════════════════════════════════════════════ -->
+<div class="section" id="stelloquy">
+  <div class="section-eyebrow">04 · STELLOQUY</div>
+  <h2 class="section-title">The AI voice. Three states.</h2>
+  <p class="section-sub">Stelloquy · steh-LOH-kwee. The presence woven through every product. Not a chatbot — a voice that knows your chart, knows the moment, and adapts.</p>
+
+  <div class="orb-row">
+    <div class="orb-cell">
+      <div class="orb-large orb-speaking"></div>
+      <span class="orb-state-tag" style="border-color:rgba(153,102,255,0.4); color:var(--kairos);">SPEAKING</span>
+      <div class="orb-label">ST-WARM · VIOLET → CYAN<br>Default state · active response</div>
+    </div>
+    <div class="orb-cell">
+      <div class="orb-large orb-listening"></div>
+      <span class="orb-state-tag" style="border-color:rgba(78,231,253,0.4); color:var(--prism);">LISTENING</span>
+      <div class="orb-label">ST-COOL · CYAN → BLUE<br>Receiving · processing input</div>
+    </div>
+    <div class="orb-cell">
+      <div class="orb-large orb-thinking"></div>
+      <span class="orb-state-tag" style="border-color:rgba(255,155,43,0.4); color:var(--chronos);">THINKING</span>
+      <div class="orb-label">ST-AMBER · AMBER → DEEP<br>Pattern synthesis · deep recall</div>
+    </div>
+
+    <div style="flex:1; min-width:260px; display:flex; flex-direction:column; gap:14px;">
+      <div style="border:1px solid var(--rule); border-radius:12px; padding:18px 20px; background:var(--void2);">
+        <div style="font-family:var(--f-mono); font-size:9px; letter-spacing:0.25em; color:var(--prism); margin-bottom:8px;">PRONUNCIATION</div>
+        <div style="font-family:var(--f-display); font-size:20px; letter-spacing:0.1em; margin-bottom:4px;">STELLOQUY</div>
+        <div style="font-family:var(--f-italic); font-style:italic; font-size:15px; color:var(--bone-dim);">steh · LOH · kwee</div>
+      </div>
+      <div style="border:1px solid var(--rule); border-radius:12px; padding:18px 20px; background:var(--void2);">
+        <div style="font-family:var(--f-mono); font-size:9px; letter-spacing:0.25em; color:var(--prism); margin-bottom:8px;">ORIGIN</div>
+        <div style="font-size:14px; color:var(--bone-dim); line-height:1.6;"><em style="font-family:var(--f-italic); font-style:italic; color:var(--bone);">Stella</em> (star) + <em style="font-family:var(--f-italic); font-style:italic; color:var(--bone);">loqui</em> (to speak). A conversation with the stars.</div>
+      </div>
+      <div style="border:1px solid var(--rule); border-radius:12px; padding:18px 20px; background:var(--void2);">
+        <div style="font-family:var(--f-mono); font-size:9px; letter-spacing:0.25em; color:var(--prism); margin-bottom:8px;">COLOR SYSTEM</div>
+        <div style="font-size:13px; color:var(--bone-dim); line-height:1.6;">Orb colors map to the product palette. Violet speaking → Kairos energy. Cyan listening → Prismarium clarity. Amber thinking → Chronos pattern depth.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mini orbs -->
+  <div style="margin-top:32px; display:flex; gap:32px; flex-wrap:wrap;">
+    <div class="orb-cell">
+      <div class="orb-medium orb-speaking"></div>
+      <span class="orb-label">96px</span>
+    </div>
+    <div class="orb-cell">
+      <div style="width:64px; height:64px; border-radius:50%;" class="orb-speaking"></div>
+      <span class="orb-label">64px</span>
+    </div>
+    <div class="orb-cell">
+      <div style="width:40px; height:40px; border-radius:50%;" class="orb-speaking"></div>
+      <span class="orb-label">40px</span>
+    </div>
+    <div style="width:1px; background:var(--rule); margin:0 8px;"></div>
+    <div class="orb-cell">
+      <div class="orb-medium orb-listening"></div>
+      <span class="orb-label">96px</span>
+    </div>
+    <div class="orb-cell">
+      <div style="width:64px; height:64px; border-radius:50%;" class="orb-listening"></div>
+      <span class="orb-label">64px</span>
+    </div>
+    <div style="width:1px; background:var(--rule); margin:0 8px;"></div>
+    <div class="orb-cell">
+      <div class="orb-medium orb-thinking"></div>
+      <span class="orb-label">96px</span>
+    </div>
+    <div class="orb-cell">
+      <div style="width:64px; height:64px; border-radius:50%;" class="orb-thinking"></div>
+      <span class="orb-label">64px</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════
+     05 · 7 LENS SPECTRUM
+══════════════════════════════════════════════════════════════ -->
+<div class="section" id="spectrum">
+  <div class="section-eyebrow">05 · 7 LENS SPECTRUM</div>
+  <h2 class="section-title">Neon Cathedral. Two registers.</h2>
+  <p class="section-sub">The same rainbow in two voices: Vivid (Neon Cathedral) for UI emphasis and the living color system; Tonal (Muted) for the brand canvas and soft surfaces.</p>
+
+  <!-- Neon Cathedral -->
+  <div class="lens-register">
+    <div class="lens-header">
+      <div>
+        <div class="lens-register-name">NEON CATHEDRAL · VIVID REGISTER</div>
+        <div class="lens-register-note">UI color system · product assignments · Prismarium lens spectrum</div>
+      </div>
+      <span style="font-family:var(--f-mono);font-size:9px;letter-spacing:0.18em;padding:4px 12px;border-radius:100px;border:1px solid rgba(78,231,253,0.3);color:var(--prism);">CANONICAL</span>
+    </div>
+    <div class="lens-swatches">
+      <div class="lens-swatch">
+        <div class="swatch-color" style="background:#FF3DAD;"></div>
+        <div class="swatch-info"><div class="swatch-name">MAGENTA</div><div class="swatch-hex">#FF3DAD</div></div>
+      </div>
+      <div class="lens-swatch">
+        <div class="swatch-color" style="background:#A040FF;"></div>
+        <div class="swatch-info"><div class="swatch-name">AMETHYST</div><div class="swatch-hex">#A040FF</div></div>
+      </div>
+      <div class="lens-swatch">
+        <div class="swatch-color" style="background:#3060FF;"></div>
+        <div class="swatch-info"><div class="swatch-name">SAPPHIRE</div><div class="swatch-hex">#3060FF</div></div>
+      </div>
+      <div class="lens-swatch">
+        <div class="swatch-color" style="background:#22D3EE;"></div>
+        <div class="swatch-info"><div class="swatch-name">CYAN</div><div class="swatch-hex">#22D3EE</div></div>
+      </div>
+      <div class="lens-swatch">
+        <div class="swatch-color" style="background:#28E090;"></div>
+        <div class="swatch-info"><div class="swatch-name">EMERALD</div><div class="swatch-hex">#28E090</div></div>
+      </div>
+      <div class="lens-swatch">
+        <div class="swatch-color" style="background:#FFD040;"></div>
+        <div class="swatch-info"><div class="swatch-name">CITRINE</div><div class="swatch-hex">#FFD040</div></div>
+      </div>
+      <div class="lens-swatch">
+        <div class="swatch-color" style="background:#FF6850;"></div>
+        <div class="swatch-info"><div class="swatch-name">CORAL</div><div class="swatch-hex">#FF6850</div></div>
+      </div>
+    </div>
+    <div class="lens-gradient-bar" style="background:linear-gradient(90deg,#FF3DAD,#A040FF,#3060FF,#22D3EE,#28E090,#FFD040,#FF6850);"></div>
+  </div>
+
+  <!-- Muted / Tonal -->
+  <div class="lens-register">
+    <div class="lens-header">
+      <div>
+        <div class="lens-register-name">MUTED / TONAL REGISTER</div>
+        <div class="lens-register-note">Brand canvas · soft surfaces · product color assignments</div>
+      </div>
+      <span style="font-family:var(--f-mono);font-size:9px;letter-spacing:0.18em;padding:4px 12px;border-radius:100px;border:1px solid rgba(242,239,230,0.15);color:var(--bone-faint);">TONAL</span>
+    </div>
+    <div class="lens-swatches">
+      <div class="lens-swatch">
+        <div class="swatch-color" style="background:#FF8BD4;"></div>
+        <div class="swatch-info"><div class="swatch-name">BLUSH</div><div class="swatch-hex">#FF8BD4</div></div>
+      </div>
+      <div class="lens-swatch">
+        <div class="swatch-color" style="background:#B8A8F0;"></div>
+        <div class="swatch-info"><div class="swatch-name">LAVENDER</div><div class="swatch-hex">#B8A8F0</div></div>
+      </div>
+      <div class="lens-swatch">
+        <div class="swatch-color" style="background:#7CECE0;"></div>
+        <div class="swatch-info"><div class="swatch-name">AQUA</div><div class="swatch-hex">#7CECE0</div></div>
+      </div>
+      <div class="lens-swatch">
+        <div class="swatch-color" style="background:#2BD9E8;"></div>
+        <div class="swatch-info"><div class="swatch-name">CYAN</div><div class="swatch-hex">#2BD9E8</div></div>
+      </div>
+      <div class="lens-swatch">
+        <div class="swatch-color" style="background:#C8E84B;"></div>
+        <div class="swatch-info"><div class="swatch-name">LIME</div><div class="swatch-hex">#C8E84B</div></div>
+      </div>
+      <div class="lens-swatch">
+        <div class="swatch-color" style="background:#F5D86C;"></div>
+        <div class="swatch-info"><div class="swatch-name">BUTTER</div><div class="swatch-hex">#F5D86C</div></div>
+      </div>
+      <div class="lens-swatch">
+        <div class="swatch-color" style="background:#F0A858;"></div>
+        <div class="swatch-info"><div class="swatch-name">AMBER</div><div class="swatch-hex">#F0A858</div></div>
+      </div>
+    </div>
+    <div class="lens-gradient-bar" style="background:linear-gradient(90deg,#FF8BD4,#B8A8F0,#7CECE0,#2BD9E8,#C8E84B,#F5D86C,#F0A858);"></div>
+  </div>
+
+  <div class="note">
+    <strong>Two registers, one spectrum.</strong> Neon Cathedral is the full-saturation expression — used for UI glows, active states, and the living app color system. The Muted register is the tonal/brand layer — softer, for surfaces, product identities, and background color fields. Both are the same rainbow. Neon Cathedral was independently derived from, and exactly matches, the Muted palette at higher saturation.
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════
+     06 · PALETTE RECONCILIATION
+══════════════════════════════════════════════════════════════ -->
+<div class="section" id="palette">
+  <div class="section-eyebrow">06 · PALETTE RECONCILIATION</div>
+  <h2 class="section-title">v9 candy → v3 neon. Detailed.</h2>
+  <p class="section-sub">The full comparison. What changed, what stayed, and which values are now canonical for each product and context.</p>
+
+  <div class="palette-compare">
+    <!-- v9 old -->
+    <div class="palette-card">
+      <div class="palette-card-header">
+        <div class="palette-card-title">V9 · CANDY SYSTEM (PREVIOUS)</div>
+        <div class="palette-card-desc">Brand Exploration v9 · old candy/iris palette</div>
+      </div>
+      <div class="palette-swatches">
+        <div class="palette-row">
+          <div class="palette-chip" style="background:#7E5AD6;"></div>
+          <div class="palette-info">
+            <div class="palette-role">KAIROS · OLD</div>
+            <div class="palette-hex">#7E5AD6 — Iris</div>
+          </div>
+          <span class="palette-tag old">REPLACED</span>
+        </div>
+        <div class="palette-row">
+          <div class="palette-chip" style="background:#2BD9E8;"></div>
+          <div class="palette-info">
+            <div class="palette-role">PRISMARIUM · OLD</div>
+            <div class="palette-hex">#2BD9E8 — Candy Cyan</div>
+          </div>
+          <span class="palette-tag old">REPLACED</span>
+        </div>
+        <div class="palette-row">
+          <div class="palette-chip" style="background:#F0A858;"></div>
+          <div class="palette-info">
+            <div class="palette-role">CHRONOS · OLD</div>
+            <div class="palette-hex">#F0A858 — Amber</div>
+          </div>
+          <span class="palette-tag old">REPLACED</span>
+        </div>
+        <div class="palette-row">
+          <div class="palette-chip" style="background:#C9A14A;"></div>
+          <div class="palette-info">
+            <div class="palette-role">MARK GOLD</div>
+            <div class="palette-hex">#C9A14A — Gold</div>
+          </div>
+          <span class="palette-tag old">MUTED REG.</span>
+        </div>
+        <div class="palette-row">
+          <div class="palette-chip" style="background:#FF8B6E;"></div>
+          <div class="palette-info">
+            <div class="palette-role">PARALLAX STEREO R</div>
+            <div class="palette-hex">#FF8B6E — Coral</div>
+          </div>
+          <span class="palette-tag old">RETIRED</span>
+        </div>
+        <div class="palette-row">
+          <div class="palette-chip" style="background:#F5D86C;"></div>
+          <div class="palette-info">
+            <div class="palette-role">STAR · BUTTER</div>
+            <div class="palette-hex">#F5D86C — Butter</div>
+          </div>
+          <span class="palette-tag old">MUTED REG.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- v3 new canonical -->
+    <div class="palette-card active">
+      <div class="palette-card-header">
+        <div class="palette-card-title">V3 · NEON SYSTEM (CANONICAL)</div>
+        <div class="palette-card-desc">Landing Page v3 · current canonical palette</div>
+      </div>
+      <div class="palette-swatches">
+        <div class="palette-row">
+          <div class="palette-chip" style="background:#9966FF;"></div>
+          <div class="palette-info">
+            <div class="palette-role">KAIROS · CANONICAL</div>
+            <div class="palette-hex">#9966FF — Violet</div>
+          </div>
+          <span class="palette-tag canonical">CANONICAL</span>
+        </div>
+        <div class="palette-row">
+          <div class="palette-chip" style="background:#4EE7FD;"></div>
+          <div class="palette-info">
+            <div class="palette-role">PRISMARIUM · CANONICAL</div>
+            <div class="palette-hex">#4EE7FD — Cyan</div>
+          </div>
+          <span class="palette-tag canonical">CANONICAL</span>
+        </div>
+        <div class="palette-row">
+          <div class="palette-chip" style="background:#FF9B2B;"></div>
+          <div class="palette-info">
+            <div class="palette-role">CHRONOS · CANONICAL</div>
+            <div class="palette-hex">#FF9B2B — Amber</div>
+          </div>
+          <span class="palette-tag canonical">CANONICAL</span>
+        </div>
+        <div class="palette-row">
+          <div class="palette-chip" style="background:#F2EFE6;"></div>
+          <div class="palette-info">
+            <div class="palette-role">BONE · TEXT / SURFACE</div>
+            <div class="palette-hex">#F2EFE6 — Bone</div>
+          </div>
+          <span class="palette-tag canonical">CANONICAL</span>
+        </div>
+        <div class="palette-row">
+          <div class="palette-chip" style="background:#0A0A0E;"></div>
+          <div class="palette-info">
+            <div class="palette-role">VOID · DARK CANVAS</div>
+            <div class="palette-hex">#0A0A0E — Void</div>
+          </div>
+          <span class="palette-tag canonical">CANONICAL</span>
+        </div>
+        <div class="palette-row">
+          <div class="palette-chip" style="background:linear-gradient(135deg,#9966FF,#4EE7FD,#FF9B2B);"></div>
+          <div class="palette-info">
+            <div class="palette-role">PARALLAX SPECTRUM</div>
+            <div class="palette-hex">Violet → Cyan → Amber</div>
+          </div>
+          <span class="palette-tag new">GRADIENT</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Product assignments -->
+  <h3 style="font-family:var(--f-mono); font-size:10px; letter-spacing:0.3em; color:var(--prism); margin-bottom:16px;">PRODUCT COLOR ASSIGNMENTS</h3>
+  <div class="product-assign">
+    <div class="assign-card" style="border-color:rgba(153,102,255,0.3); background:rgba(153,102,255,0.04);">
+      <div style="display:flex; align-items:center; gap:14px;">
+        <div class="assign-swatch" style="background:#9966FF; box-shadow:0 0 20px rgba(153,102,255,0.4);"></div>
+        <div>
+          <div class="assign-product" style="color:var(--kairos);">KAIROS</div>
+          <div class="assign-color">#9966FF · VIOLET</div>
+        </div>
+      </div>
+      <p class="assign-desc">Personal timing. Introspective, qualitative, inner-directed. Violet grounds the self-reflective nature of astrological planning.</p>
+      <div style="display:flex; gap:6px; flex-wrap:wrap;">
+        <span style="font-family:var(--f-mono);font-size:9px;letter-spacing:0.12em;padding:3px 10px;border-radius:100px;border:1px solid rgba(153,102,255,0.3);color:var(--kairos);">BORDERS</span>
+        <span style="font-family:var(--f-mono);font-size:9px;letter-spacing:0.12em;padding:3px 10px;border-radius:100px;border:1px solid rgba(153,102,255,0.3);color:var(--kairos);">GLOWS</span>
+        <span style="font-family:var(--f-mono);font-size:9px;letter-spacing:0.12em;padding:3px 10px;border-radius:100px;border:1px solid rgba(153,102,255,0.3);color:var(--kairos);">BUTTONS</span>
+        <span style="font-family:var(--f-mono);font-size:9px;letter-spacing:0.12em;padding:3px 10px;border-radius:100px;border:1px solid rgba(153,102,255,0.3);color:var(--kairos);">ORB SPEAKING</span>
+      </div>
+    </div>
+    <div class="assign-card" style="border-color:rgba(78,231,253,0.3); background:rgba(78,231,253,0.04);">
+      <div style="display:flex; align-items:center; gap:14px;">
+        <div class="assign-swatch" style="background:#4EE7FD; box-shadow:0 0 20px rgba(78,231,253,0.4);"></div>
+        <div>
+          <div class="assign-product" style="color:var(--prism);">PRISMARIUM</div>
+          <div class="assign-color">#4EE7FD · CYAN</div>
+        </div>
+      </div>
+      <p class="assign-desc">Knowledge synthesis. Outward, expansive, clarifying. Cyan refracts outward — multiple lenses converging on one source of light.</p>
+      <div style="display:flex; gap:6px; flex-wrap:wrap;">
+        <span style="font-family:var(--f-mono);font-size:9px;letter-spacing:0.12em;padding:3px 10px;border-radius:100px;border:1px solid rgba(78,231,253,0.3);color:var(--prism);">EYEBROWS</span>
+        <span style="font-family:var(--f-mono);font-size:9px;letter-spacing:0.12em;padding:3px 10px;border-radius:100px;border:1px solid rgba(78,231,253,0.3);color:var(--prism);">UI ACCENTS</span>
+        <span style="font-family:var(--f-mono);font-size:9px;letter-spacing:0.12em;padding:3px 10px;border-radius:100px;border:1px solid rgba(78,231,253,0.3);color:var(--prism);">ORB LISTENING</span>
+      </div>
+    </div>
+    <div class="assign-card" style="border-color:rgba(255,155,43,0.3); background:rgba(255,155,43,0.04);">
+      <div style="display:flex; align-items:center; gap:14px;">
+        <div class="assign-swatch" style="background:#FF9B2B; box-shadow:0 0 20px rgba(255,155,43,0.4);"></div>
+        <div>
+          <div class="assign-product" style="color:var(--chronos);">CHRONOS</div>
+          <div class="assign-color">#FF9B2B · AMBER</div>
+        </div>
+      </div>
+      <p class="assign-desc">Pattern research. Ancient, archival, cyclical. Amber gold — the color of old light, old documents, old cycles recurring.</p>
+      <div style="display:flex; gap:6px; flex-wrap:wrap;">
+        <span style="font-family:var(--f-mono);font-size:9px;letter-spacing:0.12em;padding:3px 10px;border-radius:100px;border:1px solid rgba(255,155,43,0.3);color:var(--chronos);">BORDERS</span>
+        <span style="font-family:var(--f-mono);font-size:9px;letter-spacing:0.12em;padding:3px 10px;border-radius:100px;border:1px solid rgba(255,155,43,0.3);color:var(--chronos);">SUPPORT CTA</span>
+        <span style="font-family:var(--f-mono);font-size:9px;letter-spacing:0.12em;padding:3px 10px;border-radius:100px;border:1px solid rgba(255,155,43,0.3);color:var(--chronos);">ORB THINKING</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════
+     07 · TYPOGRAPHY
+══════════════════════════════════════════════════════════════ -->
+<div class="section" id="type">
+  <div class="section-eyebrow">07 · TYPOGRAPHY</div>
+  <h2 class="section-title">Four voices. One register.</h2>
+  <p class="section-sub">Each typeface plays a distinct role. None are decorative — each carries meaning and context in the system.</p>
+
+  <!-- Cinzel -->
+  <div class="type-card">
+    <div class="type-card-header">
+      <div class="type-label">CINZEL · DISPLAY · BRAND VOICE</div>
+      <div class="type-meta">Google Fonts · wght 400–700 · Roman only</div>
+    </div>
+    <div class="type-sample">
+      <div style="font-family:'Cinzel',serif; font-weight:600; font-size:56px; letter-spacing:0.12em; line-height:1; color:var(--bone); margin-bottom:8px;">PARALLAX</div>
+      <div style="font-family:'Cinzel',serif; font-weight:500; font-size:32px; letter-spacing:0.2em; color:var(--bone-dim); margin-bottom:8px;">KAIROS · PRISMARIUM · CHRONOS</div>
+      <div style="font-family:'Cinzel',serif; font-weight:400; font-size:18px; letter-spacing:0.25em; color:var(--bone-faint);">THE OPPORTUNE MOMENT · KNOWLEDGE SYNTHESIS</div>
+    </div>
+    <div class="type-scale">
+      <div class="type-scale-row"><span class="type-scale-size">160px</span><span style="font-family:'Cinzel',serif;font-size:48px;font-weight:700;letter-spacing:0.12em;line-height:1;">Hero</span></div>
+      <div class="type-scale-row"><span class="type-scale-size">56px</span><span style="font-family:'Cinzel',serif;font-size:36px;font-weight:600;letter-spacing:0.12em;">Section Title</span></div>
+      <div class="type-scale-row"><span class="type-scale-size">22px</span><span style="font-family:'Cinzel',serif;font-size:22px;font-weight:500;letter-spacing:0.22em;">Product Name</span></div>
+      <div class="type-scale-row"><span class="type-scale-size">13px</span><span style="font-family:'Cinzel',serif;font-size:13px;font-weight:500;letter-spacing:0.28em;">BUTTON LABEL · NAV ITEM</span></div>
+    </div>
+  </div>
+
+  <!-- Cormorant Garamond -->
+  <div class="type-card">
+    <div class="type-card-header">
+      <div class="type-label">CORMORANT GARAMOND · ITALIC · POETIC VOICE</div>
+      <div class="type-meta">Google Fonts · wght 400–500 · Italic primary</div>
+    </div>
+    <div class="type-sample">
+      <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:32px;line-height:1.4;color:var(--bone);margin-bottom:12px;">"A conversation with the stars."</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:22px;line-height:1.5;color:var(--bone-dim);">A universe for meaning, timing, and pattern intelligence.</div>
+    </div>
+    <div class="type-scale">
+      <div class="type-scale-row"><span class="type-scale-size">36px</span><span style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:32px;line-height:1.4;">"Tagline · hero italic · voice of the brand"</span></div>
+      <div class="type-scale-row"><span class="type-scale-size">22px</span><span style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:20px;line-height:1.5;">Section sub-copy · pull quotes · product straps</span></div>
+    </div>
+  </div>
+
+  <!-- Space Grotesk -->
+  <div class="type-card">
+    <div class="type-card-header">
+      <div class="type-label">SPACE GROTESK · BODY · UTILITY VOICE</div>
+      <div class="type-meta">Google Fonts · wght 300–700 · Primary UI font</div>
+    </div>
+    <div class="type-sample">
+      <div style="font-family:'Space Grotesk',sans-serif;font-size:18px;line-height:1.7;color:var(--bone-dim);max-width:680px;">Three connected tools for studying symbols, planning with personal timing, and researching patterns across history — built for those who believe the sky has something to say.</div>
+    </div>
+    <div class="type-scale">
+      <div class="type-scale-row"><span class="type-scale-size">18px</span><span style="font-family:'Space Grotesk',sans-serif;font-size:17px;line-height:1.7;color:var(--bone-dim);">Body copy · product descriptions · paragraph text</span></div>
+      <div class="type-scale-row"><span class="type-scale-size">15px</span><span style="font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:600;letter-spacing:0.04em;">CTA buttons · labels · navigation</span></div>
+    </div>
+  </div>
+
+  <!-- Fira Mono -->
+  <div class="type-card">
+    <div class="type-card-header">
+      <div class="type-label">FIRA MONO · UTILITY · DATA VOICE</div>
+      <div class="type-meta">Google Fonts · wght 400–500 · Labels, codes, metadata</div>
+    </div>
+    <div class="type-sample">
+      <div style="font-family:'Fira Mono',monospace;font-size:12px;letter-spacing:0.4em;color:var(--prism);margin-bottom:8px;">PROJECT PARALLAX</div>
+      <div style="font-family:'Fira Mono',monospace;font-size:10px;letter-spacing:0.25em;color:var(--bone-faint);">KAIROS · PERSONAL TIMING · APR 2026 · AVAILABLE NOW</div>
+    </div>
+    <div class="type-scale">
+      <div class="type-scale-row"><span class="type-scale-size">12px</span><span style="font-family:'Fira Mono',monospace;font-size:12px;letter-spacing:0.35em;color:var(--prism);">SECTION EYEBROWS · PRODUCT LABELS</span></div>
+      <div class="type-scale-row"><span class="type-scale-size">10px</span><span style="font-family:'Fira Mono',monospace;font-size:10px;letter-spacing:0.22em;color:var(--bone-faint);">METADATA · DATES · STATUS TAGS · HEX VALUES</span></div>
+      <div class="type-scale-row"><span class="type-scale-size">9px</span><span style="font-family:'Fira Mono',monospace;font-size:9px;letter-spacing:0.18em;color:var(--bone-faint);">LEGAL · FOOTER · CAPTIONS · CODE LABELS</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════
+     08 · BUTTONS & UI
+══════════════════════════════════════════════════════════════ -->
+<div class="section" id="buttons">
+  <div class="section-eyebrow">08 · BUTTONS & UI COMPONENTS</div>
+  <h2 class="section-title">Ghost/outline. Always.</h2>
+  <p class="section-sub">No solid fills on primary buttons. All calls-to-action use transparent backgrounds with colored borders — fill only on hover as a glow state.</p>
+
+  <div class="btn-showcase">
+    <span class="btn-row-label">PRODUCT COLORS</span>
+    <button class="ds-btn ds-btn-kairos">Start with Kairos</button>
+    <button class="ds-btn ds-btn-prism">Explore Prismarium</button>
+    <button class="ds-btn ds-btn-chronos">Support the Project</button>
+    <button class="ds-btn ds-btn-bone">Learn More</button>
+  </div>
+
+  <div class="btn-showcase">
+    <span class="btn-row-label">STATES</span>
+    <button class="ds-btn ds-btn-danger" style="border-radius:100px;border:1.5px solid rgba(248,113,113,0.4);">Disconnect</button>
+    <button class="ds-btn ds-btn-prism" style="opacity:0.4;cursor:not-allowed;" disabled>Signing in…</button>
+    <button class="ds-btn ds-btn-kairos" style="font-size:16px;padding:13px 36px;">Get Started →</button>
+  </div>
+
+  <div class="note">
+    <strong>Design rationale.</strong> Ghost buttons let the dark void background breathe through. The neon product colors read as light sources — the border is the glow's edge. Solid fills would kill the luminosity that makes the UI feel like it lives in space. Hover states add a soft box-shadow glow, never a hard fill.
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════
+     09 · BACKGROUND DRIFT
+══════════════════════════════════════════════════════════════ -->
+<div class="section" id="drift">
+  <div class="section-eyebrow">09 · BACKGROUND DRIFT</div>
+  <h2 class="section-title">The nebula surface.</h2>
+  <p class="section-sub">Color shifts over minutes, not frames. Radial gradients in the three product colors drift slowly across the void — never freeze on a single color.</p>
+
+  <div class="drift-wrap">
+    <div class="drift-l drift-l1"></div>
+    <div class="drift-l drift-l2"></div>
+    <div class="drift-l drift-l3"></div>
+    <div class="drift-veil"></div>
+    <div class="drift-content">
+      <div class="drift-eyebrow">PROJECT PARALLAX</div>
+      <div class="drift-headline">PARALLAX</div>
+      <div class="drift-strap">A universe for meaning, timing, and pattern intelligence.</div>
+    </div>
+  </div>
+
+  <div style="margin-top:16px; display:grid; grid-template-columns:repeat(3,1fr); gap:16px;">
+    <div style="border:1px solid var(--rule); border-radius:12px; padding:16px 18px; background:var(--void2);">
+      <div style="font-family:var(--f-mono);font-size:9px;letter-spacing:0.25em;color:var(--kairos);margin-bottom:8px;">LAYER 1 · KAIROS</div>
+      <div style="font-size:13px;color:var(--bone-dim);line-height:1.6;">Violet radial at 25% 25% · 32s cycle · scale 1→1.15</div>
+      <div style="height:4px;border-radius:2px;background:linear-gradient(90deg,rgba(153,102,255,0.6),transparent);margin-top:10px;"></div>
+    </div>
+    <div style="border:1px solid var(--rule); border-radius:12px; padding:16px 18px; background:var(--void2);">
+      <div style="font-family:var(--f-mono);font-size:9px;letter-spacing:0.25em;color:var(--prism);margin-bottom:8px;">LAYER 2 · PRISMARIUM</div>
+      <div style="font-size:13px;color:var(--bone-dim);line-height:1.6;">Cyan radial at 75% 70% · 38s cycle · mix-blend: screen</div>
+      <div style="height:4px;border-radius:2px;background:linear-gradient(90deg,rgba(78,231,253,0.5),transparent);margin-top:10px;"></div>
+    </div>
+    <div style="border:1px solid var(--rule); border-radius:12px; padding:16px 18px; background:var(--void2);">
+      <div style="font-family:var(--f-mono);font-size:9px;letter-spacing:0.25em;color:var(--chronos);margin-bottom:8px;">LAYER 3 · CHRONOS</div>
+      <div style="font-size:13px;color:var(--bone-dim);line-height:1.6;">Amber radial at 50% 50% · 24s cycle · mix-blend: screen</div>
+      <div style="height:4px;border-radius:2px;background:linear-gradient(90deg,rgba(255,155,43,0.5),transparent);margin-top:10px;"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════
+     10 · SYSTEM TABLE
+══════════════════════════════════════════════════════════════ -->
+<div class="section" id="system">
+  <div class="section-eyebrow">10 · THE SYSTEM</div>
+  <h2 class="section-title">Every asset. Where it lives.</h2>
+  <p class="section-sub">Complete inventory as of v10. Status reflects May 2026.</p>
+
+  <table class="sys-table">
+    <thead>
+      <tr>
+        <th>ASSET</th>
+        <th>FILE / CODE</th>
+        <th>ROLE</th>
+        <th>STATUS</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Project Parallax master mark</td>
+        <td><span class="sys-tag">logos/parallax-correct.png</span></td>
+        <td>Parent brand · merkaba dual triangle · spectrum gradient</td>
+        <td><span class="sys-tag status-locked">LOCKED ✓</span></td>
+      </tr>
+      <tr>
+        <td>Kairos logo</td>
+        <td><span class="sys-tag">logos/kairos-correct.png</span></td>
+        <td>Sibling 01 · personal timing · violet · triangle + orbital rings</td>
+        <td><span class="sys-tag status-locked">LOCKED ✓</span></td>
+      </tr>
+      <tr>
+        <td>Prismarium logo</td>
+        <td><span class="sys-tag">logos/prismarium-correct.png</span></td>
+        <td>Sibling 02 · knowledge synthesis · cyan · star tetrahedron</td>
+        <td><span class="sys-tag status-locked">LOCKED ✓</span></td>
+      </tr>
+      <tr>
+        <td>Chronos logo</td>
+        <td><span class="sys-tag">logos/chronos-correct.png</span></td>
+        <td>Sibling 03 · pattern research · amber · clock compass</td>
+        <td><span class="sys-tag status-locked">LOCKED ✓</span></td>
+      </tr>
+      <tr>
+        <td>Stelloquy orb · Speaking</td>
+        <td><span class="sys-tag">ST-WARM · CSS radial</span></td>
+        <td>AI voice · speaking state · violet → cyan · pulsing</td>
+        <td><span class="sys-tag status-live">LIVE</span></td>
+      </tr>
+      <tr>
+        <td>Stelloquy orb · Listening</td>
+        <td><span class="sys-tag">ST-COOL · CSS radial</span></td>
+        <td>AI voice · listening state · cyan → blue · breathing</td>
+        <td><span class="sys-tag status-live">LIVE</span></td>
+      </tr>
+      <tr>
+        <td>Stelloquy orb · Thinking</td>
+        <td><span class="sys-tag">ST-AMBER · CSS radial</span></td>
+        <td>AI voice · thinking state · amber → deep · NEW</td>
+        <td><span class="sys-tag status-live">NEW ✓</span></td>
+      </tr>
+      <tr>
+        <td>7 Lens Spectrum · Neon Cathedral</td>
+        <td><span class="sys-tag">Vivid register</span></td>
+        <td>Magenta / Amethyst / Sapphire / Cyan / Emerald / Citrine / Coral</td>
+        <td><span class="sys-tag status-locked">CANONICAL</span></td>
+      </tr>
+      <tr>
+        <td>7 Lens Spectrum · Muted</td>
+        <td><span class="sys-tag">Tonal register</span></td>
+        <td>Blush / Lavender / Aqua / Cyan / Lime / Butter / Amber</td>
+        <td><span class="sys-tag status-live">TONAL</span></td>
+      </tr>
+      <tr>
+        <td>Background drift surface</td>
+        <td><span class="sys-tag">CSS · 3 layers</span></td>
+        <td>Violet 32s · Cyan 38s · Amber 24s · void black base</td>
+        <td><span class="sys-tag status-live">LIVE</span></td>
+      </tr>
+      <tr>
+        <td>Typography · Cinzel</td>
+        <td><span class="sys-tag">Display · brand voice</span></td>
+        <td>All headlines, product names, nav, button labels</td>
+        <td><span class="sys-tag status-locked">CANONICAL</span></td>
+      </tr>
+      <tr>
+        <td>Typography · Cormorant Garamond</td>
+        <td><span class="sys-tag">Italic · poetic voice</span></td>
+        <td>Taglines, pull quotes, section sub-copy, straps</td>
+        <td><span class="sys-tag status-locked">CANONICAL</span></td>
+      </tr>
+      <tr>
+        <td>Typography · Space Grotesk</td>
+        <td><span class="sys-tag">Body · UI</span></td>
+        <td>All body copy, CTAs, paragraph text</td>
+        <td><span class="sys-tag status-locked">CANONICAL</span></td>
+      </tr>
+      <tr>
+        <td>Typography · Fira Mono</td>
+        <td><span class="sys-tag">Utility · data</span></td>
+        <td>Eyebrows, metadata, dates, hex values, labels</td>
+        <td><span class="sys-tag status-locked">CANONICAL</span></td>
+      </tr>
+      <tr>
+        <td>Kairos app (live)</td>
+        <td><span class="sys-tag">URL TBD</span></td>
+        <td>Personal timing app · available now</td>
+        <td><span class="sys-tag status-live">LIVE</span></td>
+      </tr>
+      <tr>
+        <td>Prismarium app (live)</td>
+        <td><span class="sys-tag">URL TBD</span></td>
+        <td>Knowledge synthesis app · available now</td>
+        <td><span class="sys-tag status-live">LIVE</span></td>
+      </tr>
+      <tr>
+        <td>Chronos app</td>
+        <td><span class="sys-tag">In development</span></td>
+        <td>Pattern research · historical astrology · research phase</td>
+        <td><span class="sys-tag status-soon">COMING SOON</span></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ── FOOTER ── -->
+<div class="doc-footer">
+  <div class="doc-footer-text">PROJECT PARALLAX · BRAND EXPLORATION V10 · MAY 2026</div>
+  <div class="doc-footer-text">LOGOS LOCKED · PALETTE ALIGNED · STELLOQUY UPDATED</div>
+  <div class="doc-footer-text">TWO PERSPECTIVES · ONE CONTINUUM</div>
+</div>
+
+</div><!-- /page -->
+</body>
+</html>

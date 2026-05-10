@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prismarium</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;900&family=Cormorant+Garamond:ital,wght@0,300;1,300&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+  html,body { width:100%; height:100%; overflow:hidden; background:#03020c; }
+  canvas { position:fixed; inset:0; display:block; }
+  /* Grain */
+  body::after {
+    content:''; position:fixed; inset:0; pointer-events:none; z-index:8; opacity:0.25; mix-blend-mode:overlay;
+    background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+    background-size:180px;
+  }
+  /* Text overlay */
+  #ui {
+    position:fixed; inset:0; z-index:5; pointer-events:none;
+    display:flex; flex-direction:column; align-items:center;
+    justify-content:flex-end; padding-bottom:clamp(32px,5vh,60px);
+  }
+  .eyebrow {
+    font-family:'Cinzel',serif; font-size:clamp(8px,0.9vw,11px);
+    letter-spacing:0.45em; text-transform:uppercase;
+    color:rgba(200,185,240,0.42); margin-bottom:10px;
+    animation:rise 1.4s ease 0.6s both;
+  }
+  .hero-title {
+    font-family:'Cinzel',serif; font-size:clamp(48px,7.5vw,98px);
+    font-weight:900; letter-spacing:0.04em; line-height:1;
+    color:#EDE8F5;
+    text-shadow:
+      0 0 60px rgba(140,80,255,0.28),
+      0 0 120px rgba(100,50,200,0.14);
+    animation:rise 1.2s ease 0.9s both;
+  }
+  .tagline {
+    margin-top:12px;
+    font-family:'Cormorant Garamond',serif; font-style:italic;
+    font-size:clamp(14px,1.7vw,20px); font-weight:300;
+    color:rgba(210,200,235,0.48); letter-spacing:0.05em;
+    animation:rise 1.2s ease 1.2s both;
+  }
+  .cta-row {
+    margin-top:26px; display:flex; gap:12px; pointer-events:auto;
+    animation:rise 1.2s ease 1.5s both;
+  }
+  .btn {
+    font-family:'Cinzel',serif; font-size:clamp(9px,0.9vw,11px);
+    letter-spacing:0.22em; text-transform:uppercase;
+    padding:12px 28px; border-radius:2px; cursor:pointer;
+    text-decoration:none; transition:all 0.28s ease;
+    display:inline-flex; align-items:center;
+  }
+  .btn-primary {
+    background:linear-gradient(135deg,rgba(100,40,200,0.9),rgba(60,100,220,0.85));
+    color:rgba(235,225,255,0.95); border:1px solid rgba(150,100,255,0.4);
+    box-shadow:0 0 24px rgba(100,60,200,0.35), 0 0 60px rgba(80,40,180,0.15);
+  }
+  .btn-primary:hover { box-shadow:0 0 40px rgba(130,80,255,0.6),0 0 80px rgba(80,40,180,0.25); transform:translateY(-2px); }
+  .btn-ghost {
+    background:transparent; color:rgba(200,185,240,0.65);
+    border:1px solid rgba(160,130,220,0.28);
+  }
+  .btn-ghost:hover { border-color:rgba(180,150,240,0.55); color:rgba(220,210,250,0.9); }
+  @keyframes rise { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div id="ui">
+  <p class="eyebrow">The Living Library of Esoteric Wisdom</p>
+  <h1 class="hero-title">Prismarium</h1>
+  <p class="tagline">Where ancient knowledge refracts into a thousand living facets</p>
+  <div class="cta-row">
+    <a href="#" class="btn btn-primary">Enter the Prismarium</a>
+    <a href="#" class="btn btn-ghost">Explore the Ecosystem</a>
+  </div>
+</div>
+
+<script>
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+let W, H;
+let t = 0;
+let stars = [], spores = [];
+
+// Layout vars (set in resize)
+let HORIZON, PX, PY, P_SIZE;
+let PA, PL, PR; // prism apex, left base, right base
+let BEAM_START_X, BEAM_HIT; // white input beam
+let SPEC_ORIGIN;  // where spectrum exits prism (right face midpoint)
+
+const SPECTRUM = ['#FF3A5C','#FF8C2A','#F5D020','#2AFFA0','#20E0F5','#3A7FFF','#B03AFF'];
+
+function resize() {
+  W = canvas.width  = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+
+  HORIZON = H * 0.60;
+  P_SIZE  = Math.min(W * 0.13, 130);
+  PX = W * 0.46;
+  PY = H * 0.30;
+
+  // Equilateral triangle, pointing UP
+  PA = [PX, PY - P_SIZE * 0.92];            // apex
+  PL = [PX - P_SIZE, PY + P_SIZE * 0.46];   // base left
+  PR = [PX + P_SIZE, PY + P_SIZE * 0.46];   // base right
+
+  // White beam enters left face, roughly at the mid-upper point
+  BEAM_HIT = lerp2(PA, PL, 0.45);           // point on left face
+  BEAM_START_X = -W * 0.05;                 // off-screen left
+
+  // Spectrum exits from right face
+  SPEC_ORIGIN = lerp2(PA, PR, 0.48);        // exit point on right face
+
+  stars = Array.from({length:280}, () => ({
+    x: Math.random()*W, y: Math.random()*HORIZON*1.1,
+    r: Math.random()*1.3+0.15,
+    a: Math.random()*0.6+0.15,
+    ph: Math.random()*Math.PI*2, sp: Math.random()*0.015+0.004
+  }));
+
+  spores = Array.from({length:55}, () => makeSpore());
+}
+
+function lerp2([x0,y0],[x1,y1],t){ return [x0+(x1-x0)*t, y0+(y1-y0)*t]; }
+
+function makeSpore() {
+  return {
+    x: PX - P_SIZE*2 + Math.random()*P_SIZE*5,
+    y: HORIZON * 0.2 + Math.random() * (H - HORIZON * 0.2),
+    r: Math.random()*1.6+0.3,
+    a: Math.random()*0.28+0.06,
+    vx: (Math.random()-.5)*0.22,
+    vy: -Math.random()*0.35-0.05,
+    col: ['#C0A0FF','#B48F4A','#2AFFA0','#22D3EE','#ffffff'][Math.floor(Math.random()*5)]
+  };
+}
+
+// ── COSMIC SKY ────────────────────────────────
+function drawSky() {
+  const g = ctx.createLinearGradient(0, 0, 0, HORIZON);
+  g.addColorStop(0,   '#060215');
+  g.addColorStop(0.5, '#090318');
+  g.addColorStop(1,   '#100828');
+  ctx.fillStyle = g; ctx.fillRect(0, 0, W, HORIZON + 40);
+
+  // Nebula wisps
+  [[W*.15,H*.12,W*.22,'rgba(60,20,120,0.09)'],
+   [W*.78,H*.08,W*.18,'rgba(30,20,100,0.07)'],
+   [W*.5, H*.05,W*.30,'rgba(80,30,150,0.05)']
+  ].forEach(([x,y,r,c]) => {
+    const n = ctx.createRadialGradient(x,y,0,x,y,r);
+    n.addColorStop(0,c); n.addColorStop(1,'transparent');
+    ctx.fillStyle=n; ctx.fillRect(0,0,W,HORIZON);
+  });
+}
+
+// ── STARS ─────────────────────────────────────
+function drawStars() {
+  stars.forEach(s => {
+    s.ph += s.sp;
+    const a = s.a * (0.5 + 0.5*Math.sin(s.ph));
+    ctx.beginPath();
+    ctx.arc(s.x, s.y, s.r, 0, Math.PI*2);
+    ctx.fillStyle = `rgba(230,225,255,${a})`;
+    ctx.fill();
+  });
+}
+
+// ── LUSH EARTH ────────────────────────────────
+function drawEarth() {
+  // Rich ground gradient
+  const g = ctx.createLinearGradient(0, HORIZON, 0, H);
+  g.addColorStop(0,   '#0c0a04');
+  g.addColorStop(0.25,'#0e0c05');
+  g.addColorStop(0.6, '#0a0b08');
+  g.addColorStop(1,   '#080908');
+  ctx.fillStyle = g; ctx.fillRect(0, HORIZON, W, H - HORIZON);
+
+  // Warm underglow deep in earth
+  const warmGlow = ctx.createRadialGradient(W*.5, H, 0, W*.5, H, W*.55);
+  warmGlow.addColorStop(0,   'rgba(100,65,20,0.18)');
+  warmGlow.addColorStop(0.5, 'rgba(60,35,8,0.09)');
+  warmGlow.addColorStop(1,   'transparent');
+  ctx.fillStyle = warmGlow; ctx.fillRect(0, HORIZON, W, H - HORIZON);
+}
+
+// ── GROUND HORIZON LINE ───────────────────────
+function drawHorizon() {
+  const g = ctx.createLinearGradient(0, HORIZON-1, 0, HORIZON+3);
+  g.addColorStop(0, 'rgba(180,143,74,0.22)');
+  g.addColorStop(1, 'transparent');
+  ctx.fillStyle = g; ctx.fillRect(0, HORIZON - 1, W, 6);
+}
+
+// ── DOME RIBS (subtle framing) ─────────────────
+function drawDomeRibs() {
+  const baseY  = HORIZON;
+  const RX     = Math.min(W*.42, 480);
+  const domeCX = W*.5;
+  const domeTopY = baseY - RX * 1.0;
+  const ctrlY  = domeTopY + (baseY - domeTopY) * 0.18;
+  const numRibs = 10;
+
+  for (let i = 0; i <= numRibs; i++) {
+    const ang = (i / numRibs) * Math.PI;
+    const ex  = domeCX - RX * Math.cos(ang);
+    const ey  = baseY  - Math.abs(Math.sin(ang)) * 12;
+    const alpha = (i === 0 || i === numRibs) ? 0.20 : 0.07;
+    ctx.beginPath();
+    ctx.moveTo(domeCX, domeTopY);
+    ctx.quadraticCurveTo(domeCX + (ex-domeCX)*0.5, (domeTopY+ey)*0.5, ex, ey);
+    ctx.strokeStyle = `rgba(180,143,74,${alpha})`;
+    ctx.lineWidth = 0.8;
+    ctx.stroke();
+  }
+
+  // Base rim glow
+  const rim = ctx.createRadialGradient(domeCX, baseY, RX*.4, domeCX, baseY, RX*1.05);
+  rim.addColorStop(0,   'transparent');
+  rim.addColorStop(0.85,'rgba(180,143,74,0.07)');
+  rim.addColorStop(0.95,'rgba(180,143,74,0.14)');
+  rim.addColorStop(1,   'transparent');
+  ctx.beginPath();
+  ctx.ellipse(domeCX, baseY, RX, 18, 0, 0, Math.PI*2);
+  ctx.fillStyle = rim; ctx.fill();
+}
+
+// ── GROUND CRYSTALS ───────────────────────────
+const CRYSTAL_DEFS = [
+  {x:.12,h:0.095,w:.012,a:-.08,col:'rgba(80,40,140,0.55)',glow:'#9040e0'},
+  {x:.18,h:0.065,w:.008,a:.05, col:'rgba(50,25,100,0.5)', glow:'#6030c0'},
+  {x:.22,h:0.13, w:.014,a:-.03,col:'rgba(100,60,170,0.6)',glow:'#b060ff'},
+  {x:.27,h:0.055,w:.007,a:.08, col:'rgba(60,30,120,0.5)', glow:'#7040d0'},
+  {x:.70,h:0.11, w:.013,a:.04, col:'rgba(90,50,150,0.58)',glow:'#a050f0'},
+  {x:.75,h:0.07, w:.009,a:-.06,col:'rgba(60,35,100,0.52)',glow:'#7035c0'},
+  {x:.80,h:0.14, w:.015,a:.02, col:'rgba(110,65,180,0.62)',glow:'#c070ff'},
+  {x:.86,h:0.06, w:.008,a:-.04,col:'rgba(50,28,95,0.48)', glow:'#6030b0'},
+  {x:.38,h:0.038,w:.006,a:.10, col:'rgba(40,70,55,0.45)', glow:'#2affa0'},
+  {x:.62,h:0.042,w:.006,a:-.07,col:'rgba(30,60,80,0.45)', glow:'#20e0f5'},
+];
+
+function drawCrystal(x, y, h, w, angle, col, glowCol) {
+  ctx.save(); ctx.translate(x, y); ctx.rotate(angle);
+  const hw = w/2;
+  ctx.beginPath();
+  ctx.moveTo(-hw, 0);
+  ctx.lineTo(-hw*0.7, -h*0.55);
+  ctx.lineTo(-hw*0.25, -h);
+  ctx.lineTo( hw*0.25, -h);
+  ctx.lineTo( hw*0.7,  -h*0.55);
+  ctx.lineTo( hw, 0);
+  ctx.closePath();
+  ctx.fillStyle = col;
+  ctx.fill();
+  ctx.strokeStyle = 'rgba(200,170,255,0.12)';
+  ctx.lineWidth = 0.6; ctx.stroke();
+
+  // Glow
+  const gw = ctx.createRadialGradient(0,-h*.55,1, 0,-h*.55, w*1.8);
+  gw.addColorStop(0, glowCol+'50'); gw.addColorStop(1,'transparent');
+  ctx.fillStyle = gw;
+  ctx.fillRect(-w*2, -h*1.4, w*4, h*1.8);
+  ctx.restore();
+}
+
+function drawGroundCrystals() {
+  CRYSTAL_DEFS.forEach(d => {
+    const x = d.x * W;
+    const h = d.h * H;
+    const w = d.w * W;
+    drawCrystal(x, HORIZON, h, w, d.a, d.col, d.glow);
+  });
+}
+
+// ── GROUND PLANTS ─────────────────────────────
+function drawPlantStem(x, y, len, angle, depth) {
+  if (depth > 4 || len < 4) return;
+  const ex = x + Math.sin(angle) * len;
+  const ey = y - Math.cos(angle) * len;
+  ctx.beginPath(); ctx.moveTo(x,y); ctx.lineTo(ex,ey);
+  const a = 0.45 - depth * 0.08;
+  ctx.strokeStyle = `rgba(25,55,30,${a})`;
+  ctx.lineWidth = Math.max(0.4, 1.5 - depth*0.28);
+  ctx.stroke();
+  if (depth < 3) {
+    drawPlantStem(ex, ey, len*0.65, angle - 0.42 - Math.random()*0.1, depth+1);
+    drawPlantStem(ex, ey, len*0.65, angle + 0.42 + Math.random()*0.1, depth+1);
+  }
+  drawPlantStem(ex, ey, len*0.75, angle + (Math.random()-.5)*0.18, depth+1);
+}
+
+const PLANT_DEFS = [
+  {x:.06,len:.085,a:-.12},{x:.10,len:.07,a:.08},{x:.32,len:.065,a:-.05},
+  {x:.35,len:.09,a:.14},{x:.43,len:.06,a:-.1},{x:.57,len:.07,a:.06},
+  {x:.65,len:.085,a:-.08},{x:.68,len:.06,a:.12},{x:.92,len:.075,a:.07},
+  {x:.95,len:.065,a:-.09},
+];
+
+function drawGroundPlants() {
+  // Clip to earth
+  ctx.save();
+  ctx.beginPath(); ctx.rect(0, HORIZON, W, H-HORIZON); ctx.clip();
+  PLANT_DEFS.forEach(p => {
+    const len = p.len * H;
+    drawPlantStem(p.x * W, HORIZON + 4, len, p.a, 0);
+  });
+  // Silhouette tree shapes at far sides
+  [[W*.02, HORIZON, H*.18],[W*.98, HORIZON, H*.14]].forEach(([tx,ty,th]) => {
+    ctx.beginPath();
+    ctx.moveTo(tx, ty);
+    ctx.lineTo(tx - th*0.3, ty - th);
+    ctx.lineTo(tx + th*0.3, ty - th);
+    ctx.closePath();
+    ctx.fillStyle = 'rgba(15,35,20,0.55)'; ctx.fill();
+  });
+  ctx.restore();
+}
+
+// ── BIOLUMINESCENT GROUND GLOW ────────────────
+function drawGroundGlow() {
+  const glowPts = [
+    {x:.12,r:.06,col:'rgba(140,60,255,0.12)'},{x:.22,r:.05,col:'rgba(180,100,255,0.1)'},
+    {x:.80,r:.06,col:'rgba(140,60,255,0.12)'},{x:.70,r:.05,col:'rgba(120,50,220,0.1)'},
+    {x:.38,r:.04,col:'rgba(42,255,160,0.08)'},{x:.62,r:.04,col:'rgba(32,224,245,0.07)'},
+  ];
+  glowPts.forEach(p => {
+    const g = ctx.createRadialGradient(p.x*W, HORIZON, 0, p.x*W, HORIZON, p.r*W);
+    g.addColorStop(0, p.col); g.addColorStop(1,'transparent');
+    ctx.fillStyle = g; ctx.fillRect(0, HORIZON, W, H-HORIZON);
+  });
+}
+
+// ── GROUND MIST ───────────────────────────────
+function drawMist() {
+  const m = ctx.createLinearGradient(0, HORIZON, 0, HORIZON + H*0.12);
+  m.addColorStop(0, 'rgba(60,30,100,0.18)');
+  m.addColorStop(1, 'transparent');
+  ctx.fillStyle = m; ctx.fillRect(0, HORIZON, W, H*0.12);
+}
+
+// ── PRISM ─────────────────────────────────────
+function drawPrism() {
+  const pulse = 0.92 + 0.08*Math.sin(t*0.9);
+
+  // Ambient prism halo
+  const halo = ctx.createRadialGradient(PX, PY-P_SIZE*0.2, P_SIZE*0.2, PX, PY-P_SIZE*0.2, P_SIZE*2.2);
+  halo.addColorStop(0, `rgba(130,60,240,${0.16*pulse})`);
+  halo.addColorStop(0.4,`rgba(80,30,180,${0.07*pulse})`);
+  halo.addColorStop(1,  'transparent');
+  ctx.fillStyle = halo;
+  ctx.fillRect(PX-P_SIZE*2.5, PA[1]-P_SIZE, P_SIZE*5, P_SIZE*4);
+
+  // Left face (dark-to-medium purple)
+  const lf = ctx.createLinearGradient(...PA, ...PL);
+  lf.addColorStop(0,'rgba(100,50,200,0.82)');
+  lf.addColorStop(1,'rgba(55,20,130,0.88)');
+  ctx.beginPath(); ctx.moveTo(...PA); ctx.lineTo(...PL); ctx.lineTo(...lerp2(PL,PR,0.5)); ctx.closePath();
+  ctx.fillStyle = lf; ctx.globalAlpha = pulse; ctx.fill(); ctx.globalAlpha = 1;
+
+  // Right face (lighter, more glass)
+  const rf = ctx.createLinearGradient(...PA, ...PR);
+  rf.addColorStop(0,'rgba(160,90,255,0.78)');
+  rf.addColorStop(1,'rgba(90,40,200,0.85)');
+  ctx.beginPath(); ctx.moveTo(...PA); ctx.lineTo(...PR); ctx.lineTo(...lerp2(PL,PR,0.5)); ctx.closePath();
+  ctx.fillStyle = rf; ctx.globalAlpha = pulse; ctx.fill(); ctx.globalAlpha = 1;
+
+  // Front face (most visible — glass-like with internal light)
+  const ff = ctx.createLinearGradient(PX-P_SIZE, PY, PX+P_SIZE, PY);
+  ff.addColorStop(0,  'rgba(130,70,220,0.55)');
+  ff.addColorStop(0.3,'rgba(180,130,255,0.52)');
+  ff.addColorStop(0.5,'rgba(220,200,255,0.50)');
+  ff.addColorStop(0.7,'rgba(180,140,255,0.52)');
+  ff.addColorStop(1,  'rgba(120,60,210,0.55)');
+  ctx.beginPath(); ctx.moveTo(...PL); ctx.lineTo(...PR); ctx.lineTo(...PA); ctx.closePath();
+  ctx.fillStyle = ff; ctx.globalAlpha = pulse*0.7; ctx.fill(); ctx.globalAlpha = 1;
+
+  // Edge highlight — left edge (brighter, catches light)
+  ctx.beginPath(); ctx.moveTo(...PA); ctx.lineTo(...PL);
+  ctx.strokeStyle = 'rgba(200,170,255,0.55)'; ctx.lineWidth = 1.2; ctx.stroke();
+
+  // Right edge
+  ctx.beginPath(); ctx.moveTo(...PA); ctx.lineTo(...PR);
+  ctx.strokeStyle = 'rgba(180,140,255,0.38)'; ctx.lineWidth = 0.9; ctx.stroke();
+
+  // Base edge
+  ctx.beginPath(); ctx.moveTo(...PL); ctx.lineTo(...PR);
+  ctx.strokeStyle = 'rgba(160,120,240,0.32)'; ctx.lineWidth = 0.8; ctx.stroke();
+
+  // Internal refraction path (implied, faint)
+  const refExit = SPEC_ORIGIN;
+  ctx.beginPath(); ctx.moveTo(...BEAM_HIT); ctx.lineTo(...refExit);
+  ctx.strokeStyle = 'rgba(255,255,255,0.08)'; ctx.lineWidth = 2; ctx.stroke();
+
+  // Apex sparkle
+  const sp = 0.5 + 0.5*Math.abs(Math.sin(t*2.2));
+  const apg = ctx.createRadialGradient(...PA, 0, ...PA, 18);
+  apg.addColorStop(0, `rgba(255,255,255,${0.7*sp*pulse})`);
+  apg.addColorStop(0.3,`rgba(210,180,255,${0.3*sp*pulse})`);
+  apg.addColorStop(1, 'transparent');
+  ctx.fillStyle = apg; ctx.fillRect(PA[0]-20, PA[1]-20, 40, 40);
+}
+
+// ── WHITE INPUT BEAM ──────────────────────────
+function drawInputBeam() {
+  const [hx,hy] = BEAM_HIT;
+  const beamW = P_SIZE * 0.08;
+  const pulse = 0.88 + 0.12*Math.sin(t*0.7);
+
+  const g = ctx.createLinearGradient(BEAM_START_X, hy, hx, hy);
+  g.addColorStop(0,   'rgba(255,255,255,0.0)');
+  g.addColorStop(0.55,'rgba(255,255,255,0.5)');
+  g.addColorStop(0.85,'rgba(255,255,255,0.75)');
+  g.addColorStop(1,   'rgba(255,255,255,0.9)');
+
+  ctx.save();
+  ctx.globalAlpha = pulse;
+  ctx.beginPath();
+  ctx.moveTo(BEAM_START_X, hy - beamW);
+  ctx.lineTo(hx, hy - beamW*0.4);
+  ctx.lineTo(hx, hy + beamW*0.4);
+  ctx.lineTo(BEAM_START_X, hy + beamW);
+  ctx.closePath();
+  ctx.fillStyle = g; ctx.fill();
+
+  // Core bright line
+  ctx.beginPath();
+  ctx.moveTo(BEAM_START_X, hy);
+  ctx.lineTo(hx, hy);
+  ctx.strokeStyle = `rgba(255,255,255,${0.6*pulse})`;
+  ctx.lineWidth = 1.5; ctx.stroke();
+
+  // Outer glow
+  const gg = ctx.createLinearGradient(BEAM_START_X, hy, hx, hy);
+  gg.addColorStop(0,'rgba(200,180,255,0)');
+  gg.addColorStop(1,'rgba(200,180,255,0.12)');
+  ctx.beginPath();
+  ctx.moveTo(BEAM_START_X, hy - beamW*3);
+  ctx.lineTo(hx, hy - beamW*1.2);
+  ctx.lineTo(hx, hy + beamW*1.2);
+  ctx.lineTo(BEAM_START_X, hy + beamW*3);
+  ctx.fillStyle = gg; ctx.fill();
+  ctx.restore();
+}
+
+// ── SPECTRUM RAYS ─────────────────────────────
+function drawSpectrum() {
+  const [ox,oy] = SPEC_ORIGIN;
+  const pulse = (i) => 0.32 + 0.18*Math.sin(t*0.85 + i*0.92);
+
+  // Fan of 7 rays spreading right, from ~0° to ~65° below horizontal
+  const ANGLES = [-8, 1, 11, 20, 30, 41, 52]; // degrees below horizontal, from top to bottom
+  const RAY_LEN = Math.min(W * 0.55, 620);
+  const RAY_HW  = RAY_LEN * 0.038;
+
+  SPECTRUM.forEach((col, i) => {
+    const deg = ANGLES[i] * (Math.PI / 180);
+    const ex  = ox + Math.cos(deg) * RAY_LEN;
+    const ey  = oy + Math.sin(deg) * RAY_LEN;
+    const perpX = -Math.sin(deg);
+    const perpY =  Math.cos(deg);
+    const hw    = RAY_HW * (0.5 + 0.5 * (i / 6));
+    const p     = pulse(i);
+
+    ctx.save();
+    ctx.globalAlpha = p;
+    ctx.beginPath();
+    ctx.moveTo(ox + perpX*1, oy + perpY*1);
+    ctx.lineTo(ex + perpX*hw, ey + perpY*hw);
+    ctx.lineTo(ex - perpX*hw, ey - perpY*hw);
+    ctx.lineTo(ox - perpX*1, oy - perpY*1);
+    ctx.closePath();
+
+    const g = ctx.createLinearGradient(ox, oy, ex, ey);
+    g.addColorStop(0,   col + 'cc');
+    g.addColorStop(0.6, col + '55');
+    g.addColorStop(1,   col + '08');
+    ctx.fillStyle = g; ctx.fill();
+
+    // Where ray hits earth — illuminate crystals
+    if (ey > HORIZON) {
+      const hitGlow = ctx.createRadialGradient(ex, ey, 0, ex, ey, RAY_HW*3.5);
+      hitGlow.addColorStop(0, col + '30'); hitGlow.addColorStop(1,'transparent');
+      ctx.fillStyle = hitGlow; ctx.fillRect(ex-60, ey-30, 120, 60);
+    }
+    ctx.restore();
+  });
+
+  // Exit glow on right face
+  const exitGlow = ctx.createRadialGradient(ox, oy, 0, ox, oy, P_SIZE*0.8);
+  exitGlow.addColorStop(0,'rgba(255,255,255,0.22)');
+  exitGlow.addColorStop(0.25,'rgba(200,160,255,0.1)');
+  exitGlow.addColorStop(1,'transparent');
+  ctx.fillStyle = exitGlow; ctx.fillRect(ox-60, oy-60, 120, 120);
+}
+
+// ── SPORES / PARTICLES ────────────────────────
+function drawSpores() {
+  spores.forEach(p => {
+    ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+    const hexA = Math.floor(p.a*255).toString(16).padStart(2,'0');
+    ctx.fillStyle = p.col + hexA; ctx.fill();
+    p.x += p.vx; p.y += p.vy;
+    if (p.y < -10) { Object.assign(p, makeSpore()); p.y = H + 5; }
+    if (p.x < 0 || p.x > W) p.vx *= -1;
+  });
+}
+
+// ── SPECTRUM-ON-GROUND LIGHT POOLS ────────────
+function drawGroundSpectrumPools() {
+  // Where each spectrum ray ends on the ground, add a soft color wash
+  const [ox,oy] = SPEC_ORIGIN;
+  const ANGLES = [-8, 1, 11, 20, 30, 41, 52];
+  const RAY_LEN = Math.min(W * 0.55, 620);
+
+  SPECTRUM.forEach((col,i) => {
+    const deg = ANGLES[i] * Math.PI/180;
+    const ex = ox + Math.cos(deg) * RAY_LEN;
+    const ey = oy + Math.sin(deg) * RAY_LEN;
+    if (ey < HORIZON) return;
+    const pulse = 0.28 + 0.14*Math.sin(t*0.85 + i*0.92);
+    const g = ctx.createRadialGradient(ex, ey, 0, ex, ey, 80);
+    g.addColorStop(0, col + Math.floor(pulse*255*0.55).toString(16).padStart(2,'0'));
+    g.addColorStop(1,'transparent');
+    ctx.fillStyle = g; ctx.fillRect(ex-80, ey-40, 160, 120);
+  });
+}
+
+// ── MAIN LOOP ─────────────────────────────────
+function frame() {
+  ctx.clearRect(0, 0, W, H);
+  drawSky();
+  drawStars();
+  drawEarth();
+  drawGroundGlow();
+  drawGroundCrystals();
+  drawGroundPlants();
+  drawDomeRibs();
+  drawHorizon();
+  drawInputBeam();
+  drawSpectrum();
+  drawGroundSpectrumPools();
+  drawMist();
+  drawPrism();
+  drawSpores();
+  t += 0.016;
+  requestAnimationFrame(frame);
+}
+
+window.addEventListener('resize', resize);
+resize();
+frame();
+</script>
+</body>
+</html>

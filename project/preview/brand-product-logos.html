@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;900&family=Cormorant+Garamond:ital,wght@1,300&family=Inter:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #05030f;
+    padding: 28px 24px;
+    font-family: 'Inter', sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .section-label {
+    font-family: 'Fira Mono', monospace;
+    font-size: 8px; letter-spacing: 0.28em; text-transform: uppercase;
+    color: #3a3450; margin-bottom: 18px;
+  }
+
+  /* ── PARALLAX MASTER BRAND ── */
+  .parallax-block {
+    display: flex; align-items: center; justify-content: center;
+    gap: 14px; margin-bottom: 28px;
+    padding: 18px 24px;
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 10px;
+    background: rgba(255,255,255,0.02);
+    position: relative; overflow: hidden;
+  }
+  .parallax-block::before {
+    content:''; position:absolute; top:0; left:0; right:0; height:1px;
+    background: linear-gradient(90deg, transparent, rgba(160,120,255,0.4), transparent);
+  }
+  .parallax-mark { position: relative; width: 52px; height: 52px; }
+  .parallax-wordmark-group { display: flex; flex-direction: column; gap: 2px; }
+  .parallax-sub  { font-family: 'Cinzel', serif; font-size: 8.5px; letter-spacing: 0.42em; text-transform: uppercase; color: rgba(180,150,255,0.45); }
+  .parallax-name { font-family: 'Cinzel', serif; font-size: 28px; font-weight: 900; letter-spacing: 0.12em; text-transform: uppercase;
+    background: linear-gradient(135deg, #c0a0ff 0%, #8060e0 50%, #a080ff 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  }
+  .parallax-tag  { font-family: 'Cormorant Garamond', serif; font-size: 12px; font-style: italic; color: rgba(180,150,255,0.4); letter-spacing: 0.05em; }
+
+  /* ── PRODUCT GRID ── */
+  .products { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+
+  .product-card {
+    border-radius: 10px; padding: 20px 18px 16px;
+    border: 1px solid; display: flex; flex-direction: column; gap: 0;
+    position: relative; overflow: hidden; cursor: default;
+  }
+  .product-card::before {
+    content:''; position:absolute; top:0; left:0; right:0; height:1px;
+    background: var(--card-gradient);
+  }
+
+  .product-mark  { width: 48px; height: 48px; margin-bottom: 12px; }
+  .product-sub   { font-size: 8px; letter-spacing: 0.25em; text-transform: uppercase; margin-bottom: 3px; opacity: 0.6; }
+  .product-name  { font-size: 20px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 2px; }
+  .product-role  { font-family: 'Cormorant Garamond', serif; font-size: 12px; font-style: italic; opacity: 0.55; margin-bottom: 12px; }
+  .product-desc  { font-size: 11px; line-height: 1.55; opacity: 0.5; }
+
+  /* Kairos */
+  .kairos { background: rgba(20,30,55,0.6); border-color: rgba(58,127,255,0.22); --card-gradient: linear-gradient(90deg,transparent,rgba(58,127,255,0.4),transparent); }
+  .kairos .product-sub  { color: #6AABFF; font-family: 'Space Grotesk', sans-serif; }
+  .kairos .product-name { color: #A8C8FF; font-family: 'Space Grotesk', sans-serif; }
+  .kairos .product-role { color: #8aadff; }
+  .kairos .product-desc { color: #8090b0; }
+
+  /* Prismarium */
+  .prismarium { background: rgba(25,12,45,0.65); border-color: rgba(140,60,255,0.28); --card-gradient: linear-gradient(90deg,transparent,rgba(140,60,255,0.45),transparent); }
+  .prismarium .product-sub  { color: rgba(200,160,255,0.7); font-family: 'Cinzel', serif; }
+  .prismarium .product-name { color: #D4A0FF; font-family: 'Cinzel', serif; }
+  .prismarium .product-role { color: rgba(200,160,255,0.6); }
+  .prismarium .product-desc { color: #9070a0; }
+
+  /* Stelloquy */
+  .stelloquy { background: rgba(30,22,8,0.65); border-color: rgba(180,143,74,0.28); --card-gradient: linear-gradient(90deg,transparent,rgba(180,143,74,0.45),transparent); }
+  .stelloquy .product-sub  { color: rgba(220,185,100,0.7); font-family: 'Cinzel', serif; }
+  .stelloquy .product-name { color: #E8C870; font-family: 'Cinzel', serif; }
+  .stelloquy .product-role { color: rgba(220,185,100,0.55); }
+  .stelloquy .product-desc { color: #9a8a60; }
+</style>
+</head>
+<body>
+
+<!-- ── PROJECT PARALLAX MASTER ── -->
+<div class="parallax-block">
+  <!-- Parallax mark: 3 triangles in orbit -->
+  <svg class="parallax-mark" viewBox="0 0 52 52" fill="none">
+    <defs>
+      <linearGradient id="pg" x1="0" y1="0" x2="52" y2="52" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stop-color="#3A7FFF"/>
+        <stop offset="50%" stop-color="#9040e0"/>
+        <stop offset="100%" stop-color="#B48F4A"/>
+      </linearGradient>
+    </defs>
+    <!-- Orbital ellipse -->
+    <ellipse cx="26" cy="28" rx="22" ry="8" stroke="url(#pg)" stroke-width="0.7" fill="none" opacity="0.5"/>
+    <!-- Three small triangles at orbital positions -->
+    <!-- Kairos: left -->
+    <polygon points="5,22 11,32 -1,32" fill="none" stroke="#3A7FFF" stroke-width="1.2" opacity="0.8"/>
+    <circle cx="5" cy="22" r="1.5" fill="#3A7FFF" opacity="0.9"/>
+    <circle cx="11" cy="32" r="1.5" fill="#3A7FFF" opacity="0.9"/>
+    <circle cx="-1" cy="32" r="1.5" fill="#3A7FFF" opacity="0.9"/>
+    <!-- Prismarium: center -->
+    <polygon points="26,8 34,22 18,22" fill="rgba(140,60,255,0.15)" stroke="#9040e0" stroke-width="1.4"/>
+    <circle cx="26" cy="8" r="2" fill="#b03aff"/>
+    <!-- Stelloquy: right -->
+    <polygon points="43,22 49,32 37,32" fill="none" stroke="#B48F4A" stroke-width="1.2" opacity="0.8"/>
+    <line x1="43" y1="22" x2="43" y2="32" stroke="#B48F4A" stroke-width="0.6" opacity="0.5"/>
+    <line x1="43" y1="32" x2="49" y2="22" stroke="#B48F4A" stroke-width="0.6" opacity="0.5" transform="translate(-12,0)"/>
+    <circle cx="49" cy="32" r="1.5" fill="#B48F4A" opacity="0.9"/>
+  </svg>
+
+  <div class="parallax-wordmark-group">
+    <span class="parallax-sub">Project</span>
+    <span class="parallax-name">Parallax</span>
+    <span class="parallax-tag">Seeing things from different perspectives</span>
+  </div>
+</div>
+
+<!-- ── THREE PRODUCTS ── -->
+<div class="products">
+
+  <!-- KAIROS -->
+  <div class="product-card kairos">
+    <svg class="product-mark" viewBox="0 0 48 48" fill="none">
+      <!-- Constellation triangle -->
+      <polygon points="24,6 42,38 6,38" fill="rgba(58,127,255,0.07)" stroke="rgba(58,127,255,0.35)" stroke-width="1"/>
+      <!-- Inner structure lines -->
+      <line x1="24" y1="6" x2="24" y2="38" stroke="rgba(58,127,255,0.25)" stroke-width="0.7"/>
+      <line x1="6" y1="38" x2="33" y2="22" stroke="rgba(58,127,255,0.2)" stroke-width="0.6"/>
+      <line x1="42" y1="38" x2="15" y2="22" stroke="rgba(58,127,255,0.2)" stroke-width="0.6"/>
+      <!-- Node dots -->
+      <circle cx="24" cy="6"  r="3.5" fill="#3A7FFF" opacity="0.9"/>
+      <circle cx="42" cy="38" r="3"   fill="#3A7FFF" opacity="0.85"/>
+      <circle cx="6"  cy="38" r="3"   fill="#3A7FFF" opacity="0.85"/>
+      <circle cx="24" cy="25" r="2"   fill="#3A7FFF" opacity="0.6"/>
+      <!-- Subtle glow on top node -->
+      <circle cx="24" cy="6" r="7" fill="rgba(58,127,255,0.15)"/>
+    </svg>
+    <div class="product-sub" style="font-family:'Space Grotesk',sans-serif;">Product 01</div>
+    <div class="product-name">Kairos</div>
+    <div class="product-role">The Intelligence</div>
+    <div class="product-desc">AI-powered insight engine for personal and collective intelligence.</div>
+  </div>
+
+  <!-- PRISMARIUM -->
+  <div class="product-card prismarium">
+    <svg class="product-mark" viewBox="0 0 48 48" fill="none">
+      <defs>
+        <linearGradient id="cr" x1="24" y1="4" x2="24" y2="44" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="#e0c0ff"/>
+          <stop offset="40%" stop-color="#a040ff"/>
+          <stop offset="100%" stop-color="#5010b0"/>
+        </linearGradient>
+        <linearGradient id="rainbow" x1="0" y1="0" x2="48" y2="0" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="#FF3A5C"/>
+          <stop offset="50%" stop-color="#20E0F5"/>
+          <stop offset="100%" stop-color="#B03AFF"/>
+        </linearGradient>
+      </defs>
+      <!-- Crystal / bipyramid shape -->
+      <polygon points="24,4 36,22 24,28 12,22" fill="rgba(160,64,255,0.18)" stroke="rgba(200,150,255,0.5)" stroke-width="0.8"/>
+      <polygon points="24,28 36,22 24,44" fill="rgba(100,30,200,0.3)" stroke="rgba(180,120,255,0.45)" stroke-width="0.8"/>
+      <polygon points="24,28 12,22 24,44" fill="rgba(70,20,160,0.35)" stroke="rgba(160,100,220,0.4)" stroke-width="0.8"/>
+      <!-- Center highlight -->
+      <polygon points="24,4 36,22 24,14" fill="url(#cr)" opacity="0.5"/>
+      <!-- Rainbow edge line -->
+      <line x1="12" y1="22" x2="36" y2="22" stroke="url(#rainbow)" stroke-width="2" opacity="0.8"/>
+      <!-- Apex glow -->
+      <circle cx="24" cy="4" r="5" fill="rgba(180,100,255,0.25)"/>
+      <circle cx="24" cy="4" r="2" fill="rgba(220,180,255,0.9)"/>
+    </svg>
+    <div class="product-sub">Product 02</div>
+    <div class="product-name">Prismarium</div>
+    <div class="product-role">The Workshop</div>
+    <div class="product-desc">Living library of esoteric wisdom synthesized through seven lenses of understanding.</div>
+  </div>
+
+  <!-- STELLOQUY -->
+  <div class="product-card stelloquy">
+    <svg class="product-mark" viewBox="0 0 48 48" fill="none">
+      <defs>
+        <linearGradient id="sg" x1="24" y1="4" x2="24" y2="44" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="#F5D020"/>
+          <stop offset="100%" stop-color="#8A6030"/>
+        </linearGradient>
+      </defs>
+      <!-- Outer triangle -->
+      <polygon points="24,4 44,38 4,38" fill="rgba(180,143,74,0.06)" stroke="rgba(180,143,74,0.55)" stroke-width="1.2"/>
+      <!-- Inscribed circle -->
+      <circle cx="24" cy="28" r="10" fill="none" stroke="rgba(180,143,74,0.3)" stroke-width="0.8"/>
+      <!-- Inner triangle (inverted, forming Star of David / sacred geo) -->
+      <polygon points="24,20 32,34 16,34" fill="rgba(180,143,74,0.06)" stroke="rgba(180,143,74,0.3)" stroke-width="0.7"/>
+      <!-- Center dot -->
+      <circle cx="24" cy="28" r="3" fill="#B48F4A" opacity="0.9"/>
+      <circle cx="24" cy="28" r="6" fill="rgba(180,143,74,0.18)"/>
+      <!-- Grid lines (subtle) -->
+      <line x1="24" y1="4"  x2="24" y2="38" stroke="rgba(180,143,74,0.15)" stroke-width="0.5"/>
+      <line x1="4"  y1="38" x2="44" y2="38" stroke="rgba(180,143,74,0.15)" stroke-width="0.5"/>
+      <!-- Apex glow -->
+      <circle cx="24" cy="4" r="4" fill="rgba(220,185,80,0.2)"/>
+      <circle cx="24" cy="4" r="2" fill="rgba(240,210,100,0.85)"/>
+    </svg>
+    <div class="product-sub">Product 03</div>
+    <div class="product-name">Stelloquy</div>
+    <div class="product-role">The Architect</div>
+    <div class="product-desc">Sacred geometry, time systems, and structural frameworks for understanding reality.</div>
+  </div>
+
+</div>
+
+</body>
+</html>

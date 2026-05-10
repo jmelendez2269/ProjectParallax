@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { background: #0A1212; margin: 0; padding: 16px; }
+  .section-label { font-family: 'Fira Mono', monospace; font-size: 9px; color: #52525b; letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 8px; margin-top: 12px; }
+  .section-label:first-child { margin-top: 0; }
+  .field { margin-bottom: 10px; }
+  label { display: block; font-family: 'Fira Mono', monospace; font-size: 9px; color: #71717a; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 5px; }
+  input, textarea {
+    display: block; width: 100%; box-sizing: border-box;
+    background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.10);
+    border-radius: 4px; padding: 9px 12px; color: #f1f5f9;
+    font-family: 'Inter', sans-serif; font-size: 13px; outline: none;
+  }
+  input:focus, textarea:focus { border-color: rgba(34,211,238,0.5); box-shadow: 0 0 0 3px rgba(34,211,238,0.12); }
+  input::placeholder, textarea::placeholder { color: #52525b; }
+  .input-error { border-color: rgba(239,68,68,0.5) !important; }
+  .error-msg { font-family: 'Fira Mono', monospace; font-size: 10px; color: #f87171; display: flex; align-items: center; gap: 5px; margin-top: 4px; }
+  .error-dot { width: 5px; height: 5px; border-radius: 50%; background: #f87171; animation: pulse 1.5s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+</style>
+</head>
+<body>
+  <div class="section-label">Text Inputs</div>
+  <div class="field">
+    <label>Email Address</label>
+    <input type="email" placeholder="email@example.com">
+  </div>
+  <div class="field">
+    <label>Password</label>
+    <input type="password" placeholder="••••••••">
+  </div>
+  <div class="section-label">States</div>
+  <div class="field">
+    <label>Search Query (focused)</label>
+    <input type="text" value="What is the Hermetic Principle?" style="border-color:rgba(34,211,238,0.5);box-shadow:0 0 0 3px rgba(34,211,238,0.12);">
+  </div>
+  <div class="field">
+    <label>Invalid Field</label>
+    <input type="email" value="not-an-email" class="input-error">
+    <div class="error-msg"><div class="error-dot"></div>ERROR: The email or password is incorrect.</div>
+  </div>
+</body>
+</html>

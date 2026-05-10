@@ -1,0 +1,459 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pricing — Kairos</title>
+<link rel="stylesheet" href="kairos.css">
+<style>
+/* Pricing hero */
+.pricing-hero {
+  padding: 88px 0 64px;
+  text-align: center;
+}
+
+.pricing-hero .display-xl { margin-bottom: 16px; }
+.pricing-hero .italic-lead { max-width: 500px; margin: 0 auto 40px; }
+
+/* Billing toggle */
+.billing-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0;
+  border: 1px solid var(--rule);
+  border-radius: 100px;
+  padding: 4px;
+  margin-bottom: 56px;
+}
+
+.billing-btn {
+  padding: 8px 20px;
+  border-radius: 100px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+  color: var(--bone-dim);
+  background: transparent;
+  border: none;
+  position: relative;
+}
+
+.billing-btn.active { background: rgba(255,255,255,0.08); color: var(--bone); }
+
+.save-badge {
+  position: absolute;
+  top: -8px;
+  right: -6px;
+  background: var(--k);
+  color: #fff;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  padding: 2px 6px;
+  border-radius: 100px;
+}
+
+/* Tier cards */
+.tiers-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  max-width: 900px;
+  margin: 0 auto 64px;
+}
+
+@media (max-width: 680px) { .tiers-grid { grid-template-columns: 1fr; } }
+
+.tier-card {
+  border: 1px solid var(--rule);
+  border-radius: 20px;
+  padding: 36px 36px 32px;
+  background: rgba(13,13,18,0.9);
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.tier-card.premium {
+  border-color: rgba(153,102,255,0.32);
+  background: linear-gradient(145deg, rgba(17,17,24,0.98), rgba(13,13,18,0.96));
+  box-shadow: 0 0 60px rgba(153,102,255,0.07), inset 0 1px 0 rgba(255,255,255,0.04);
+}
+
+.tier-card.premium::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(153,102,255,0.5), transparent);
+}
+
+.tier-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: 100px;
+  font-family: var(--f-mono);
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  align-self: flex-start;
+}
+
+.tier-badge.standard { border: 1px solid var(--rule); color: var(--bone-faint); background: rgba(255,255,255,0.03); }
+.tier-badge.premium  { border: 1px solid rgba(153,102,255,0.35); color: var(--k-lit); background: rgba(153,102,255,0.1); }
+
+.tier-name { font-family: var(--f-display); font-size: 22px; font-weight: 500; letter-spacing: 0.1em; color: var(--bone); margin-bottom: 8px; }
+.tier-tag  { font-size: 13px; color: var(--bone-dim); line-height: 1.55; margin-bottom: 28px; }
+
+/* Pricing blocks */
+.price-options {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 28px;
+}
+
+.price-opt {
+  border: 1px solid var(--rule);
+  border-radius: 12px;
+  padding: 14px 14px;
+}
+
+.price-opt.featured {
+  border-color: rgba(153,102,255,0.4);
+  background: rgba(153,102,255,0.08);
+  box-shadow: 0 0 20px rgba(153,102,255,0.06);
+}
+
+.price-label  { font-family: var(--f-mono); font-size: 8px; letter-spacing: 0.22em; color: var(--bone-faint); text-transform: uppercase; margin-bottom: 6px; }
+.price-label.featured { color: rgba(200,168,255,0.8); }
+.price-val    { font-size: 24px; font-weight: 600; color: var(--bone); line-height: 1; }
+.price-period { font-size: 11px; color: var(--bone-dim); margin-top: 3px; }
+.price-save   { font-size: 9px; font-weight: 700; color: var(--k-lit); margin-top: 4px; font-family: var(--f-mono); letter-spacing: 0.1em; }
+
+/* Feature list */
+.feature-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  margin-bottom: 28px;
+  flex: 1;
+}
+
+.feature-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--bone-dim);
+}
+
+.feat-check {
+  flex-shrink: 0;
+  margin-top: 2px;
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  border: 1px solid rgba(153,102,255,0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.feat-check svg { width: 8px; height: 8px; }
+
+/* CTA button */
+.tier-cta {
+  display: block;
+  text-align: center;
+  padding: 14px;
+  border-radius: 100px;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  transition: opacity 0.2s, transform 0.18s;
+  cursor: pointer;
+}
+
+.tier-cta.primary { background: var(--k); color: #fff; }
+.tier-cta.primary:hover { opacity: 0.88; transform: translateY(-1px); }
+.tier-cta.ghost   { border: 1px solid rgba(255,255,255,0.14); color: var(--bone); background: transparent; }
+.tier-cta.ghost:hover { border-color: rgba(153,102,255,0.4); background: rgba(153,102,255,0.06); }
+
+/* Founding note */
+.founding-note {
+  border: 1px solid rgba(153,102,255,0.2);
+  border-radius: 16px;
+  background: rgba(153,102,255,0.04);
+  padding: 28px 32px;
+  max-width: 900px;
+  margin: 0 auto 64px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+@media (max-width: 640px) { .founding-note { grid-template-columns: 1fr; } }
+
+/* FAQ */
+.faq-list { max-width: 720px; margin: 0 auto; }
+.faq-item { border-bottom: 1px solid var(--rule); padding: 22px 0; }
+.faq-q { font-size: 15px; font-weight: 600; color: var(--bone); margin-bottom: 10px; }
+.faq-a { font-size: 13px; line-height: 1.7; color: var(--bone-dim); }
+
+/* Comparison table */
+.compare-table { width: 100%; border-collapse: collapse; max-width: 900px; margin: 0 auto 20px; }
+.compare-table th { padding: 14px 20px; text-align: left; font-family: var(--f-mono); font-size: 9px; letter-spacing: 0.22em; color: var(--bone-faint); text-transform: uppercase; border-bottom: 1px solid var(--rule); }
+.compare-table th:not(:first-child) { text-align: center; }
+.compare-table td { padding: 13px 20px; border-bottom: 1px solid rgba(255,255,255,0.04); font-size: 13px; color: var(--bone-dim); }
+.compare-table td:not(:first-child) { text-align: center; }
+.compare-table tr:hover td { background: rgba(255,255,255,0.02); }
+.check-y { color: var(--k); font-size: 15px; }
+.check-n { color: rgba(255,255,255,0.2); font-size: 15px; }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="wrap">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">
+        <svg class="nav-logo-mark" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="7" fill="#0A0A0E"/><polygon points="14,3.5 3.5,24.5 24.5,24.5" fill="#9966FF" opacity="0.85"/><circle cx="14" cy="3.5" r="1.2" fill="#e0ccff" opacity="0.9"/></svg>
+        KAIROS
+      </a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="dashboard.html">Dashboard demo</a></li>
+        <li><a href="oracle.html">Oracle demo</a></li>
+        <li><a href="pricing.html" class="active">Pricing</a></li>
+      </ul>
+      <a href="#tiers" class="nav-cta btn-sm">Join beta</a>
+    </div>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="pricing-hero">
+  <div class="wrap">
+    <span class="pill pill-violet" style="margin-bottom:20px;"><span class="pill-dot"></span>Founding Beta · Now Open</span>
+    <h1 class="display-xl">Start with the way<br>you want to plan.</h1>
+    <p class="italic-lead">Monthly for accessibility. Annual for the best value. All tiers include the same full blueprint and personalized planning experience.</p>
+
+    <div class="billing-toggle" id="billing-toggle">
+      <button class="billing-btn active" data-period="monthly" onclick="setPeriod('monthly')">Monthly</button>
+      <button class="billing-btn" data-period="annual" onclick="setPeriod('annual')">Annual <span class="save-badge">Save 30%</span></button>
+    </div>
+  </div>
+</section>
+
+<!-- Tiers -->
+<section id="tiers" class="section-sm">
+  <div class="wrap">
+    <div class="tiers-grid">
+
+      <!-- Planner -->
+      <div class="tier-card">
+        <span class="tier-badge standard">Planner</span>
+        <h2 class="tier-name">Planner</h2>
+        <p class="tier-tag">Your personalized 2026 blueprint, week-by-week guidance, and journal — without the Oracle.</p>
+
+        <div class="price-options">
+          <div class="price-opt" id="planner-monthly">
+            <div class="price-label">Monthly</div>
+            <div class="price-val">$9</div>
+            <div class="price-period">per month</div>
+          </div>
+          <div class="price-opt featured" id="planner-annual">
+            <div class="price-label featured">Annual direct</div>
+            <div class="price-val">$76</div>
+            <div class="price-period">per year</div>
+            <div class="price-save">Save $32</div>
+          </div>
+          <div class="price-opt" id="planner-etsy">
+            <div class="price-label">Via Etsy</div>
+            <div class="price-val">$82</div>
+            <div class="price-period">one-time</div>
+          </div>
+        </div>
+
+        <ul class="feature-list">
+          <li><span class="feat-check"><svg viewBox="0 0 8 8" fill="none"><path d="M1.5 4L3.2 5.8L6.5 2.5" stroke="#9966FF" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Personalized natal chart synthesis</li>
+          <li><span class="feat-check"><svg viewBox="0 0 8 8" fill="none"><path d="M1.5 4L3.2 5.8L6.5 2.5" stroke="#9966FF" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Full 2026 year blueprint (52 weeks)</li>
+          <li><span class="feat-check"><svg viewBox="0 0 8 8" fill="none"><path d="M1.5 4L3.2 5.8L6.5 2.5" stroke="#9966FF" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Week Pulse with daily signals</li>
+          <li><span class="feat-check"><svg viewBox="0 0 8 8" fill="none"><path d="M1.5 4L3.2 5.8L6.5 2.5" stroke="#9966FF" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Activation &amp; rest window naming</li>
+          <li><span class="feat-check"><svg viewBox="0 0 8 8" fill="none"><path d="M1.5 4L3.2 5.8L6.5 2.5" stroke="#9966FF" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Journal with timing-aware prompts</li>
+          <li><span class="feat-check"><svg viewBox="0 0 8 8" fill="none"><path d="M1.5 4L3.2 5.8L6.5 2.5" stroke="#9966FF" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Life areas &amp; goal tracking</li>
+          <li style="color:var(--bone-faint);"><span style="width:16px;height:16px;flex-shrink:0;border-radius:50%;border:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:center;"><svg viewBox="0 0 8 8" width="8" height="8" fill="none"><line x1="2.5" y1="2.5" x2="5.5" y2="5.5" stroke="rgba(255,255,255,0.2)" stroke-width="1.2" stroke-linecap="round"/><line x1="5.5" y1="2.5" x2="2.5" y2="5.5" stroke="rgba(255,255,255,0.2)" stroke-width="1.2" stroke-linecap="round"/></svg></span>Oracle not included</li>
+        </ul>
+
+        <a href="#" class="tier-cta ghost">Get Planner</a>
+      </div>
+
+      <!-- Planner + Oracle -->
+      <div class="tier-card premium">
+        <span class="tier-badge premium">Planner + Oracle</span>
+        <h2 class="tier-name">Planner + Oracle</h2>
+        <p class="tier-tag">Everything in Planner, plus the Oracle — a guidance channel grounded in your chart, your goals, and your journal memory.</p>
+
+        <div class="price-options">
+          <div class="price-opt" id="oracle-monthly">
+            <div class="price-label">Monthly</div>
+            <div class="price-val">$19</div>
+            <div class="price-period">per month</div>
+          </div>
+          <div class="price-opt featured" id="oracle-annual">
+            <div class="price-label featured">Annual direct</div>
+            <div class="price-val">$159</div>
+            <div class="price-period">per year</div>
+            <div class="price-save">Save $69</div>
+          </div>
+          <div class="price-opt" id="oracle-etsy">
+            <div class="price-label">Via Etsy</div>
+            <div class="price-val">$168</div>
+            <div class="price-period">one-time</div>
+          </div>
+        </div>
+
+        <ul class="feature-list">
+          <li><span class="feat-check"><svg viewBox="0 0 8 8" fill="none"><path d="M1.5 4L3.2 5.8L6.5 2.5" stroke="#9966FF" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Everything in Planner</li>
+          <li><span class="feat-check"><svg viewBox="0 0 8 8" fill="none"><path d="M1.5 4L3.2 5.8L6.5 2.5" stroke="#9966FF" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>The Oracle — guidance channel</li>
+          <li><span class="feat-check"><svg viewBox="0 0 8 8" fill="none"><path d="M1.5 4L3.2 5.8L6.5 2.5" stroke="#9966FF" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Chart + transit context in every response</li>
+          <li><span class="feat-check"><svg viewBox="0 0 8 8" fill="none"><path d="M1.5 4L3.2 5.8L6.5 2.5" stroke="#9966FF" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Journal memory — you choose what it knows</li>
+          <li><span class="feat-check"><svg viewBox="0 0 8 8" fill="none"><path d="M1.5 4L3.2 5.8L6.5 2.5" stroke="#9966FF" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Sky-pattern intelligence from journal</li>
+          <li><span class="feat-check"><svg viewBox="0 0 8 8" fill="none"><path d="M1.5 4L3.2 5.8L6.5 2.5" stroke="#9966FF" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Sources cited in every Oracle response</li>
+          <li><span class="feat-check"><svg viewBox="0 0 8 8" fill="none"><path d="M1.5 4L3.2 5.8L6.5 2.5" stroke="#9966FF" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Founding beta rate — locked in</li>
+        </ul>
+
+        <a href="#" class="tier-cta primary">Join Founding Beta · $19/mo</a>
+        <p style="text-align:center;font-size:11px;color:var(--bone-faint);margin-top:10px;">Cancel any time · founding rate locked for beta members</p>
+      </div>
+    </div>
+
+    <!-- Comparison table -->
+    <p class="eyebrow" style="text-align:center;margin-bottom:20px;">Full feature comparison</p>
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th style="width:50%;">Feature</th>
+          <th>Planner</th>
+          <th>Planner + Oracle</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Natal chart synthesis</td><td><span class="check-y">✓</span></td><td><span class="check-y">✓</span></td></tr>
+        <tr><td>2026 year blueprint (52 weeks)</td><td><span class="check-y">✓</span></td><td><span class="check-y">✓</span></td></tr>
+        <tr><td>Week Pulse with daily signals</td><td><span class="check-y">✓</span></td><td><span class="check-y">✓</span></td></tr>
+        <tr><td>Activation &amp; rest window naming</td><td><span class="check-y">✓</span></td><td><span class="check-y">✓</span></td></tr>
+        <tr><td>Journal with timing-aware prompts</td><td><span class="check-y">✓</span></td><td><span class="check-y">✓</span></td></tr>
+        <tr><td>Life areas &amp; goal tracking</td><td><span class="check-y">✓</span></td><td><span class="check-y">✓</span></td></tr>
+        <tr><td>The Oracle</td><td><span class="check-n">—</span></td><td><span class="check-y">✓</span></td></tr>
+        <tr><td>Chart + transit context in responses</td><td><span class="check-n">—</span></td><td><span class="check-y">✓</span></td></tr>
+        <tr><td>Journal memory</td><td><span class="check-n">—</span></td><td><span class="check-y">✓</span></td></tr>
+        <tr><td>Sky-pattern intelligence</td><td><span class="check-n">—</span></td><td><span class="check-y">✓</span></td></tr>
+        <tr><td>Sources cited in responses</td><td><span class="check-n">—</span></td><td><span class="check-y">✓</span></td></tr>
+      </tbody>
+    </table>
+
+    <!-- Founding note -->
+    <div class="founding-note">
+      <div>
+        <p class="eyebrow" style="margin-bottom:12px;">About the founding beta</p>
+        <h3 class="display-sm" style="margin-bottom:12px;font-size:18px;">This is the first real version of Kairos.</h3>
+        <p class="body-sm">The founding beta is not every future feature at once. It is the core personalized planning experience — built for people who want to explore a better way to plan while helping shape what Kairos becomes. Founding members get their rate locked in for as long as they stay subscribed.</p>
+      </div>
+      <div>
+        <p class="kicker" style="margin-bottom:12px;">What founding beta includes</p>
+        <ul class="checklist">
+          <li><span class="check-icon"><svg viewBox="0 0 8 8" fill="none"><path d="M1.5 4L3.2 5.8L6.5 2.5" stroke="#9966FF" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Guided onboarding with birth data and goals intake</li>
+          <li><span class="check-icon"><svg viewBox="0 0 8 8" fill="none"><path d="M1.5 4L3.2 5.8L6.5 2.5" stroke="#9966FF" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Personalized 2026 planning blueprint</li>
+          <li><span class="check-icon"><svg viewBox="0 0 8 8" fill="none"><path d="M1.5 4L3.2 5.8L6.5 2.5" stroke="#9966FF" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Early access to the first live version</li>
+          <li><span class="check-icon"><svg viewBox="0 0 8 8" fill="none"><path d="M1.5 4L3.2 5.8L6.5 2.5" stroke="#9966FF" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Direct input on the product's future</li>
+          <li><span class="check-icon"><svg viewBox="0 0 8 8" fill="none"><path d="M1.5 4L3.2 5.8L6.5 2.5" stroke="#9966FF" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Founding rate locked for the life of the subscription</li>
+        </ul>
+        <p class="mono-sm" style="margin-top:16px;">A limited number of reduced-cost seats are available to support accessibility.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="section">
+  <div class="wrap">
+    <p class="eyebrow" style="text-align:center;margin-bottom:40px;">Common questions</p>
+    <div class="faq-list">
+      <div class="faq-item">
+        <p class="faq-q">Is Kairos only for people who are deeply into astrology?</p>
+        <p class="faq-a">No. While Kairos is open to symbolic and cyclical frameworks, the real goal is to create a more personal and meaningful planning system. Many users approach it as a structured framework for reflection rather than a spiritual practice. It is designed to feel grounded and useful, not gimmicky.</p>
+      </div>
+      <div class="faq-item">
+        <p class="faq-q">What does "founding beta rate locked in" mean?</p>
+        <p class="faq-a">If you join during the founding beta at $19/month, that price stays yours for as long as you remain subscribed — even as Kairos adds features and the standard price increases. You're not locked in to a contract; you can cancel any time. But if you do stay, you keep the founding rate.</p>
+      </div>
+      <div class="faq-item">
+        <p class="faq-q">Is this a full planner replacement?</p>
+        <p class="faq-a">Not necessarily for everyone right away. Kairos is designed to become a planning layer that helps you understand timing, priorities, and energy more clearly. How central it becomes to your practice depends on how deeply you want to engage with it.</p>
+      </div>
+      <div class="faq-item">
+        <p class="faq-q">What does "beta" mean here?</p>
+        <p class="faq-a">Beta means you're getting early access to the first live version of Kairos. The core experience is real — your blueprint is generated from your actual natal chart and real ephemeris data. But the product will continue evolving based on feedback and learning from founding members.</p>
+      </div>
+      <div class="faq-item">
+        <p class="faq-q">Why is the beta paid?</p>
+        <p class="faq-a">Because the beta is intended to deliver real value, not just function as a free experiment. Founding beta members receive the full planning experience at a reduced rate — and their feedback directly shapes what Kairos becomes.</p>
+      </div>
+      <div class="faq-item">
+        <p class="faq-q">What's the difference between the Planner and Planner + Oracle tiers?</p>
+        <p class="faq-a">Both tiers include the full personalized blueprint, week pulse, journal, and life areas. The Oracle tier adds the ability to have conversations with an AI that already knows your natal chart, current transits, onboarding answers, and any journal entries you've chosen to share with it. The Oracle is the most contextually aware piece of the system — it doesn't require you to re-explain your situation.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Closing CTA -->
+<section style="text-align:center;padding:80px 0 100px;border-top:1px solid var(--rule);">
+  <div class="wrap">
+    <p class="italic-lead" style="max-width:520px;margin:0 auto 12px;">"You do not need another system that asks you to override yourself."</p>
+    <p class="mono-sm" style="margin-bottom:40px;">— Kairos product vision</p>
+    <a href="#tiers" class="btn-primary" style="font-size:15px;padding:16px 40px;">Join the Founding Beta</a>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <span class="footer-logo">KAIROS</span>
+        <span class="footer-sub">Part of the Project Parallax ecosystem</span>
+      </div>
+      <ul class="footer-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="dashboard.html">Dashboard demo</a></li>
+        <li><a href="blueprint.html">Blueprint demo</a></li>
+        <li><a href="oracle.html">Oracle demo</a></li>
+        <li><a href="#">Privacy</a></li>
+        <li><a href="#">Terms</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+<script>
+function setPeriod(period) {
+  document.querySelectorAll('.billing-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.period === period);
+  });
+}
+</script>
+
+</body>
+</html>

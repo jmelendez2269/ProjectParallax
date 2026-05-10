@@ -1,0 +1,599 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kairos — Plan with your real timing</title>
+<link rel="stylesheet" href="kairos.css">
+<style>
+/* ── PAGE-SPECIFIC ── */
+.hero {
+  padding: 96px 0 80px;
+  position: relative;
+}
+
+.hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 28px;
+}
+
+.hero-title {
+  font-family: var(--f-display);
+  font-weight: 500;
+  font-size: clamp(42px, 6.5vw, 88px);
+  letter-spacing: 0.06em;
+  line-height: 0.96;
+  color: var(--bone);
+  max-width: 800px;
+  margin-bottom: 28px;
+  text-wrap: balance;
+}
+
+.hero-sub {
+  font-family: var(--f-italic);
+  font-style: italic;
+  font-size: clamp(17px, 2vw, 22px);
+  color: var(--bone-dim);
+  line-height: 1.55;
+  max-width: 560px;
+  margin-bottom: 40px;
+}
+
+.hero-ctas {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+/* Floating stat chips */
+.hero-stats {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 56px;
+  padding-top: 40px;
+  border-top: 1px solid var(--rule);
+}
+
+.stat-chip {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.stat-val {
+  font-family: var(--f-display);
+  font-size: 22px;
+  letter-spacing: 0.08em;
+  color: var(--bone);
+}
+
+.stat-label {
+  font-family: var(--f-mono);
+  font-size: 9px;
+  letter-spacing: 0.24em;
+  color: var(--bone-faint);
+  text-transform: uppercase;
+}
+
+/* ── BELT SECTION ── */
+.belt {
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  padding: 28px 0;
+  overflow: hidden;
+}
+
+.belt-inner {
+  display: flex;
+  gap: 48px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.belt-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  white-space: nowrap;
+}
+
+.belt-dot {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--k);
+  opacity: 0.6;
+}
+
+.belt-text {
+  font-family: var(--f-mono);
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  color: var(--bone-faint);
+  text-transform: uppercase;
+}
+
+/* ── HOW IT WORKS STEPS ── */
+.steps-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2px;
+}
+
+@media (max-width: 860px) { .steps-grid { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 520px) { .steps-grid { grid-template-columns: 1fr; } }
+
+.step-card {
+  padding: 28px 24px;
+  border: 1px solid var(--rule);
+  background: rgba(13,13,18,0.8);
+  position: relative;
+}
+
+.step-card:first-child { border-radius: var(--radius-card) 0 0 var(--radius-card); }
+.step-card:last-child  { border-radius: 0 var(--radius-card) var(--radius-card) 0; }
+
+.step-num {
+  font-family: var(--f-display);
+  font-size: 42px;
+  font-weight: 500;
+  line-height: 1;
+  opacity: 0.14;
+  margin-bottom: 20px;
+}
+
+.step-title { font-size: 14px; font-weight: 600; color: var(--bone); margin-bottom: 10px; }
+.step-body  { font-size: 12px; line-height: 1.65; color: var(--bone-dim); }
+
+/* ── FEATURES 2-COL ── */
+.feature-block {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5px;
+  align-items: start;
+}
+
+@media (max-width: 768px) { .feature-block { grid-template-columns: 1fr; } }
+
+.feature-copy { padding: 40px 32px; }
+.feature-visual { padding: 24px; }
+
+/* ── SOCIAL PROOF ── */
+.proof-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+@media (max-width: 768px) { .proof-grid { grid-template-columns: 1fr; } }
+
+.proof-card {
+  padding: 28px 26px;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-card);
+  background: rgba(13,13,18,0.6);
+}
+
+.proof-quote {
+  font-family: var(--f-italic);
+  font-style: italic;
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--bone-dim);
+  margin-bottom: 20px;
+}
+
+.proof-name  { font-size: 12px; font-weight: 600; color: var(--bone); }
+.proof-role  { font-family: var(--f-mono); font-size: 9px; letter-spacing: 0.18em; color: var(--bone-faint); margin-top: 3px; text-transform: uppercase; }
+
+/* ── CTA BAND ── */
+.cta-band {
+  text-align: center;
+  padding: 100px 0;
+}
+
+.cta-band .display-xl { margin-bottom: 20px; }
+.cta-band .italic-lead { max-width: 520px; margin: 0 auto 40px; }
+
+/* ── MINI DASHBOARD PREVIEW ── */
+.mini-dash {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  padding: 20px;
+}
+
+@media (max-width: 640px) { .mini-dash { grid-template-columns: 1fr; } }
+
+.mini-card {
+  border: 1px solid var(--rule);
+  border-radius: 14px;
+  padding: 16px 18px;
+  background: rgba(10,10,14,0.6);
+}
+
+.mini-label { font-family: var(--f-mono); font-size: 8px; letter-spacing: 0.26em; color: rgba(200,168,255,0.55); text-transform: uppercase; margin-bottom: 8px; }
+.mini-val { font-size: 13px; font-weight: 600; color: var(--bone); }
+.mini-sub { font-size: 11px; color: var(--bone-dim); margin-top: 4px; }
+
+.week-row {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+  padding: 16px 20px;
+}
+
+.week-day {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  padding: 10px 4px;
+  border-radius: 10px;
+  border: 1px solid var(--rule);
+  background: rgba(10,10,14,0.5);
+}
+
+.week-day.today {
+  border-color: rgba(153,102,255,0.45);
+  background: rgba(153,102,255,0.1);
+}
+
+.wd-name { font-family: var(--f-mono); font-size: 8px; letter-spacing: 0.12em; color: var(--bone-faint); text-transform: uppercase; }
+.wd-num  { font-size: 14px; font-weight: 600; color: var(--bone); }
+.wd-moon { font-size: 11px; }
+
+.bar-stack { display: flex; flex-direction: column; gap: 3px; width: 100%; padding: 0 6px; margin-top: 4px; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="wrap">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">
+        <svg class="nav-logo-mark" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="28" height="28" rx="7" fill="#0A0A0E"/>
+          <polygon points="14,3.5 3.5,24.5 24.5,24.5" fill="#9966FF" opacity="0.85"/>
+          <polygon points="14,3.5 3.5,24.5 24.5,24.5" fill="none" stroke="#c8a8ff" stroke-width="0.6" stroke-linejoin="round" opacity="0.5"/>
+          <circle cx="14" cy="3.5" r="1.2" fill="#e0ccff" opacity="0.9"/>
+        </svg>
+        KAIROS
+      </a>
+      <ul class="nav-links">
+        <li><a href="#how-it-works">How it works</a></li>
+        <li><a href="#features">Features</a></li>
+        <li><a href="pricing.html">Pricing</a></li>
+      </ul>
+      <div style="display:flex;align-items:center;gap:16px;">
+        <a href="#" class="nav-signin">Sign in</a>
+        <a href="pricing.html" class="nav-cta btn-sm">Join beta</a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="wrap">
+    <div class="hero-eyebrow">
+      <span class="pill pill-violet"><span class="pill-dot"></span>Founding Beta · Now Open</span>
+    </div>
+
+    <h1 class="hero-title">Plan with your<br>real timing.</h1>
+
+    <p class="hero-sub">A personalized planning system built around your goals, cycles, and the actual sky — not a generic template.</p>
+
+    <div class="hero-ctas">
+      <a href="pricing.html" class="btn-primary">Join the Founding Beta</a>
+      <a href="#demo" class="btn-ghost">See a real demo →</a>
+    </div>
+
+    <div class="hero-stats">
+      <div class="stat-chip" style="padding-right:32px;border-right:1px solid var(--rule);">
+        <span class="stat-val">52</span>
+        <span class="stat-label">weeks mapped to your chart</span>
+      </div>
+      <div class="stat-chip" style="padding:0 32px;border-right:1px solid var(--rule);">
+        <span class="stat-val">10</span>
+        <span class="stat-label">natal placements synthesized</span>
+      </div>
+      <div class="stat-chip" style="padding-left:32px;">
+        <span class="stat-val">1</span>
+        <span class="stat-label">plan that is actually yours</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BELT -->
+<div class="belt">
+  <div class="wrap">
+    <div class="belt-inner">
+      <div class="belt-item"><span class="belt-dot"></span><span class="belt-text">Natal chart synthesis</span></div>
+      <div class="belt-item"><span class="belt-dot"></span><span class="belt-text">Live planetary transits</span></div>
+      <div class="belt-item"><span class="belt-dot"></span><span class="belt-text">Personalized blueprint</span></div>
+      <div class="belt-item"><span class="belt-dot"></span><span class="belt-text">Week Pulse</span></div>
+      <div class="belt-item"><span class="belt-dot"></span><span class="belt-text">The Oracle</span></div>
+      <div class="belt-item"><span class="belt-dot"></span><span class="belt-text">Journal intelligence</span></div>
+      <div class="belt-item"><span class="belt-dot"></span><span class="belt-text">Sky-pattern memory</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- PREMISE -->
+<section class="section">
+  <div class="wrap">
+    <div style="display:grid;grid-template-columns:1.1fr 0.9fr;gap:5px;align-items:stretch;">
+      <div class="panel panel-glow" style="padding:44px 48px;">
+        <p class="eyebrow" style="margin-bottom:18px;">The premise</p>
+        <h2 class="display-lg" style="margin-bottom:22px;">Most planning tools assume every week should look the same.</h2>
+        <div style="display:flex;flex-direction:column;gap:14px;">
+          <p class="body-lg">They assume progress should be linear, energy should always be available, and the answer to feeling disconnected is usually just more discipline.</p>
+          <p class="body-lg">Kairos starts from a different premise. It helps you understand where you are, what matters now, and how to work with your goals, timing, and natural rhythms more intelligently.</p>
+          <p style="font-family:var(--f-italic);font-style:italic;font-size:17px;color:var(--bone-dim);line-height:1.6;border-left:2px solid rgba(153,102,255,0.4);padding-left:18px;margin-top:8px;">This is not about forcing more out of yourself. It is about planning with more context, more self-understanding, and more respect for the reality that life moves in seasons.</p>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:5px;">
+        <div class="panel panel-soft" style="padding:28px 32px;flex:1;">
+          <p class="kicker" style="margin-bottom:10px;">Not this</p>
+          <ul class="checklist" style="gap:12px;">
+            <li><span style="width:16px;height:16px;flex-shrink:0;border-radius:50%;border:1px solid rgba(255,80,80,0.3);display:flex;align-items:center;justify-content:center;margin-top:2px;"><svg viewBox="0 0 8 8" fill="none"><line x1="2" y1="2" x2="6" y2="6" stroke="#ff6666" stroke-width="1.2" stroke-linecap="round"/><line x1="6" y1="2" x2="2" y2="6" stroke="#ff6666" stroke-width="1.2" stroke-linecap="round"/></svg></span>Generic weekly templates</li>
+            <li><span style="width:16px;height:16px;flex-shrink:0;border-radius:50%;border:1px solid rgba(255,80,80,0.3);display:flex;align-items:center;justify-content:center;margin-top:2px;"><svg viewBox="0 0 8 8" fill="none"><line x1="2" y1="2" x2="6" y2="6" stroke="#ff6666" stroke-width="1.2" stroke-linecap="round"/><line x1="6" y1="2" x2="2" y2="6" stroke="#ff6666" stroke-width="1.2" stroke-linecap="round"/></svg></span>Hustle culture dressed as productivity</li>
+            <li><span style="width:16px;height:16px;flex-shrink:0;border-radius:50%;border:1px solid rgba(255,80,80,0.3);display:flex;align-items:center;justify-content:center;margin-top:2px;"><svg viewBox="0 0 8 8" fill="none"><line x1="2" y1="2" x2="6" y2="6" stroke="#ff6666" stroke-width="1.2" stroke-linecap="round"/><line x1="6" y1="2" x2="2" y2="6" stroke="#ff6666" stroke-width="1.2" stroke-linecap="round"/></svg></span>Sun-sign horoscopes</li>
+            <li><span style="width:16px;height:16px;flex-shrink:0;border-radius:50%;border:1px solid rgba(255,80,80,0.3);display:flex;align-items:center;justify-content:center;margin-top:2px;"><svg viewBox="0 0 8 8" fill="none"><line x1="2" y1="2" x2="6" y2="6" stroke="#ff6666" stroke-width="1.2" stroke-linecap="round"/><line x1="6" y1="2" x2="2" y2="6" stroke="#ff6666" stroke-width="1.2" stroke-linecap="round"/></svg></span>Plans that ignore your energy</li>
+          </ul>
+        </div>
+        <div class="panel panel-soft" style="padding:28px 32px;flex:1;border-color:rgba(153,102,255,0.2);">
+          <p class="kicker" style="margin-bottom:10px;color:var(--k);">This</p>
+          <ul class="checklist">
+            <li><span class="check-icon"><svg viewBox="0 0 8 8" fill="none"><path d="M1.5 4L3.2 5.8L6.5 2.5" stroke="#9966FF" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Your full natal chart, synthesized</li>
+            <li><span class="check-icon"><svg viewBox="0 0 8 8" fill="none"><path d="M1.5 4L3.2 5.8L6.5 2.5" stroke="#9966FF" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Real planetary transits for your year</li>
+            <li><span class="check-icon"><svg viewBox="0 0 8 8" fill="none"><path d="M1.5 4L3.2 5.8L6.5 2.5" stroke="#9966FF" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Your goals in your own words</li>
+            <li><span class="check-icon"><svg viewBox="0 0 8 8" fill="none"><path d="M1.5 4L3.2 5.8L6.5 2.5" stroke="#9966FF" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Named activation &amp; rest windows</li>
+            <li><span class="check-icon"><svg viewBox="0 0 8 8" fill="none"><path d="M1.5 4L3.2 5.8L6.5 2.5" stroke="#9966FF" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>An Oracle that already knows your context</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="section" id="how-it-works">
+  <div class="wrap">
+    <p class="eyebrow" style="margin-bottom:14px;">How it works</p>
+    <h2 class="display-lg" style="max-width:600px;margin-bottom:48px;">Your chart and your answers go through the same engine — together.</h2>
+
+    <div class="steps-grid">
+      <div class="step-card">
+        <div class="step-num" style="color:var(--k);">01</div>
+        <div class="step-title">Birth data → natal chart</div>
+        <div class="step-body">Your birth date, time, and location produce a real natal chart: ten planetary positions, Whole Sign house placements, and a precise snapshot of the sky at the moment you were born.</div>
+      </div>
+      <div class="step-card">
+        <div class="step-num" style="color:var(--plum);">02</div>
+        <div class="step-title">Your year → live transits</div>
+        <div class="step-body">Kairos calculates the actual planetary positions for every day of your year. Where is Saturn right now relative to your natal Venus? When does Jupiter cross your Moon?</div>
+      </div>
+      <div class="step-card">
+        <div class="step-num" style="color:var(--moss);">03</div>
+        <div class="step-title">Your answers → layered intent</div>
+        <div class="step-body">Your goals in your own words, what you want to release, your energy cycle rhythm — they become the second load-bearing layer the engine reads alongside your chart.</div>
+      </div>
+      <div class="step-card">
+        <div class="step-num" style="color:var(--ember);">04</div>
+        <div class="step-title">Synthesis → your blueprint</div>
+        <div class="step-body">An AI reads your chart and your answers together. The result: 52 weeks, 12 months, 4 quarters, named activation windows, named rest periods, and a year theme that is about you specifically.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DEMO PREVIEW -->
+<section class="section" id="demo">
+  <div class="wrap">
+    <p class="eyebrow" style="margin-bottom:14px;">Demo preview</p>
+    <h2 class="display-lg" style="max-width:580px;margin-bottom:10px;">This is what your actual dashboard looks like.</h2>
+    <p class="body-lg" style="max-width:560px;margin-bottom:40px;">Every element is pulled from a fictional person's real natal chart and 2026 transits. The layout and data structure is exactly what you'll see when you log in.</p>
+
+    <div class="demo-chrome">
+      <div class="demo-bar">
+        <div class="demo-dots"><span></span><span></span><span></span></div>
+        <span class="demo-label">Kairos · Your Dashboard</span>
+        <span class="pill pill-violet" style="font-size:9px;"><span class="pill-dot"></span>Demo</span>
+      </div>
+
+      <!-- Top hero bar -->
+      <div style="padding:20px 20px 0;">
+        <div class="panel panel-glow" style="padding:28px 32px;">
+          <div style="display:grid;grid-template-columns:1.3fr 0.7fr;gap:20px;align-items:start;">
+            <div>
+              <p class="kicker" style="margin-bottom:10px;">Kairos Life OS · 2026</p>
+              <h3 style="font-family:var(--f-display);font-size:clamp(20px,2.8vw,32px);letter-spacing:0.06em;color:var(--bone);line-height:1.1;margin-bottom:12px;">Alex, your year runs on timing first.</h3>
+              <p class="body-sm">The Year of Deliberate Expression — Saturn's trine to your Midheaven opens the year with structural clarity, and Jupiter's conjunction to your natal Moon brings an expansive Q2 unlike anything in the last 12 years.</p>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:10px;">
+              <div class="panel-soft" style="border-radius:12px;padding:14px 16px;border:1px solid var(--rule);">
+                <p class="kicker" style="margin-bottom:7px;">Today</p>
+                <p style="font-size:13px;font-weight:600;color:var(--bone);">🌙 Moon in Cancer 22°</p>
+                <p class="body-sm" style="margin-top:4px;">Sun in Taurus 2° · 4 active transits</p>
+              </div>
+              <div class="panel-soft" style="border-radius:12px;padding:14px 16px;border:1px solid var(--rule);">
+                <p class="kicker" style="margin-bottom:7px;">Year word</p>
+                <p style="font-size:13px;font-weight:600;color:var(--bone);">Expression + Renewal</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Week pulse -->
+      <div style="padding:12px 20px 0;">
+        <div class="panel-inline" style="border:1px solid var(--rule);border-radius:16px;overflow:hidden;">
+          <div style="padding:16px 20px 10px;border-bottom:1px solid var(--rule);">
+            <p class="kicker">Week Pulse · Apr 21 — Jupiter window</p>
+          </div>
+          <div class="week-row">
+            <div class="week-day"><span class="wd-name">Mon</span><span class="wd-num">21</span><span class="wd-moon">🌙</span><div class="bar-stack"><div class="bar-track"><div class="bar-fill" style="width:72%;background:var(--k);"></div></div><div class="bar-track"><div class="bar-fill" style="width:24%;background:var(--plum);"></div></div></div></div>
+            <div class="week-day today"><span class="wd-name">Tue</span><span class="wd-num">22</span><span class="wd-moon">🌙</span><div class="bar-stack"><div class="bar-track"><div class="bar-fill" style="width:68%;background:var(--k);"></div></div><div class="bar-track"><div class="bar-fill" style="width:28%;background:var(--plum);"></div></div></div></div>
+            <div class="week-day"><span class="wd-name">Wed</span><span class="wd-num">23</span><span class="wd-moon">🌒</span><div class="bar-stack"><div class="bar-track"><div class="bar-fill" style="width:55%;background:var(--k);"></div></div><div class="bar-track"><div class="bar-fill" style="width:35%;background:var(--plum);"></div></div></div></div>
+            <div class="week-day"><span class="wd-name">Thu</span><span class="wd-num">24</span><span class="wd-moon">🌒</span><div class="bar-stack"><div class="bar-track"><div class="bar-fill" style="width:85%;background:var(--k);"></div></div><div class="bar-track"><div class="bar-fill" style="width:18%;background:var(--plum);"></div></div></div></div>
+            <div class="week-day"><span class="wd-name">Fri</span><span class="wd-num">25</span><span class="wd-moon">🌓</span><div class="bar-stack"><div class="bar-track"><div class="bar-fill" style="width:65%;background:var(--k);"></div></div><div class="bar-track"><div class="bar-fill" style="width:22%;background:var(--plum);"></div></div></div></div>
+            <div class="week-day"><span class="wd-name">Sat</span><span class="wd-num">26</span><span class="wd-moon">🌔</span><div class="bar-stack"><div class="bar-track"><div class="bar-fill" style="width:38%;background:var(--k);"></div></div><div class="bar-track"><div class="bar-fill" style="width:48%;background:var(--plum);"></div></div></div></div>
+            <div class="week-day"><span class="wd-name">Sun</span><span class="wd-num">27</span><span class="wd-moon">🌔</span><div class="bar-stack"><div class="bar-track"><div class="bar-fill" style="width:22%;background:var(--k);"></div></div><div class="bar-track"><div class="bar-fill" style="width:55%;background:var(--plum);"></div></div></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3 lanes -->
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;padding:12px 20px 20px;">
+        <div class="panel-inline" style="padding:18px 20px;border:1px solid rgba(153,102,255,0.25);background:rgba(153,102,255,0.07);">
+          <p class="kicker" style="margin-bottom:8px;color:rgba(200,168,255,0.8);">Primary · 60%</p>
+          <p style="font-size:16px;font-weight:700;color:var(--bone);margin-bottom:8px;">Creative Projects</p>
+          <p class="body-sm">Saturn's structural backing and Jupiter's expansive reach active simultaneously — a combination that appears rarely. What you build here is built to last.</p>
+        </div>
+        <div class="panel-inline" style="padding:18px 20px;border:1px solid rgba(124,236,224,0.2);background:rgba(124,236,224,0.06);">
+          <p class="kicker" style="margin-bottom:8px;color:rgba(124,236,224,0.7);">Tending · 30%</p>
+          <p style="font-size:16px;font-weight:700;color:var(--bone);margin-bottom:8px;">Restoration rhythm</p>
+          <p class="body-sm">The Moon transiting Cancer activates your natal Moon. Your tending lane this week: rest, nourishment, and the conditions that make sustained creative work possible.</p>
+        </div>
+        <div class="panel-inline" style="padding:18px 20px;border:1px solid var(--rule);">
+          <p class="kicker" style="margin-bottom:8px;">Depth · 10%</p>
+          <p style="font-size:16px;font-weight:700;color:var(--bone);margin-bottom:8px;">Philosophy + music</p>
+          <p class="body-sm">The study focus you named during onboarding. The depth lane accumulates slowly at the edge of attention — not a project to complete, but an orientation that compounds.</p>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:20px;text-align:center;">
+      <a href="dashboard.html" class="btn-ghost">Explore full dashboard demo →</a>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES GRID -->
+<section class="section" id="features">
+  <div class="wrap">
+    <p class="eyebrow" style="margin-bottom:14px;">What's inside</p>
+    <h2 class="display-lg" style="max-width:560px;margin-bottom:48px;">Four tools. One coherent system.</h2>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:5px;">
+      <!-- Blueprint -->
+      <a href="blueprint.html" style="display:block;">
+        <div class="panel panel-soft" style="padding:36px 40px;height:100%;transition:border-color 0.2s;border-color:rgba(153,102,255,0.15);" onmouseover="this.style.borderColor='rgba(153,102,255,0.4)'" onmouseout="this.style.borderColor='rgba(153,102,255,0.15)'">
+          <div style="width:42px;height:42px;border-radius:12px;border:1px solid rgba(153,102,255,0.35);background:rgba(153,102,255,0.12);display:flex;align-items:center;justify-content:center;margin-bottom:20px;">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3" y="3" width="14" height="14" rx="2" stroke="#9966FF" stroke-width="1.4"/><line x1="3" y1="7" x2="17" y2="7" stroke="#9966FF" stroke-width="1" opacity="0.5"/><line x1="6" y1="11" x2="14" y2="11" stroke="#9966FF" stroke-width="1" opacity="0.4"/><line x1="6" y1="14" x2="11" y2="14" stroke="#9966FF" stroke-width="1" opacity="0.3"/></svg>
+          </div>
+          <p class="kicker" style="margin-bottom:10px;">Blueprint</p>
+          <h3 class="display-sm" style="margin-bottom:12px;">Your year, fully mapped</h3>
+          <p class="body-sm">52 weeks, 12 months, 4 quarters. Named activation windows and rest periods. A year theme that is about you specifically — not your sign.</p>
+          <p style="font-size:12px;color:var(--k);margin-top:18px;letter-spacing:0.04em;">Explore Blueprint →</p>
+        </div>
+      </a>
+
+      <!-- Oracle -->
+      <a href="oracle.html" style="display:block;">
+        <div class="panel panel-soft" style="padding:36px 40px;height:100%;transition:border-color 0.2s;border-color:rgba(184,153,255,0.12);" onmouseover="this.style.borderColor='rgba(184,153,255,0.4)'" onmouseout="this.style.borderColor='rgba(184,153,255,0.12)'">
+          <div style="width:42px;height:42px;border-radius:12px;border:1px solid rgba(184,153,255,0.3);background:rgba(184,153,255,0.1);display:flex;align-items:center;justify-content:center;margin-bottom:20px;">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="6" stroke="#b899ff" stroke-width="1.4"/><circle cx="10" cy="10" r="2.5" fill="#b899ff" opacity="0.6"/><circle cx="10" cy="10" r="1" fill="#fff" opacity="0.9"/></svg>
+          </div>
+          <p class="kicker" style="margin-bottom:10px;color:rgba(184,153,255,0.7);">Oracle</p>
+          <h3 class="display-sm" style="margin-bottom:12px;">Not a chatbot — a counsel</h3>
+          <p class="body-sm">When you ask the Oracle a question, it already knows your natal chart, current transits, goals, and any journal entries you've added to its memory.</p>
+          <p style="font-size:12px;color:var(--plum);margin-top:18px;letter-spacing:0.04em;">Explore Oracle →</p>
+        </div>
+      </a>
+
+      <!-- Dashboard / Week Pulse -->
+      <a href="dashboard.html" style="display:block;">
+        <div class="panel panel-soft" style="padding:36px 40px;height:100%;transition:border-color 0.2s;border-color:rgba(124,236,224,0.1);" onmouseover="this.style.borderColor='rgba(124,236,224,0.35)'" onmouseout="this.style.borderColor='rgba(124,236,224,0.1)'">
+          <div style="width:42px;height:42px;border-radius:12px;border:1px solid rgba(124,236,224,0.28);background:rgba(124,236,224,0.08);display:flex;align-items:center;justify-content:center;margin-bottom:20px;">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="2" y="12" width="3" height="6" rx="1" fill="#7cece0" opacity="0.6"/><rect x="7" y="8" width="3" height="10" rx="1" fill="#7cece0" opacity="0.75"/><rect x="12" y="5" width="3" height="13" rx="1" fill="#7cece0" opacity="0.9"/><rect x="17" y="9" width="1" height="1" rx="0.5" fill="#7cece0"/></svg>
+          </div>
+          <p class="kicker" style="margin-bottom:10px;color:rgba(124,236,224,0.65);">Dashboard + Week Pulse</p>
+          <h3 class="display-sm" style="margin-bottom:12px;">The week at a glance</h3>
+          <p class="body-sm">Daily activation, review, and lunar-charge signals for each day. Three focus lanes — primary, tending, depth — showing where your energy belongs this week.</p>
+          <p style="font-size:12px;color:var(--moss);margin-top:18px;letter-spacing:0.04em;">Explore Dashboard →</p>
+        </div>
+      </a>
+
+      <!-- Journal -->
+      <div class="panel panel-soft" style="padding:36px 40px;border-color:rgba(255,155,43,0.1);">
+        <div style="width:42px;height:42px;border-radius:12px;border:1px solid rgba(255,155,43,0.28);background:rgba(255,155,43,0.08);display:flex;align-items:center;justify-content:center;margin-bottom:20px;">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="4" y="3" width="12" height="14" rx="2" stroke="#FF9B2B" stroke-width="1.4"/><line x1="7" y1="7.5" x2="13" y2="7.5" stroke="#FF9B2B" stroke-width="1" opacity="0.55"/><line x1="7" y1="10.5" x2="13" y2="10.5" stroke="#FF9B2B" stroke-width="1" opacity="0.4"/><line x1="7" y1="13.5" x2="10" y2="13.5" stroke="#FF9B2B" stroke-width="1" opacity="0.3"/></svg>
+        </div>
+        <p class="kicker" style="margin-bottom:10px;color:rgba(255,155,43,0.6);">Journal</p>
+        <h3 class="display-sm" style="margin-bottom:12px;">You never have to think of a prompt</h3>
+        <p class="body-sm">Every area, timing window, and week links to the journal with a prompt already written for that specific moment — one that knows your transits and your goals simultaneously.</p>
+        <p style="font-size:12px;color:var(--ember);margin-top:18px;letter-spacing:0.04em;">Journal intelligence →</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SOCIAL PROOF -->
+<section class="section">
+  <div class="wrap">
+    <p class="eyebrow" style="margin-bottom:14px;">Early voices</p>
+    <h2 class="display-md" style="max-width:500px;margin-bottom:40px;">From people in the founding beta.</h2>
+    <div class="proof-grid">
+      <div class="proof-card">
+        <p class="proof-quote">"I've tried every productivity system. Kairos is the first one that made me feel like the plan was actually mine — not a template I was supposed to fit into."</p>
+        <p class="proof-name">Maya K.</p>
+        <p class="proof-role">Designer · Founding Beta</p>
+      </div>
+      <div class="proof-card">
+        <p class="proof-quote">"The Oracle answered a question I'd been circling for weeks in two paragraphs. It referenced my journal, my chart, and a transit I'd forgotten was active. I didn't have to explain anything."</p>
+        <p class="proof-name">Daniel R.</p>
+        <p class="proof-role">Writer · Founding Beta</p>
+      </div>
+      <div class="proof-card">
+        <p class="proof-quote">"I'm not deep into astrology, but I found Kairos genuinely useful. The blueprint gave me a framework for the year that I actually refer back to."</p>
+        <p class="proof-name">Sarah L.</p>
+        <p class="proof-role">Strategist · Founding Beta</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA BAND -->
+<section class="cta-band">
+  <div class="wrap">
+    <p class="eyebrow" style="margin-bottom:16px;">Founding Beta · $19/month</p>
+    <h2 class="display-xl">You don't need another<br>system that asks you to<br>override yourself.</h2>
+    <p class="italic-lead" style="margin-top:20px;">You may need one that helps you understand where you are, what this season is asking of you, and how to move with more clarity.</p>
+    <div style="display:flex;align-items:center;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:40px;">
+      <a href="pricing.html" class="btn-primary" style="font-size:15px;padding:16px 36px;">Join the Founding Beta</a>
+      <a href="pricing.html" class="btn-ghost" style="font-size:15px;padding:16px 28px;">See pricing →</a>
+    </div>
+    <p class="mono-sm" style="margin-top:24px;">Limited founding beta seats · $19/month · Cancel any time</p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <span class="footer-logo">KAIROS</span>
+        <span class="footer-sub">Part of the Project Parallax ecosystem</span>
+      </div>
+      <ul class="footer-links">
+        <li><a href="pricing.html">Pricing</a></li>
+        <li><a href="dashboard.html">Dashboard demo</a></li>
+        <li><a href="blueprint.html">Blueprint demo</a></li>
+        <li><a href="oracle.html">Oracle demo</a></li>
+        <li><a href="#">Privacy</a></li>
+        <li><a href="#">Terms</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

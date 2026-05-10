@@ -1,0 +1,676 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Kairos × Chronos — boundary worksheet</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&family=Kalam:wght@300;400;700&family=Space+Grotesk:wght@300;400;500;600;700&family=Cinzel:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Fira+Mono:wght@400;500&display=swap');
+
+  :root {
+    --paper:#F4F1E8; --ink:#1B1815; --ink-soft:#3A3530; --ink-faint:#8A847A; --ink-veil:rgba(27,24,21,0.18);
+    --hand:'Kalam',cursive; --hand-bold:'Caveat',cursive;
+    --margin-red:#B43A2A; --accent-blue:#2E5BFF;
+    --candy-cyan:#2BD9E8; --candy-butter:#F5D86C; --candy-amber:#F0A858; --candy-coral:#FF8B6E; --candy-pink:#FF6FB5; --candy-rose:#E94B7A; --candy-iris:#7E5AD6; --candy-lime:#C8E84B;
+    --bone:#F2EFE6; --void:#0E1622;
+    --chronos-warm:#F0A858; --kairos-cool:#2BD9E8;
+  }
+  html, body { color: var(--ink); }
+  body {
+    background: var(--paper);
+    background-image:
+      linear-gradient(rgba(27,24,21,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(27,24,21,0.04) 1px, transparent 1px);
+    background-size: 28px 28px;
+    font-family: var(--hand); font-size: 17px; line-height: 1.5; margin: 0;
+  }
+  .page { max-width: 1280px; margin: 0 auto; padding: 56px 56px 120px; position: relative; }
+  .page::before { content:''; position:absolute; left:92px; top:0; bottom:0; width:1px; background:var(--margin-red); opacity:0.4; }
+
+  h1.cover-title { font-family: var(--hand-bold); font-size: 64px; font-weight: 700; line-height: 1; margin: 0 0 8px; transform: rotate(-1deg); }
+  .cover-meta { font-family: var(--hand); font-size: 14px; color: var(--ink-faint); letter-spacing: 0.05em; margin: 0; }
+  .cover-sub { font-size: 21px; color: var(--ink-soft); margin: 4px 0 0; }
+  h2.section { font-family: var(--hand-bold); font-size: 40px; font-weight: 700; line-height: 1.05; margin: 72px 0 4px; transform: rotate(-0.4deg); }
+  h2.section .num { color: var(--margin-red); font-size: 26px; margin-right: 12px; vertical-align: 6px; }
+  .section-sub { font-size: 18px; color: var(--ink-soft); margin: 0 0 28px; max-width: 880px; }
+  h3.sub { font-family: var(--hand-bold); font-size: 26px; margin: 32px 0 8px; transform: rotate(-0.3deg); }
+  .pen-blue { color: var(--accent-blue); }
+  em.under { font-style:normal; color: var(--accent-blue); border-bottom: 1px solid var(--accent-blue); }
+  .crossed { text-decoration: line-through; text-decoration-color: var(--margin-red); text-decoration-thickness: 2px; color: var(--ink-faint); }
+
+  .callout { border: 1.5px dashed var(--margin-red); border-radius: 6px; padding: 14px 18px; background: rgba(180,58,42,0.05); margin: 18px 0; font-size: 16px; color: var(--ink-soft); }
+  .callout strong { color: var(--margin-red); font-family: var(--hand-bold); font-weight: 700; font-size: 18px; }
+  .break { display:flex; align-items:center; gap:12px; margin:56px 0 24px; color: var(--ink-faint); font-size: 13px; letter-spacing: 0.2em; text-transform: uppercase; }
+  .break::before, .break::after { content:''; flex:1; height:1px; background: repeating-linear-gradient(90deg, var(--ink-faint) 0 6px, transparent 6px 12px); opacity: 0.5; }
+  .cover-card { border: 2px solid var(--ink); border-radius: 10px; padding: 28px 32px; background: rgba(255,255,255,0.55); position: relative; max-width: 940px; }
+  .cover-stamp { position: absolute; top: 22px; right: 28px; font-size: 12px; color: var(--margin-red); border: 1.5px dashed var(--margin-red); padding: 5px 10px; border-radius: 4px; transform: rotate(4deg); letter-spacing: 0.05em; }
+  .cover-thesis { margin: 8px 0 0; font-size: 16px; line-height: 1.55; color: var(--ink-soft); max-width: 820px; }
+
+  /* ─── DIAGRAM 01 — the misread ─── */
+  .vs { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 14px; }
+  .vs-cell { border: 1.5px solid var(--ink); border-radius: 10px; padding: 22px 24px; background: rgba(255,255,255,0.5); position: relative; }
+  .vs-cell h4 { font-family: var(--hand-bold); font-size: 24px; margin: 0 0 4px; }
+  .vs-cell .gloss { font-family: 'Cinzel', serif; font-size: 11px; letter-spacing: 0.3em; color: var(--ink-faint); text-transform: uppercase; margin-bottom: 8px; }
+  .vs-cell ul { margin: 8px 0 0 18px; padding: 0; font-size: 15px; color: var(--ink-soft); line-height: 1.55; }
+  .vs-cell.bad { border-color: var(--margin-red); background: rgba(180,58,42,0.05); }
+  .vs-cell.bad::after { content:'old read'; position:absolute; top: -10px; right: 18px; background: var(--margin-red); color: var(--paper); font-family:'Fira Mono',monospace; font-size:10px; padding: 3px 10px; border-radius: 3px; letter-spacing: 0.1em; }
+  .vs-cell.good::after { content:'real read'; position:absolute; top: -10px; right: 18px; background: var(--ink); color: var(--paper); font-family:'Fira Mono',monospace; font-size:10px; padding: 3px 10px; border-radius: 3px; letter-spacing: 0.1em; }
+
+  /* ─── DIAGRAM 02 — boundary stack ─── */
+  .arch { border: 2px solid var(--ink); border-radius: 12px; padding: 28px 28px 24px; background: rgba(255,255,255,0.55); position: relative; }
+  .arch-title { font-family:'Fira Mono',monospace; font-size: 11px; letter-spacing: 0.3em; color: var(--margin-red); text-transform:uppercase; margin-bottom: 12px; }
+  .arch h3 { font-family: var(--hand-bold); font-size: 28px; margin: 0; }
+  .arch p.lead { font-size: 16px; color: var(--ink-soft); margin: 6px 0 22px; }
+
+  .stack { display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
+  .surf { padding: 22px 24px 26px; position: relative; min-height: 280px; border-radius: 10px; }
+  .surf.kairos { background: linear-gradient(160deg, #DCEEF2, #BEE3F2); border: 2px solid var(--ink); margin-right: -1px; border-top-right-radius: 0; border-bottom-right-radius: 0; }
+  .surf.chronos { background: linear-gradient(160deg, #FFE8B8, #F5C97E); border: 2px solid var(--ink); margin-left: -1px; border-top-left-radius: 0; border-bottom-left-radius: 0; }
+
+  .surf .label { display: flex; align-items: baseline; gap: 12px; margin-bottom: 4px; }
+  .surf .name { font-family: 'Cinzel', serif; font-weight: 600; font-size: 26px; letter-spacing: 0.12em; color: var(--ink); }
+  .surf .greek { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 15px; color: var(--ink-soft); }
+  .surf .strap { font-size: 16px; color: var(--ink-soft); margin: 4px 0 16px; max-width: 380px; }
+  .surf .verb-list { font-size: 15px; color: var(--ink); line-height: 1.6; }
+  .surf .verb-list li { margin-bottom: 4px; }
+  .surf .icon { position: absolute; top: 22px; right: 24px; }
+
+  .spine {
+    margin: 18px 0 0;
+    border: 2px dashed var(--ink);
+    border-radius: 10px;
+    padding: 18px 22px;
+    background: rgba(255,255,255,0.6);
+    position: relative;
+  }
+  .spine::before {
+    content: '⌃';
+    position: absolute; top: -18px; left: 50%; transform: translateX(-50%);
+    font-size: 32px; color: var(--ink); background: var(--paper); padding: 0 8px;
+  }
+  .spine-title { font-family:'Fira Mono',monospace; font-size: 11px; letter-spacing: 0.3em; color: var(--ink-soft); text-transform:uppercase; margin-bottom: 6px; }
+  .spine h4 { font-family: var(--hand-bold); font-size: 22px; margin: 0 0 6px; }
+  .spine .grid4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 10px; }
+  .spine .grid4 .cell { border: 1px solid var(--ink-veil); border-radius: 6px; padding: 8px 10px; background: rgba(255,255,255,0.5); font-size: 13px; line-height: 1.35; color: var(--ink-soft); }
+  .spine .grid4 .cell strong { display: block; font-family: var(--hand-bold); font-weight: 700; color: var(--ink); font-size: 15px; }
+
+  /* ─── flow diagram ─── */
+  .flow {
+    margin-top: 28px;
+    padding: 18px 18px 12px;
+    border: 1.5px solid var(--ink-veil); border-radius: 10px;
+    background: rgba(255,255,255,0.4);
+  }
+  .flow-title { font-family:'Fira Mono',monospace; font-size: 10px; letter-spacing: 0.3em; color: var(--ink-faint); text-transform:uppercase; margin-bottom: 10px; }
+  .flow svg { width: 100%; height: auto; display: block; }
+  .flow .legend { display:flex; gap: 22px; margin-top: 10px; font-size: 13px; color: var(--ink-soft); flex-wrap: wrap; }
+  .flow .legend .swatch { display: inline-block; width: 14px; height: 4px; border-radius: 2px; vertical-align: middle; margin-right: 6px; }
+
+  /* ─── module map ─── */
+  .modmap { display: grid; grid-template-columns: 1fr; gap: 8px; margin-top: 10px; }
+  .modrow { display: grid; grid-template-columns: 220px 1fr 1fr; gap: 10px; align-items: stretch; }
+  .modrow .modname { font-family: var(--hand-bold); font-size: 18px; padding: 12px 14px; border: 1.5px solid var(--ink); border-radius: 8px; background: rgba(255,255,255,0.55); display: flex; flex-direction: column; justify-content: center; }
+  .modrow .modname .src { font-family:'Fira Mono',monospace; font-size: 9px; color: var(--ink-faint); letter-spacing: 0.18em; text-transform: uppercase; }
+  .modcell { padding: 10px 14px; border: 1.5px solid var(--ink); border-radius: 8px; font-size: 14px; line-height: 1.5; color: var(--ink-soft); position: relative; }
+  .modcell.k { background: linear-gradient(160deg, rgba(43,217,232,0.18), rgba(43,217,232,0.05)); }
+  .modcell.c { background: linear-gradient(160deg, rgba(240,168,88,0.20), rgba(240,168,88,0.05)); }
+  .modcell.both { background: repeating-linear-gradient(45deg, rgba(43,217,232,0.10) 0 12px, rgba(240,168,88,0.10) 12px 24px); }
+  .modcell.none { background: rgba(255,255,255,0.3); color: var(--ink-faint); }
+  .modcell.k::before, .modcell.c::before, .modcell.both::before, .modcell.none::before {
+    content: ''; position:absolute; top: -8px; left: 12px;
+    font-family:'Fira Mono',monospace; font-size: 9px; padding: 2px 8px; letter-spacing: 0.12em;
+    background: var(--paper); border-radius: 3px;
+  }
+  .modcell.k::before { content:'KAIROS · now'; color: #0d8a96; border:1px solid #0d8a96; }
+  .modcell.c::before { content:'CHRONOS · record'; color: #a86c30; border:1px solid #a86c30; }
+  .modcell.both::before { content:'BOTH'; color: var(--ink); border:1px solid var(--ink); }
+  .modcell.none::before { content:'NEITHER (yet)'; color: var(--ink-faint); border:1px solid var(--ink-faint); }
+  .modhead { display: grid; grid-template-columns: 220px 1fr 1fr; gap: 10px; margin-bottom: 6px; font-family:'Fira Mono',monospace; font-size: 10px; letter-spacing: 0.25em; text-transform:uppercase; color: var(--margin-red); }
+  .modhead > div { padding-left: 4px; }
+
+  /* ─── packaging options ─── */
+  .opts { display: grid; grid-template-columns: 1fr; gap: 16px; margin-top: 18px; }
+  .opt {
+    border: 1.5px solid var(--ink); border-radius: 10px;
+    background: rgba(255,255,255,0.55);
+    padding: 22px 26px;
+    position: relative;
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 24px;
+    align-items: start;
+  }
+  .opt.pick { box-shadow: 0 0 0 2px var(--margin-red), 0 0 0 4px var(--paper); }
+  .opt-tag { position: absolute; top: -10px; left: 24px; background: var(--ink); color: var(--paper); font-family:'Fira Mono',monospace; font-size: 10px; padding: 3px 10px; border-radius: 3px; letter-spacing: 0.12em; }
+  .opt.pick .opt-tag { background: var(--margin-red); }
+  .opt h4 { font-family: var(--hand-bold); font-size: 26px; margin: 4px 0 4px; }
+  .opt .opt-strap { font-size: 14px; color: var(--ink-faint); font-family:'Fira Mono',monospace; letter-spacing: 0.06em; text-transform: uppercase; }
+  .opt .pros, .opt .cons { font-size: 14px; line-height: 1.55; color: var(--ink-soft); }
+  .opt .pros li::marker, .opt .cons li::marker { font-size: 14px; }
+  .opt .body { font-size: 16px; color: var(--ink); line-height: 1.55; margin: 8px 0 12px; }
+  .opt .pc { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .opt .pc h5 { font-family:'Fira Mono',monospace; font-size: 10px; letter-spacing: 0.25em; color: var(--margin-red); margin: 0 0 4px; }
+  .opt ul { margin: 4px 0 0 18px; padding: 0; }
+
+  /* ─── option illustrations ─── */
+  .opt-ill { aspect-ratio: 1.05/1; background: var(--bone); border: 1.5px solid var(--ink); border-radius: 8px; padding: 14px; position: relative; overflow: hidden; }
+  .opt-ill svg { width: 100%; height: 100%; display: block; }
+
+  /* ─── decision support ─── */
+  .ask { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 16px; }
+  .ask-card { border: 1.5px solid var(--ink); border-radius: 8px; padding: 16px 20px; background: rgba(255,255,255,0.5); }
+  .ask-card .q { font-family: var(--hand-bold); font-size: 19px; margin-bottom: 4px; }
+  .ask-card .why { font-size: 13px; color: var(--ink-faint); }
+
+  /* ─── sigil ─── */
+  .sigil { display: inline-flex; align-items: center; justify-content: center; vertical-align: middle; }
+
+  @media (max-width: 1100px) {
+    .stack { grid-template-columns: 1fr; }
+    .surf.kairos, .surf.chronos { margin: 0; border-radius: 10px; }
+    .modrow, .modhead { grid-template-columns: 1fr; }
+    .opt { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- ════════════════ COVER ════════════════ -->
+  <section class="cover">
+    <p class="cover-meta">SKETCHBOOK — VOL. 05 · BOUNDARY WORKSHEET · APR 2026</p>
+    <h1 class="cover-title">Kairos × Chronos — what is each, and where does each stop?</h1>
+    <p class="cover-sub">Sorting <em class="under">function</em> from <em class="under">name</em> · re-reading the bible · drawing the line.</p>
+
+    <div class="cover-card" style="margin-top:22px;">
+      <span class="cover-stamp">v5 · WORKSHEET</span>
+      <h3 class="sub" style="margin-top:0;">Notes from the desk</h3>
+      <p class="cover-thesis"><em>The bible only mentions one product:</em> Stelloquy. Six modules under it. Kairos and Chronos
+        showed up in branding rounds — never in the spec. So before we draw the line we have to ask:
+        <strong>are they two products, or two surfaces of one?</strong></p>
+      <p class="cover-thesis"><em>Your answers told me a lot.</em> Kairos = "see your day/week/year against the sky · plan." Chronos = "capture moments,
+        find your patterns over time." Same journal entries · same astrology layer · same aspects. They share <em class="under">everything</em>.</p>
+      <p class="cover-thesis"><em>The unlock:</em> the v4 metaphor isn't decorative — it's the architecture.
+        Chronos is the <strong style="color:var(--chronos-warm); -webkit-text-stroke: 0.5px var(--ink); font-family:var(--hand-bold);">horizon</strong>.
+        Kairos is the <strong style="color: var(--kairos-cool); -webkit-text-stroke: 0.5px var(--ink); font-family:var(--hand-bold);">moment something crosses it</strong>.
+        That's not a tagline. That's the system.</p>
+    </div>
+  </section>
+
+  <!-- ════════════════ 01 · THE MISREAD ════════════════ -->
+  <section>
+    <h2 class="section"><span class="num">01</span>The misread we keep falling into</h2>
+    <p class="section-sub">
+      Earlier rounds described Kairos as "the intelligence" and Chronos as "the architect / time / structure" — and that's why
+      it kept feeling wrong. Re-reading the bible plus your answers this morning: those labels don't describe what the products <em class="under">do</em>.
+    </p>
+
+    <div class="vs">
+      <div class="vs-cell bad">
+        <div class="gloss">old read · brand-side</div>
+        <h4>Kairos = "the intelligence"</h4>
+        <ul>
+          <li>positioned as a separate AI product</li>
+          <li>cobalt/cyan, "computing"</li>
+          <li>implied a chatbot surface</li>
+          <li class="crossed">Stelloquy = AI mascot bolted on top</li>
+        </ul>
+      </div>
+      <div class="vs-cell bad">
+        <div class="gloss">old read · brand-side</div>
+        <h4>Chronos = "the architect"</h4>
+        <ul>
+          <li>sacred geometry · golden ratio · structures</li>
+          <li>Cinzel · butter · "eternal"</li>
+          <li>implied a separate timekeeping app</li>
+          <li class="crossed">renamed from Stelloquy</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="vs" style="margin-top:18px;">
+      <div class="vs-cell good">
+        <div class="gloss">real read · what it does</div>
+        <h4>Kairos = the <em class="under">moment</em> surface</h4>
+        <ul>
+          <li>"how does today/this week/this year light up against my chart?"</li>
+          <li>planner · transit-aware day view · the right-now reading</li>
+          <li>creates journal entries when you click a moment</li>
+          <li>has nothing to say without your record</li>
+        </ul>
+      </div>
+      <div class="vs-cell good">
+        <div class="gloss">real read · what it does</div>
+        <h4>Chronos = the <em class="under">record</em> surface</h4>
+        <ul>
+          <li>capture observations · moods · what you noticed</li>
+          <li>auto-tagged against the sky at that moment</li>
+          <li>over time becomes <em>your</em> evidence base of patterns</li>
+          <li>has no framework without the celestial layer</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="callout">
+      <strong>The takeaway.</strong> The names are right. The <em class="under">scope</em> was wrong.
+      You weren't designing two products — you were designing the <em>now</em> face and the <em>memory</em> face of one product.
+      Stelloquy is the body. Kairos and Chronos are how it breathes in (record) and breathes out (read the moment).
+    </div>
+  </section>
+
+  <!-- ════════════════ 02 · THE ARCHITECTURE ════════════════ -->
+  <section>
+    <h2 class="section"><span class="num">02</span>The architecture · two surfaces, one spine</h2>
+    <p class="section-sub">
+      Both surfaces sit on top of <em class="under">the same shared spine</em>: your natal chart, the live ephemeris, your journal,
+      and the AI synthesis layer. Neither surface owns the data. The data is Stelloquy's. Kairos and Chronos are <em>views</em> onto it.
+    </p>
+
+    <div class="arch">
+      <div class="arch-title">// stelloquy · two surfaces, one spine</div>
+
+      <div class="stack">
+        <div class="surf kairos">
+          <div class="icon">
+            <svg width="60" height="60" viewBox="0 0 100 100">
+              <line x1="10" y1="60" x2="90" y2="60" stroke="#1B1815" stroke-width="2"/>
+              <line x1="50" y1="14" x2="50" y2="86" stroke="var(--kairos-cool)" stroke-width="6" stroke-linecap="round"/>
+              <circle cx="50" cy="60" r="5" fill="var(--candy-pink)" stroke="#1B1815" stroke-width="1.5"/>
+            </svg>
+          </div>
+          <div class="label">
+            <span class="name">KAIROS</span>
+            <span class="greek">καιρός · the right moment</span>
+          </div>
+          <p class="strap">The <em class="under">now</em> surface. Vertical. Decisive. "What's lit up today?"</p>
+          <ul class="verb-list">
+            <li>· <strong>see</strong> day / week / year against your chart</li>
+            <li>· <strong>plan</strong> around aspects (electional)</li>
+            <li>· <strong>ask</strong> "why am I feeling this?" right now</li>
+            <li>· <strong>tap</strong> a moment → opens a Chronos entry</li>
+            <li>· <strong>cast</strong> a horary on a question</li>
+            <li>· <strong>read</strong> a transit, a progression, today's sky</li>
+          </ul>
+        </div>
+
+        <div class="surf chronos">
+          <div class="icon">
+            <svg width="60" height="60" viewBox="0 0 100 100">
+              <line x1="10" y1="60" x2="90" y2="60" stroke="#1B1815" stroke-width="2"/>
+              <circle cx="32" cy="60" r="3" fill="var(--candy-pink)" stroke="#1B1815" stroke-width="1"/>
+              <circle cx="50" cy="60" r="3" fill="var(--candy-pink)" stroke="#1B1815" stroke-width="1"/>
+              <circle cx="68" cy="60" r="3" fill="var(--candy-pink)" stroke="#1B1815" stroke-width="1"/>
+              <circle cx="78" cy="38" r="6" fill="var(--candy-butter)" stroke="#1B1815" stroke-width="1"/>
+            </svg>
+          </div>
+          <div class="label">
+            <span class="name">CHRONOS</span>
+            <span class="greek">χρόνος · the river of time</span>
+          </div>
+          <p class="strap">The <em class="under">record</em> surface. Horizontal. Continuous. "What's been true for me?"</p>
+          <ul class="verb-list">
+            <li>· <strong>capture</strong> a moment / mood / observation</li>
+            <li>· <strong>tag</strong> entries to the sky automatically</li>
+            <li>· <strong>review</strong> "last time Mars hit my 10th, I felt…"</li>
+            <li>· <strong>find</strong> your personal patterns</li>
+            <li>· <strong>compare</strong> your record to world energy</li>
+            <li>· <strong>talk</strong> to Stelloquy — grounded in your record</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="spine">
+        <div class="spine-title">// shared spine · stelloquy core (neither surface owns this)</div>
+        <h4>One natal chart · one journal · one ephemeris · one AI</h4>
+        <div class="grid4">
+          <div class="cell"><strong>Natal core</strong>your birth data → the chart you always come back to</div>
+          <div class="cell"><strong>Live sky</strong>swiss ephemeris · transits · progressions · aspects</div>
+          <div class="cell"><strong>Journal</strong>every entry · auto-tagged with the sky-state when written</div>
+          <div class="cell"><strong>AI</strong>reads spine + asks "now or record?" before answering</div>
+        </div>
+      </div>
+
+      <!-- flow diagram -->
+      <div class="flow">
+        <div class="flow-title">// data flow · how the loop closes</div>
+        <svg viewBox="0 0 1200 280" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <marker id="arr-cool" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+              <path d="M0,0 L10,5 L0,10 z" fill="#0d8a96"/>
+            </marker>
+            <marker id="arr-warm" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+              <path d="M0,0 L10,5 L0,10 z" fill="#a86c30"/>
+            </marker>
+            <marker id="arr-ink" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+              <path d="M0,0 L10,5 L0,10 z" fill="#1B1815"/>
+            </marker>
+          </defs>
+
+          <!-- spine lane -->
+          <rect x="40" y="120" width="1120" height="56" rx="10" fill="rgba(255,255,255,0.6)" stroke="#1B1815" stroke-width="1.5" stroke-dasharray="4 4"/>
+          <text x="60" y="140" font-family="Fira Mono, monospace" font-size="11" fill="#8A847A" letter-spacing="2">// SPINE</text>
+          <text x="60" y="160" font-family="Kalam, cursive" font-size="16" fill="#1B1815">natal · journal · ephemeris · AI</text>
+
+          <!-- Kairos box -->
+          <rect x="40" y="20" width="320" height="80" rx="8" fill="#DCEEF2" stroke="#1B1815" stroke-width="1.5"/>
+          <text x="60" y="46" font-family="Cinzel, serif" font-weight="600" font-size="18" letter-spacing="2" fill="#1B1815">KAIROS</text>
+          <text x="60" y="68" font-family="Kalam, cursive" font-size="14" fill="#3A3530">"what's lit up right now?"</text>
+          <text x="60" y="86" font-family="Kalam, cursive" font-size="13" fill="#3A3530" font-style="italic">user reads · plans · taps a moment</text>
+
+          <!-- Chronos box -->
+          <rect x="840" y="20" width="320" height="80" rx="8" fill="#FFE8B8" stroke="#1B1815" stroke-width="1.5"/>
+          <text x="860" y="46" font-family="Cinzel, serif" font-weight="600" font-size="18" letter-spacing="2" fill="#1B1815">CHRONOS</text>
+          <text x="860" y="68" font-family="Kalam, cursive" font-size="14" fill="#3A3530">"what's been true for me?"</text>
+          <text x="860" y="86" font-family="Kalam, cursive" font-size="13" fill="#3A3530" font-style="italic">user captures · reviews · finds patterns</text>
+
+          <!-- Output: Kairos read ↑ from spine -->
+          <path d="M 200 120 C 200 110, 200 110, 200 100" stroke="#0d8a96" stroke-width="2" fill="none" marker-end="url(#arr-cool)"/>
+          <text x="210" y="115" font-family="Kalam, cursive" font-size="12" fill="#0d8a96">read sky + your record</text>
+
+          <!-- Input: Kairos creates entry ↓ to spine -->
+          <path d="M 320 100 C 320 110, 320 110, 320 120" stroke="#a86c30" stroke-width="2" fill="none" marker-end="url(#arr-warm)"/>
+          <text x="330" y="115" font-family="Kalam, cursive" font-size="12" fill="#a86c30">tap → new entry</text>
+
+          <!-- Input: Chronos write ↓ to spine -->
+          <path d="M 1000 100 C 1000 110, 1000 110, 1000 120" stroke="#a86c30" stroke-width="2" fill="none" marker-end="url(#arr-warm)"/>
+          <text x="900" y="115" font-family="Kalam, cursive" font-size="12" fill="#a86c30">write entry · tagged to sky</text>
+
+          <!-- Output: Chronos read ↑ from spine -->
+          <path d="M 880 120 C 880 110, 880 110, 880 100" stroke="#0d8a96" stroke-width="2" fill="none" marker-end="url(#arr-cool)"/>
+          <text x="780" y="115" font-family="Kalam, cursive" font-size="12" fill="#0d8a96">surface patterns</text>
+
+          <!-- Below spine: insights/AI -->
+          <rect x="380" y="200" width="440" height="60" rx="8" fill="#F4F1E8" stroke="#1B1815" stroke-width="1.5" stroke-dasharray="2 4"/>
+          <text x="600" y="222" font-family="Cinzel, serif" font-weight="600" font-size="13" letter-spacing="2" fill="#1B1815" text-anchor="middle">STELLOQUY · the AI voice</text>
+          <text x="600" y="245" font-family="Kalam, cursive" font-size="13" fill="#3A3530" text-anchor="middle">speaks in both surfaces · always grounded in the spine</text>
+
+          <path d="M 600 176 L 600 200" stroke="#1B1815" stroke-width="1.5" fill="none" marker-end="url(#arr-ink)"/>
+
+          <!-- the closure note -->
+          <text x="600" y="20" font-family="Caveat, cursive" font-weight="700" font-size="20" fill="#B43A2A" text-anchor="middle">the loop · capture in Chronos · feed insight in Kairos</text>
+        </svg>
+
+        <div class="legend">
+          <span><span class="swatch" style="background:#0d8a96;"></span>read direction (spine → surface)</span>
+          <span><span class="swatch" style="background:#a86c30;"></span>write direction (surface → spine)</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════ 03 · MODULE MAP ════════════════ -->
+  <section>
+    <h2 class="section"><span class="num">03</span>The bible's six modules · which surface owns each</h2>
+    <p class="section-sub">
+      The product bible defines six modules. None is a "product" — they're the <em class="under">jobs</em> Stelloquy does.
+      Below: which surface owns each, where they overlap, and where the work is <em>actually</em> shared.
+    </p>
+
+    <div class="modhead">
+      <div>module (from bible)</div>
+      <div>kairos surface · the now</div>
+      <div>chronos surface · the record</div>
+    </div>
+
+    <div class="modmap">
+      <div class="modrow">
+        <div class="modname">Transits & Natal<span class="src">module 1</span></div>
+        <div class="modcell k">primary home · "show me today's sky on my chart" · the day/week/year planner you described</div>
+        <div class="modcell none">past transits live here as a <em>backdrop</em> to old entries — not the focus</div>
+      </div>
+      <div class="modrow">
+        <div class="modname">Living Journal<span class="src">module 4</span></div>
+        <div class="modcell k">light footprint · "tap an aspect → seed a quick capture"</div>
+        <div class="modcell c">primary home · the river of entries · auto-tagging · the search-back-in-time experience</div>
+      </div>
+      <div class="modrow">
+        <div class="modname">Horary<span class="src">module 3</span></div>
+        <div class="modcell k">cast a chart on a question — happens in a kairotic moment</div>
+        <div class="modcell c">outcome logging · "did this prediction land?" · accumulates into the record</div>
+      </div>
+      <div class="modrow">
+        <div class="modname">Astrocartography<span class="src">module 2</span></div>
+        <div class="modcell k">"where should I be / am I" — a now-decision</div>
+        <div class="modcell c">"how did I feel last time I was on a Venus line" — record-side</div>
+      </div>
+      <div class="modrow">
+        <div class="modname">World Events<span class="src">module 5</span></div>
+        <div class="modcell both">genuinely shared. Kairos uses it to color today's read · Chronos uses it to compare your record to collective patterns</div>
+        <div></div>
+      </div>
+      <div class="modrow">
+        <div class="modname">Starseed Origins<span class="src">module 6 · post-MVP</span></div>
+        <div class="modcell c" style="grid-column: 2 / span 2;">identity layer · slow-moving · a "who am I, lineage-wise" view that lives next to the journal because it's about <em class="under">your</em> persistent picture, not today's sky</div>
+      </div>
+    </div>
+
+    <div class="callout">
+      <strong>What this tells me.</strong> The split is real <em>at the surface level</em> — different jobs, different verbs, different reasons to open the app —
+      but the bible is also right: under the hood, this is one product. Trying to ship them as two separate apps would force you to duplicate
+      auth, the chart engine, the journal, the AI, the news pipeline. <em class="under">All of it.</em> That's the boundary problem you've been feeling.
+    </div>
+  </section>
+
+  <!-- ════════════════ 04 · THREE PACKAGINGS ════════════════ -->
+  <section>
+    <h2 class="section"><span class="num">04</span>Three ways to package this · pick one</h2>
+    <p class="section-sub">
+      Same architecture, three different <em class="under">go-to-market shapes</em>. The technical answer is "one product, two surfaces."
+      The strategic question is whether you tell users that.
+    </p>
+
+    <div class="opts">
+
+      <!-- OPTION A · ONE APP, TWO MODES -->
+      <div class="opt pick">
+        <div class="opt-tag">my pick · A</div>
+        <div>
+          <div class="opt-ill">
+            <svg viewBox="0 0 220 200">
+              <!-- single phone -->
+              <rect x="60" y="20" width="100" height="160" rx="14" fill="#F4F1E8" stroke="#1B1815" stroke-width="2"/>
+              <!-- toggle bar -->
+              <rect x="68" y="32" width="84" height="22" rx="11" fill="#0E1622"/>
+              <rect x="70" y="34" width="40" height="18" rx="9" fill="#2BD9E8"/>
+              <text x="90" y="46" font-family="Cinzel, serif" font-size="8" letter-spacing="1.5" fill="#1B1815" text-anchor="middle">KAIROS</text>
+              <text x="132" y="46" font-family="Cinzel, serif" font-size="8" letter-spacing="1.5" fill="#F4F1E8" text-anchor="middle">CHRONOS</text>
+              <!-- content -->
+              <line x1="74" y1="80" x2="146" y2="80" stroke="#1B1815"/>
+              <line x1="110" y1="60" x2="110" y2="100" stroke="#2BD9E8" stroke-width="3"/>
+              <circle cx="110" cy="80" r="3" fill="#FF6FB5" stroke="#1B1815" stroke-width="0.8"/>
+              <text x="110" y="120" font-family="Kalam, cursive" font-size="9" fill="#3A3530" text-anchor="middle">today · sun trine</text>
+              <text x="110" y="135" font-family="Kalam, cursive" font-size="8" fill="#8A847A" text-anchor="middle">your venus · 14°</text>
+              <!-- bottom nav -->
+              <line x1="68" y1="158" x2="152" y2="158" stroke="#1B1815" opacity="0.3"/>
+              <circle cx="82" cy="170" r="4" fill="#1B1815"/>
+              <circle cx="110" cy="170" r="4" fill="#1B1815" opacity="0.3"/>
+              <circle cx="138" cy="170" r="4" fill="#1B1815" opacity="0.3"/>
+            </svg>
+          </div>
+        </div>
+        <div>
+          <div class="opt-strap">one product · two stances · same shell</div>
+          <h4>"Stelloquy" — and inside it, Kairos & Chronos are <em>modes</em></h4>
+          <p class="body">
+            One app. One login. Open it and there's a top-level toggle (or a tab pair, or a swipe): <strong>Kairos</strong> for today's sky · <strong>Chronos</strong> for your record.
+            Same data underneath. The names live as <em class="under">stances</em> — vocabulary the product teaches you, the way Apple taught us "Focus" or "Memoji."
+            Your sightline mark can sit at the brand level. Each mode gets a tonal shift (cool/warm) but uses the same components.
+          </p>
+          <div class="pc">
+            <div>
+              <h5>// pros</h5>
+              <ul class="pros">
+                <li>matches the bible exactly</li>
+                <li>one codebase, one auth, one funnel</li>
+                <li>data flywheel never splits</li>
+                <li>users learn one app · two beautiful words</li>
+              </ul>
+            </div>
+            <div>
+              <h5>// cons</h5>
+              <ul class="cons">
+                <li>"why are there two names for one app?"</li>
+                <li>requires great UX to make the toggle feel meaningful, not nav clutter</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- OPTION B · TWO APPS, ONE BACKEND -->
+      <div class="opt">
+        <div class="opt-tag">option B</div>
+        <div>
+          <div class="opt-ill">
+            <svg viewBox="0 0 220 200">
+              <!-- two phones -->
+              <rect x="20" y="30" width="84" height="140" rx="12" fill="#DCEEF2" stroke="#1B1815" stroke-width="2"/>
+              <text x="62" y="48" font-family="Cinzel, serif" font-size="9" letter-spacing="2" fill="#1B1815" text-anchor="middle">KAIROS</text>
+              <line x1="32" y1="100" x2="92" y2="100" stroke="#1B1815"/>
+              <line x1="62" y1="80" x2="62" y2="120" stroke="#0d8a96" stroke-width="3"/>
+
+              <rect x="116" y="30" width="84" height="140" rx="12" fill="#FFE8B8" stroke="#1B1815" stroke-width="2"/>
+              <text x="158" y="48" font-family="Cinzel, serif" font-size="9" letter-spacing="2" fill="#1B1815" text-anchor="middle">CHRONOS</text>
+              <line x1="128" y1="100" x2="188" y2="100" stroke="#1B1815"/>
+              <circle cx="140" cy="100" r="2" fill="#FF6FB5" stroke="#1B1815" stroke-width="0.5"/>
+              <circle cx="158" cy="100" r="2" fill="#FF6FB5" stroke="#1B1815" stroke-width="0.5"/>
+              <circle cx="176" cy="100" r="2" fill="#FF6FB5" stroke="#1B1815" stroke-width="0.5"/>
+
+              <!-- shared cloud underneath -->
+              <ellipse cx="110" cy="184" rx="80" ry="10" fill="none" stroke="#1B1815" stroke-width="1" stroke-dasharray="3 3"/>
+              <text x="110" y="187" font-family="Fira Mono, monospace" font-size="6" letter-spacing="2" fill="#1B1815" text-anchor="middle">SHARED CORE</text>
+
+              <line x1="62" y1="170" x2="80" y2="180" stroke="#1B1815" stroke-width="1" stroke-dasharray="2 2"/>
+              <line x1="158" y1="170" x2="140" y2="180" stroke="#1B1815" stroke-width="1" stroke-dasharray="2 2"/>
+            </svg>
+          </div>
+        </div>
+        <div>
+          <div class="opt-strap">two apps · same account · shared backend</div>
+          <h4>Kairos.app and Chronos.app — siblings, not the same app</h4>
+          <p class="body">
+            Two distinct downloads, two URLs, two app-store listings. Same Stelloquy account underneath, same data. Like Google's "Calendar" and "Tasks" — clearly siblings, but each has its own front door.
+            Stelloquy becomes the umbrella label that nobody really sees, similar to "Project Parallax" already.
+          </p>
+          <div class="pc">
+            <div>
+              <h5>// pros</h5>
+              <ul class="pros">
+                <li>each surface gets a focused identity</li>
+                <li>can market & price each separately if needed</li>
+                <li>one user can love one and ignore the other</li>
+              </ul>
+            </div>
+            <div>
+              <h5>// cons</h5>
+              <ul class="cons">
+                <li>2× design surface, 2× shells, 2× onboarding</li>
+                <li>users will ask "do I need both?"</li>
+                <li>the loop you described (capture → feed insights to planner) gets <em>weird</em> across two apps</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- OPTION C · ONE APP, ONE NAME -->
+      <div class="opt">
+        <div class="opt-tag">option C</div>
+        <div>
+          <div class="opt-ill">
+            <svg viewBox="0 0 220 200">
+              <rect x="60" y="20" width="100" height="160" rx="14" fill="#F4F1E8" stroke="#1B1815" stroke-width="2"/>
+              <text x="110" y="48" font-family="Cinzel, serif" font-size="11" letter-spacing="2" fill="#1B1815" text-anchor="middle">STELLOQUY</text>
+              <line x1="74" y1="92" x2="146" y2="92" stroke="#1B1815"/>
+              <line x1="110" y1="68" x2="110" y2="116" stroke="#2BD9E8" stroke-width="3"/>
+              <circle cx="86" cy="92" r="2.5" fill="#FF6FB5" stroke="#1B1815" stroke-width="0.5"/>
+              <circle cx="98" cy="92" r="2.5" fill="#FF6FB5" stroke="#1B1815" stroke-width="0.5"/>
+              <circle cx="122" cy="92" r="2.5" fill="#FF6FB5" stroke="#1B1815" stroke-width="0.5"/>
+              <circle cx="134" cy="92" r="2.5" fill="#FF6FB5" stroke="#1B1815" stroke-width="0.5"/>
+              <text x="110" y="138" font-family="Kalam, cursive" font-size="9" fill="#3A3530" text-anchor="middle">the moment +</text>
+              <text x="110" y="150" font-family="Kalam, cursive" font-size="9" fill="#3A3530" text-anchor="middle">the record · together</text>
+              <line x1="68" y1="166" x2="152" y2="166" stroke="#1B1815" opacity="0.3"/>
+            </svg>
+          </div>
+        </div>
+        <div>
+          <div class="opt-strap">one app · one name · k+c are internal vocabulary</div>
+          <h4>Just "Stelloquy" — Kairos & Chronos become words inside the product</h4>
+          <p class="body">
+            Drop the K and C as <em>product names</em> entirely. Keep them as <em>system vocabulary</em> the product teaches:
+            you tap a button labeled "kairotic moment" or you look at your "chronos record." Like how Slack teaches you "channel" and "huddle" but doesn't sell them as separate products.
+          </p>
+          <div class="pc">
+            <div>
+              <h5>// pros</h5>
+              <ul class="pros">
+                <li>simplest possible go-to-market</li>
+                <li>matches the bible 1:1 · no rebrand</li>
+                <li>frees Kairos/Chronos to be poetic UI labels</li>
+              </ul>
+            </div>
+            <div>
+              <h5>// cons</h5>
+              <ul class="cons">
+                <li>you lose two beautiful brandable assets</li>
+                <li>the visual system you already built (sightline pair etc.) gets <em>quiet</em></li>
+                <li>"Stelloquy" alone is a harder name to land</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout">
+      <strong>Why I'd pick A.</strong> It honors the bible (one product, one data flywheel) <em>and</em> uses the visual work you've done.
+      Kairos and Chronos earn their names by being <em class="under">stances</em> — different angles on the same self.
+      Same architecture as Apple's Photos vs. Memories, or Linear's Inbox vs. Backlog: same data, two intentional ways of looking.
+      It also matches the metaphor you said you loved: <em class="under">"Chronos is the horizon. Kairos is the moment something crosses it."</em>
+      A toggle is literally that — switching from looking <em>along</em> the horizon to looking <em>at</em> the strike.
+    </div>
+  </section>
+
+  <!-- ════════════════ 05 · WHAT TO ASK NEXT ════════════════ -->
+  <section>
+    <h2 class="section"><span class="num">05</span>What I need from you to lock this</h2>
+    <p class="section-sub">
+      Before we touch any visuals — five questions to settle the boundary.
+    </p>
+
+    <div class="ask">
+      <div class="ask-card">
+        <div class="q">1. Pick a packaging shape — A, B, or C?</div>
+        <div class="why">My read is A. But you live with this every day; if siblings (B) feels right because the audiences <em>are</em> different, that's a real signal.</div>
+      </div>
+      <div class="ask-card">
+        <div class="q">2. Does Stelloquy stay the umbrella name?</div>
+        <div class="why">Bible says yes. But "stelloquy" is also the AI voice in earlier rounds. Pick one job for that word.</div>
+      </div>
+      <div class="ask-card">
+        <div class="q">3. Is the planner part of Kairos, or its own thing?</div>
+        <div class="why">You said Kairos = "see your day/week/year." That's astrology-aware <em>planning</em>, which Co-Star and The Pattern don't do well. Could be your wedge.</div>
+      </div>
+      <div class="ask-card">
+        <div class="q">4. Where does the AI live?</div>
+        <div class="why">Both surfaces, or only Chronos (where the record is)? My read: both — but it speaks differently in each. In Kairos it's predictive ("this week will…"). In Chronos it's reflective ("last time you felt this…").</div>
+      </div>
+      <div class="ask-card">
+        <div class="q">5. What's the single sentence for each?</div>
+        <div class="why">e.g. "Kairos shows you what's lit up · Chronos remembers how you actually felt." Once we have these, every visual decision gets easier.</div>
+      </div>
+      <div class="ask-card">
+        <div class="q">6. Are we re-running v4 visuals after this?</div>
+        <div class="why">If A: we keep WM-05, sightlines, the conceptual core — and rebuild Kairos/Chronos as <em class="under">paired surface aesthetics</em>, not paired logos.</div>
+      </div>
+    </div>
+  </section>
+
+  <p style="margin-top:80px; border-top: 1px dashed var(--ink-faint); padding-top:18px; text-align:center; color:var(--ink-faint); font-size:14px;">
+    one body · two breaths · stelloquy is the spine
+  </p>
+
+</div>
+
+</body>
+</html>

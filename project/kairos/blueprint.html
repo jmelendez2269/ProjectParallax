@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Blueprint — Kairos</title>
+<link rel="stylesheet" href="kairos.css">
+<style>
+.app-shell { display: grid; grid-template-columns: 220px 1fr; min-height: 100vh; }
+@media (max-width: 860px) { .app-shell { grid-template-columns: 1fr; } }
+
+.sidebar { border-right: 1px solid var(--rule); background: rgba(13,13,18,0.88); padding: 24px 0; position: sticky; top: 0; height: 100vh; overflow-y: auto; }
+.sidebar-brand { padding: 0 18px 20px; border-bottom: 1px solid var(--rule); margin-bottom: 12px; }
+.sidebar-logo { display: flex; align-items: center; gap: 10px; }
+.sidebar-logo-icon { width: 36px; height: 36px; border-radius: 10px; border: 1px solid rgba(153,102,255,0.25); background: rgba(153,102,255,0.1); display: flex; align-items: center; justify-content: center; }
+.sidebar-wordmark { font-family: var(--f-display); font-size: 20px; letter-spacing: 0.1em; color: var(--bone); }
+.sidebar-tagline { font-size: 10px; color: var(--bone-faint); margin-top: 2px; }
+.sidebar-tagline span { color: rgba(200,168,255,0.7); }
+.nav-list { list-style: none; padding: 0 10px; display: flex; flex-direction: column; gap: 2px; }
+.nav-item a { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 12px; border: 1px solid transparent; font-size: 14px; font-weight: 500; color: var(--bone-dim); transition: all 0.15s; }
+.nav-item a:hover { background: rgba(255,255,255,0.04); color: var(--bone); border-color: var(--rule); }
+.nav-item.active a { background: rgba(124,236,224,0.08); border-color: rgba(124,236,224,0.25); color: var(--bone); }
+.nav-icon { width: 30px; height: 30px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.08); background: rgba(10,10,14,0.6); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.nav-item.active .nav-icon { border-color: rgba(124,236,224,0.3); background: rgba(124,236,224,0.08); }
+.nav-accent { width: 3px; height: 24px; border-radius: 2px; background: transparent; flex-shrink: 0; }
+.nav-item.active .nav-accent { background: rgba(124,236,224,0.8); }
+.nav-detail { flex: 1; min-width: 0; }
+.nav-label { font-size: 13px; font-weight: 600; }
+.nav-sub { font-size: 10px; color: var(--bone-faint); margin-top: 1px; }
+.nav-item.active .nav-sub { color: rgba(124,236,224,0.6); }
+
+.main-content { padding: 28px 32px 80px; }
+
+/* Blueprint specific */
+.bp-header { margin-bottom: 28px; }
+.bp-title { font-family: var(--f-display); font-size: clamp(24px, 3vw, 38px); letter-spacing: 0.07em; color: var(--bone); line-height: 1.1; margin-bottom: 8px; }
+.bp-sub { font-size: 13px; color: var(--bone-dim); }
+
+.mode-toggle { display: inline-flex; border: 1px solid var(--rule); border-radius: 100px; overflow: hidden; padding: 3px; gap: 2px; }
+.mode-btn { padding: 6px 14px; border-radius: 100px; font-size: 11px; font-weight: 600; letter-spacing: 0.06em; cursor: pointer; transition: background 0.15s, color 0.15s; color: var(--bone-dim); background: transparent; border: none; }
+.mode-btn.active { background: rgba(255,255,255,0.08); color: var(--bone); }
+
+/* Year overview */
+.year-overview { border: 1px solid rgba(124,236,224,0.18); border-radius: 16px; background: rgba(124,236,224,0.03); padding: 24px 28px; margin-bottom: 20px; }
+
+.year-pillars { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 20px; }
+.pillar { padding: 16px 18px; border: 1px solid var(--rule); border-radius: 12px; background: rgba(10,10,14,0.55); }
+.pillar-label { font-family: var(--f-mono); font-size: 8px; letter-spacing: 0.24em; color: var(--bone-faint); text-transform: uppercase; margin-bottom: 6px; }
+.pillar-val { font-size: 13px; font-weight: 600; color: var(--bone); line-height: 1.3; }
+.pillar-sub { font-size: 11px; color: var(--bone-dim); margin-top: 4px; }
+
+/* Quarter cards */
+.quarter-section { border: 1px solid var(--rule); border-radius: 16px; overflow: hidden; margin-bottom: 12px; }
+.quarter-section.active { border-color: rgba(153,102,255,0.28); }
+
+.q-toggle { padding: 18px 24px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; user-select: none; background: rgba(13,13,18,0.7); }
+.q-toggle:hover { background: rgba(17,17,24,0.8); }
+.q-label { display: flex; align-items: center; gap: 12px; }
+.q-num { font-family: var(--f-display); font-size: 32px; font-weight: 500; letter-spacing: 0.08em; opacity: 0.2; }
+.q-name { font-family: var(--f-display); font-size: 18px; letter-spacing: 0.08em; color: var(--bone); }
+.q-range { font-family: var(--f-mono); font-size: 9px; letter-spacing: 0.2em; color: var(--bone-faint); margin-top: 3px; text-transform: uppercase; }
+.q-energy { padding: 4px 12px; border-radius: 100px; font-family: var(--f-mono); font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; }
+.q-energy.push    { background: rgba(153,102,255,0.15); border: 1px solid rgba(153,102,255,0.3); color: var(--k-lit); }
+.q-energy.build   { background: rgba(124,236,224,0.1);  border: 1px solid rgba(124,236,224,0.25); color: var(--moss); }
+.q-energy.rest    { background: rgba(255,155,43,0.1);   border: 1px solid rgba(255,155,43,0.22); color: var(--ember); }
+.q-energy.integr  { background: rgba(184,153,255,0.1);  border: 1px solid rgba(184,153,255,0.22); color: var(--plum); }
+
+.q-body { padding: 20px 24px; border-top: 1px solid var(--rule); }
+.q-body p { font-size: 13px; line-height: 1.7; color: var(--bone-dim); max-width: 700px; margin-bottom: 16px; }
+
+.month-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.month-card { border: 1px solid var(--rule); border-radius: 12px; padding: 14px 16px; background: rgba(10,10,14,0.5); }
+.month-card.active { border-color: rgba(153,102,255,0.3); background: rgba(153,102,255,0.06); }
+.month-name   { font-family: var(--f-display); font-size: 14px; letter-spacing: 0.12em; color: var(--bone); margin-bottom: 6px; }
+.month-theme  { font-size: 12px; font-weight: 600; color: var(--bone); margin-bottom: 5px; }
+.month-body   { font-size: 11px; line-height: 1.6; color: var(--bone-dim); }
+
+/* Transit highlights */
+.transit-list { display: flex; flex-direction: column; gap: 8px; }
+.transit-item { display: flex; align-items: flex-start; gap: 12px; padding: 10px 14px; border-radius: 10px; border: 1px solid var(--rule); background: rgba(10,10,14,0.4); }
+.transit-dot  { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 5px; }
+.transit-text { font-size: 12px; line-height: 1.6; color: var(--bone-dim); }
+.transit-text strong { color: var(--bone); font-weight: 600; }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="wrap">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">
+        <svg class="nav-logo-mark" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="7" fill="#0A0A0E"/><polygon points="14,3.5 3.5,24.5 24.5,24.5" fill="#9966FF" opacity="0.85"/><circle cx="14" cy="3.5" r="1.2" fill="#e0ccff" opacity="0.9"/></svg>
+        KAIROS
+      </a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="dashboard.html">Dashboard</a></li>
+        <li><a href="oracle.html">Oracle</a></li>
+        <li><a href="pricing.html">Pricing</a></li>
+      </ul>
+      <a href="pricing.html" class="nav-cta btn-sm">Join beta</a>
+    </div>
+  </div>
+</nav>
+
+<div style="background:rgba(124,236,224,0.03);border-bottom:1px solid var(--rule);padding:18px 0;">
+  <div class="wrap">
+    <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+      <span class="pill" style="border-color:rgba(124,236,224,0.3);color:rgba(124,236,224,0.7);background:rgba(124,236,224,0.07);">Demo · Blueprint</span>
+      <p class="body-sm" style="color:var(--bone-faint);">Alex's 2026 celestial blueprint — built from a real natal chart and live ephemeris data.</p>
+    </div>
+  </div>
+</div>
+
+<div class="app-shell">
+  <!-- Sidebar -->
+  <nav class="sidebar">
+    <div class="sidebar-brand">
+      <div class="sidebar-logo">
+        <div class="sidebar-logo-icon">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><polygon points="9,2 2,16 16,16" fill="#9966FF" opacity="0.8"/><circle cx="9" cy="2" r="1" fill="#e0ccff"/></svg>
+        </div>
+        <div>
+          <div class="sidebar-wordmark">Life OS</div>
+          <div class="sidebar-tagline"><span>Kairos</span> · Personalized planning</div>
+        </div>
+      </div>
+    </div>
+    <ul class="nav-list">
+      <li class="nav-item"><a href="dashboard.html"><span class="nav-accent"></span><span class="nav-icon"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7L7 2L12 7" stroke="#9966FF" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/><rect x="4" y="7" width="6" height="5" rx="1" stroke="#9966FF" stroke-width="1.2"/></svg></span><span class="nav-detail"><span class="nav-label">Dashboard</span><br><span class="nav-sub">Life OS home</span></span></a></li>
+      <li class="nav-item"><a href="#"><span class="nav-accent"></span><span class="nav-icon"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="2" y="2" width="10" height="10" rx="2" stroke="#b899ff" stroke-width="1.2"/><line x1="2" y1="5.5" x2="12" y2="5.5" stroke="#b899ff" stroke-width="0.9" opacity="0.5"/></svg></span><span class="nav-detail"><span class="nav-label">Cosmic Plan</span><br><span class="nav-sub">Your year map</span></span></a></li>
+      <li class="nav-item active"><a href="blueprint.html"><span class="nav-accent"></span><span class="nav-icon"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="2" y="2" width="10" height="10" rx="1.5" stroke="#7cece0" stroke-width="1.2"/><line x1="4" y1="5.5" x2="10" y2="5.5" stroke="#7cece0" stroke-width="0.9" opacity="0.55"/><line x1="4" y1="8" x2="8" y2="8" stroke="#7cece0" stroke-width="0.9" opacity="0.4"/></svg></span><span class="nav-detail"><span class="nav-label">Blueprint</span><br><span class="nav-sub">Celestial architecture</span></span></a></li>
+      <li class="nav-item"><a href="#"><span class="nav-accent"></span><span class="nav-icon"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="3" y="2" width="8" height="10" rx="1.5" stroke="#FF9B2B" stroke-width="1.2"/><line x1="5" y1="5.5" x2="9" y2="5.5" stroke="#FF9B2B" stroke-width="0.9" opacity="0.55"/></svg></span><span class="nav-detail"><span class="nav-label">Journal</span><br><span class="nav-sub">History and entries</span></span></a></li>
+      <li class="nav-item"><a href="oracle.html"><span class="nav-accent"></span><span class="nav-icon"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="4.5" stroke="#b899ff" stroke-width="1.2"/><circle cx="7" cy="7" r="1.8" fill="#b899ff" opacity="0.5"/><circle cx="7" cy="7" r="0.7" fill="#fff" opacity="0.9"/></svg></span><span class="nav-detail"><span class="nav-label">Oracle</span><br><span class="nav-sub">Guidance channel</span></span></a></li>
+    </ul>
+  </nav>
+
+  <main class="main-content">
+    <!-- Header -->
+    <div class="bp-header">
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:8px;">
+        <div>
+          <p class="kicker" style="margin-bottom:6px;">2026 Blueprint</p>
+          <h1 class="bp-title">The Year of Deliberate Expression</h1>
+          <p class="bp-sub">Everything for the year — quarters, months, and weeks — on one page.</p>
+        </div>
+        <div class="mode-toggle">
+          <button class="mode-btn active">Layered</button>
+          <button class="mode-btn">List</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Year overview -->
+    <div class="year-overview">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:6px;">
+        <p class="eyebrow" style="color:rgba(124,236,224,0.7);">Year at a glance</p>
+      </div>
+      <p class="body-sm" style="max-width:680px;">Saturn trine Midheaven holds through May — structural support for long-term commitments. Jupiter conjunct natal Moon (Cancer) in Q2 — the most emotionally generative window in 12 years. Venus retrograde in Leo July–Sep invites creative review. Pluto square natal Sun (2026–2027) — the deep transformation arc.</p>
+
+      <div class="year-pillars">
+        <div class="pillar">
+          <div class="pillar-label">Year theme</div>
+          <div class="pillar-val">Deliberate Expression</div>
+          <div class="pillar-sub">Saturn structure + Jupiter expansion</div>
+        </div>
+        <div class="pillar">
+          <div class="pillar-label">Dominant transit</div>
+          <div class="pillar-val">Jupiter ☌ Natal Moon</div>
+          <div class="pillar-sub">Exact Apr 28 · Jun 4</div>
+        </div>
+        <div class="pillar">
+          <div class="pillar-label">Peak activation</div>
+          <div class="pillar-val">Apr 4 – May 18</div>
+          <div class="pillar-sub">Primary creative window</div>
+        </div>
+        <div class="pillar">
+          <div class="pillar-label">Rest window</div>
+          <div class="pillar-val">May 18 – May 28</div>
+          <div class="pillar-sub">Mercury retrograde shadow</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q1 -->
+    <div class="quarter-section">
+      <div class="q-toggle">
+        <div class="q-label">
+          <span class="q-num" style="color:var(--k);">Q1</span>
+          <div>
+            <div class="q-name">The Quiet Foundation</div>
+            <div class="q-range">Jan – Mar 2026</div>
+          </div>
+        </div>
+        <span class="q-energy build">Build</span>
+      </div>
+      <div class="q-body">
+        <p>The year opens with Saturn trine your Midheaven — structural, grounding, patient. Q1 asks you to build the invisible architecture: the habits, systems, and commitments that will hold what Q2 wants to grow. The temptation is to push toward visibility. The smarter move is to prepare the vessel.</p>
+        <div class="month-row">
+          <div class="month-card">
+            <div class="month-name">January</div>
+            <div class="month-theme">Systems before signals</div>
+            <div class="month-body">Saturn direct. Focus on what you want the year's structure to hold. New Moon in Capricorn on Jan 29 — ideal for formal commitments.</div>
+          </div>
+          <div class="month-card">
+            <div class="month-name">February</div>
+            <div class="month-theme">Inner clarification</div>
+            <div class="month-body">Mercury retrograde Feb 9–Mar 3. A natural pause before the Jupiter window opens. Review, refine, do not launch.</div>
+          </div>
+          <div class="month-card">
+            <div class="month-name">March</div>
+            <div class="month-theme">The readying</div>
+            <div class="month-body">Mercury stations direct Mar 3. Jupiter approaching your natal Moon. The ground is being prepared. Creative Projects lane begins to warm.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q2 — active -->
+    <div class="quarter-section active">
+      <div class="q-toggle">
+        <div class="q-label">
+          <span class="q-num" style="color:var(--k);">Q2</span>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <div>
+              <div class="q-name">The Expanding Heart</div>
+              <div class="q-range">Apr – Jun 2026</div>
+            </div>
+            <span class="pill pill-violet" style="font-size:8px;"><span class="pill-dot"></span>Now</span>
+          </div>
+        </div>
+        <span class="q-energy push">Push</span>
+      </div>
+      <div class="q-body">
+        <p>Jupiter's conjunction to your natal Moon (Cancer) makes this the most emotionally generative quarter of 2026. What you begin here has room to grow in ways that slower seasons simply cannot offer. The creative work of Q1 now finds its audience. Relationships deepen or clarify. The risk is expansion without ground — Saturn's trine to your Midheaven provides the structural counterweight.</p>
+        <div class="month-row" style="margin-bottom:18px;">
+          <div class="month-card active">
+            <div class="month-name">April</div>
+            <div class="month-theme" style="color:rgba(200,168,255,0.8);">Jupiter–Moon exact</div>
+            <div class="month-body">Jupiter conjunct natal Moon Apr 28 — the emotional peak of the quarter. New Moon in Taurus Apr 27 — begin creative projects that require material form.</div>
+          </div>
+          <div class="month-card active">
+            <div class="month-name">May</div>
+            <div class="month-theme" style="color:rgba(200,168,255,0.8);">Visibility opens</div>
+            <div class="month-body">First half: maximum activation. Mercury retrograde shadow May 18–28 — review window. Venus enters Gemini May 2 — creative partnerships activated.</div>
+          </div>
+          <div class="month-card">
+            <div class="month-name">June</div>
+            <div class="month-theme">Second Jupiter peak</div>
+            <div class="month-body">Jupiter conjunct Moon exact again Jun 4 — second wave. Saturn trine Midheaven still holds. Consolidate what April and May opened.</div>
+          </div>
+        </div>
+        <div style="margin-bottom:4px;"><p class="kicker" style="color:rgba(124,236,224,0.6);">Q2 transit highlights</p></div>
+        <div class="transit-list">
+          <div class="transit-item"><span class="transit-dot" style="background:var(--k);"></span><span class="transit-text"><strong>Jupiter ☌ natal Moon (Cancer) — exact Apr 28 and Jun 4</strong> — the most emotionally generative transit of the year</span></div>
+          <div class="transit-item"><span class="transit-dot" style="background:var(--moss);"></span><span class="transit-text"><strong>Venus enters Gemini May 2</strong> — communication and creative partnership activated</span></div>
+          <div class="transit-item"><span class="transit-dot" style="background:var(--plum);"></span><span class="transit-text"><strong>Saturn trine natal Midheaven holds through May</strong> — structural support for long-term creative commitments</span></div>
+          <div class="transit-item"><span class="transit-dot" style="background:var(--ember);"></span><span class="transit-text"><strong>New Moon in Taurus May 12</strong> — strong for beginning creative projects that require material form</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q3 -->
+    <div class="quarter-section">
+      <div class="q-toggle">
+        <div class="q-label">
+          <span class="q-num" style="color:var(--ember);">Q3</span>
+          <div>
+            <div class="q-name">The Creative Review</div>
+            <div class="q-range">Jul – Sep 2026</div>
+          </div>
+        </div>
+        <span class="q-energy rest">Review</span>
+      </div>
+    </div>
+
+    <!-- Q4 -->
+    <div class="quarter-section">
+      <div class="q-toggle">
+        <div class="q-label">
+          <span class="q-num" style="color:var(--plum);">Q4</span>
+          <div>
+            <div class="q-name">The Deep Integration</div>
+            <div class="q-range">Oct – Dec 2026</div>
+          </div>
+        </div>
+        <span class="q-energy integr">Integrate</span>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<div style="background:rgba(124,236,224,0.03);border-top:1px solid var(--rule);padding:40px 0;text-align:center;">
+  <div class="wrap">
+    <p class="display-md" style="margin-bottom:12px;">Your blueprint would be built from your chart.</p>
+    <p class="body-lg" style="max-width:480px;margin:0 auto 28px;">Sign up, share your birth data and goals, and Kairos generates a full 52-week blueprint — yours specifically, not a template.</p>
+    <a href="pricing.html" class="btn-primary">Join the Founding Beta</a>
+  </div>
+</div>
+
+</body>
+</html>
