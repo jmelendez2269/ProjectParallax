@@ -14,6 +14,15 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Project Parallax">
 <meta name="twitter:description" content="A universe for meaning, timing, and pattern intelligence.">
+<meta property="og:image" content="logos/parallax-correct.png">
+<meta name="twitter:image" content="logos/parallax-correct.png">
+
+<!-- Favicons / app icon -->
+<link rel="icon" type="image/svg+xml" href="logos/parallax-app-icon.svg">
+<link rel="alternate icon" type="image/png" href="logos/parallax-correct.png">
+<link rel="apple-touch-icon" href="logos/parallax-app-icon.svg">
+<link rel="mask-icon" href="logos/parallax-app-icon.svg" color="#9966FF">
+<meta name="theme-color" content="#0A0A0E">
 
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Cinzel:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Fira+Mono:wght@400;500&display=swap');
@@ -299,6 +308,15 @@ section { padding: 108px 52px; }
 .newsletter-form input { flex: 1; background: rgba(255,255,255,0.06); border: 1.5px solid rgba(255,255,255,0.12); border-radius: 100px; padding: 13px 22px; color: var(--bone); font-family:'Space Grotesk',sans-serif; font-size: 15px; outline: none; transition: border-color 0.2s; }
 .newsletter-form input::placeholder { color: rgba(242,239,230,0.3); }
 .newsletter-form input:focus { border-color: var(--bei-cyan); }
+.newsletter-interests { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-top: 18px; }
+.newsletter-interest { position: relative; display: block; cursor: pointer; }
+.newsletter-interest input { position: absolute; opacity: 0; pointer-events: none; }
+.newsletter-interest span {
+  display: block; border: 1.5px solid rgba(255,255,255,0.12); border-radius: 100px;
+  padding: 9px 12px; font-family:'Fira Mono',monospace; font-size: 9px; letter-spacing: 0.18em;
+  color: rgba(242,239,230,0.48); transition: border-color 0.2s, color 0.2s, background 0.2s;
+}
+.newsletter-interest input:checked + span { border-color: var(--bei-cyan); color: var(--bei-cyan); background: rgba(78,231,253,0.08); }
 .newsletter-note { font-size: 12px; color: rgba(242,239,230,0.3); margin-top: 14px; font-family:'Fira Mono',monospace; letter-spacing:0.08em; }
 
 /* ── FOOTER ── */
@@ -319,11 +337,35 @@ footer { background: #060608; padding: 64px 52px 40px; border-top: 1px solid var
 .reveal.visible { opacity:1; transform:translateY(0); }
 
 @media(max-width:960px){
-  nav { padding:16px 24px; }
+  nav { padding:14px 28px; gap:12px; }
   .nav-links { display:none; }
-  section { padding:72px 24px; }
+  .nav-brand { gap:10px; }
+  .nav-brand img { width:36px !important; height:36px !important; }
+  .nav-eyebrow { font-size:7px; letter-spacing:0.35em; }
+  .nav-title { font-size:12px; letter-spacing:0.22em; }
+  .nav-cta { gap:8px; flex-shrink:0; }
+  .nav-cta .btn { padding:7px 14px; font-size:11px; letter-spacing:0.02em; border-width:1px; white-space:nowrap; }
+  section { padding:72px 32px; }
   .siblings,.watch-grid,.notes-grid,.about-inner,.footer-inner { grid-template-columns:1fr; }
   .newsletter-form { flex-direction:column; }
+  .newsletter-interests { grid-template-columns:1fr; }
+  .hero { padding:120px 32px 80px; }
+  .hero-ctas .btn { font-size:14px !important; padding:11px 26px !important; }
+  .why-grid, #doorway [style*="grid-template-columns:repeat(3"] { grid-template-columns:1fr !important; }
+  .support-section { padding:84px 32px; }
+  footer { padding:64px 32px 40px; }
+}
+@media(max-width:600px){
+  nav { padding:12px 20px; gap:8px; }
+  .nav-brand img { width:32px !important; height:32px !important; }
+  .nav-eyebrow { font-size:6px; letter-spacing:0.3em; }
+  .nav-title { font-size:11px; letter-spacing:0.18em; }
+  .nav-cta .btn-support { display:none; }
+  .nav-cta .btn { padding:8px 18px; font-size:12px; }
+  section { padding:64px 24px; }
+  .hero { padding:110px 24px 72px; }
+  .support-section { padding:72px 24px; }
+  footer { padding:56px 24px 32px; }
 }
 </style>
 </head>
@@ -332,7 +374,7 @@ footer { background: #060608; padding: 64px 52px 40px; border-top: 1px solid var
 <!-- ── NAV ── -->
 <nav>
   <a class="nav-brand" href="#hero">
-    <img src="logos/parallax-correct.png" alt="Project Parallax" style="width:48px;height:48px;object-fit:contain;display:block;flex-shrink:0;">
+    <img src="logos/parallax-app-icon.svg" alt="Project Parallax" style="width:48px;height:48px;object-fit:contain;display:block;flex-shrink:0;">
     <div class="nav-wordmark">
       <span class="nav-eyebrow">— PROJECT —</span>
       <span class="nav-title">PARALLAX</span>
@@ -346,7 +388,7 @@ footer { background: #060608; padding: 64px 52px 40px; border-top: 1px solid var
     <a href="#contact">Contact</a>
   </div>
   <div class="nav-cta">
-    <a href="#support" class="btn btn-support" style="font-size:11px;padding:7px 16px;">Support the Project</a>
+    <a href="#support" class="btn btn-support">Support the Project</a>
     <a href="#family" class="btn btn-solid">Get Started</a>
   </div>
 </nav>
@@ -372,9 +414,8 @@ footer { background: #060608; padding: 64px 52px 40px; border-top: 1px solid var
     <p class="hero-tagline">A universe for meaning, timing, and pattern intelligence.</p>
     <p class="hero-sub">Three connected tools for studying symbols, planning with personal timing, and researching patterns across history — built for those who believe the sky has something to say.</p>
     <div class="hero-ctas">
-      <a href="#family" class="btn btn-solid" style="font-size:16px; padding:13px 36px;">Explore the Universe</a>
+      <a href="https://prismarium.xyz" class="btn btn-solid" style="font-size:16px; padding:13px 36px;">Start with Prismarium</a>
       <a href="#family" class="btn btn-vivid" style="font-size:16px; padding:13px 36px;">Start with Kairos</a>
-      <a href="#support" class="btn btn-support" style="font-size:13px; padding:9px 22px;">Support the Project</a>
     </div>
   </div>
 
@@ -435,6 +476,68 @@ footer { background: #060608; padding: 64px 52px 40px; border-top: 1px solid var
         <p class="sib-desc">Historical pattern intelligence for astrology. Research celestial configurations, world events, and recurring cycles across time. Study what happened under similar skies.</p>
         <div class="sib-cta"><a href="#newsletter" class="sib-btn">Preview Chronos →</a></div>
       </div>
+    </div>
+  </div>
+</section>
+
+<hr class="rule">
+
+<!-- ── ABOUT ── -->
+<section class="about-section" id="about">
+  <div class="about-inner">
+    <div class="about-mark reveal">
+      <img src="logos/parallax-correct.png" alt="Project Parallax — master mark" style="width:300px;height:300px;object-fit:contain;display:block;">
+      <p style="font-family:'Fira Mono',monospace;font-size:10px;letter-spacing:0.3em;color:var(--bei-cyan);text-align:center;line-height:2;margin-top:18px;">TWO PERSPECTIVES<br>ONE CONTINUUM</p>
+    </div>
+    <div class="about-body reveal">
+      <p class="section-eyebrow">ORIGIN</p>
+      <h2 class="section-title" style="margin-bottom:28px;">Perspective reveals pattern.</h2>
+      <p>Project Parallax begins with a simple premise: what we understand depends on where we stand, what lens we use, and when we look. The name comes from the astronomical phenomenon — the apparent shift in a star's position when viewed from two different angles.</p>
+      <p>The ecosystem is designed for seekers, researchers, creators, and practitioners who want tools that treat meaning seriously — without collapsing mystery into certainty. No single lens is the whole truth. But each lens can reveal part of the pattern.</p>
+      <p>Kairos, Prismarium, and Chronos were built to close that gap. Stelloquy is the voice that makes all three feel like a conversation, not a manual.</p>
+    </div>
+  </div>
+</section>
+
+<hr class="rule">
+
+<!-- ── WHY NOW ── -->
+<section style="background:#0A0A12;" id="why-now">
+  <div style="max-width:900px;margin:0 auto;text-align:center;" class="reveal">
+    <p class="section-eyebrow">WHY NOW</p>
+    <h2 class="section-title">Built for a changing world.</h2>
+    <p style="font-size:clamp(17px,1.8vw,22px);color:var(--bone-dim);line-height:1.75;max-width:720px;margin:0 auto 48px;">We are living through a threshold of accelerated technology, fragmented meaning, and collective uncertainty. Project Parallax offers tools for people who want to move through this era with more reflection, discernment, and pattern awareness — not to tell you what to believe, but to help you study what is emerging.</p>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px;max-width:860px;margin:0 auto;" class="why-grid">
+      <div style="border:1.5px solid rgba(153,102,255,0.2);border-radius:16px;padding:28px 22px;text-align:left;">
+        <div style="font-family:'Fira Mono',monospace;font-size:10px;letter-spacing:0.3em;color:var(--kairos);margin-bottom:12px;">MEANING</div>
+        <p style="font-size:15px;color:var(--bone-dim);line-height:1.6;">Too much information, not enough wisdom. Prismarium helps you explore traditions, symbols, and systems without being forced into one doctrine.</p>
+      </div>
+      <div style="border:1.5px solid rgba(78,231,253,0.2);border-radius:16px;padding:28px 22px;text-align:left;">
+        <div style="font-family:'Fira Mono',monospace;font-size:10px;letter-spacing:0.3em;color:var(--prism);margin-bottom:12px;">TIMING</div>
+        <p style="font-size:15px;color:var(--bone-dim);line-height:1.6;">The world is faster, more automated, more algorithmic. Kairos offers a private timing system to return to your own rhythm before the world convinces you to live on someone else's clock.</p>
+      </div>
+      <div style="border:1.5px solid rgba(255,155,43,0.2);border-radius:16px;padding:28px 22px;text-align:left;">
+        <div style="font-family:'Fira Mono',monospace;font-size:10px;letter-spacing:0.3em;color:var(--chronos);margin-bottom:12px;">PATTERN</div>
+        <p style="font-size:15px;color:var(--bone-dim);line-height:1.6;">Collective anxiety about repeating cycles. Chronos is a research instrument for studying recurring configurations — astrology as research, not certainty. Pattern recognition, not prophecy.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="rule">
+
+<!-- ── DISCERNMENT ── -->
+<section id="discernment" style="background:rgba(255,255,255,0.015);">
+  <div style="max-width:860px;margin:0 auto;text-align:center;" class="reveal">
+    <p class="section-eyebrow">OUR COMMITMENT</p>
+    <h2 class="section-title">Built for discernment,<br>not dependency.</h2>
+    <p style="font-size:clamp(17px,1.8vw,22px);color:var(--bone-dim);line-height:1.75;margin:0 auto 44px;">These tools are designed to support your inquiry — not replace your judgment. Project Parallax uses transparent framing, source-aware research, and reflective planning. We distinguish carefully between observed patterns, traditional interpretations, symbolic reflections, and personal evidence.</p>
+    <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;font-family:'Fira Mono',monospace;font-size:10px;letter-spacing:0.22em;">
+      <span style="border:1px solid rgba(78,231,253,0.3);color:var(--prism);padding:8px 18px;border-radius:100px;">TRANSPARENT SOURCES</span>
+      <span style="border:1px solid rgba(153,102,255,0.3);color:var(--kairos);padding:8px 18px;border-radius:100px;">MULTI-LENS EXPLORATION</span>
+      <span style="border:1px solid rgba(255,155,43,0.3);color:var(--chronos);padding:8px 18px;border-radius:100px;">PATTERN ≠ PROPHECY</span>
+      <span style="border:1px solid rgba(242,239,230,0.15);color:var(--bone-dim);padding:8px 18px;border-radius:100px;">NO GURU POSITIONING</span>
+      <span style="border:1px solid rgba(242,239,230,0.15);color:var(--bone-dim);padding:8px 18px;border-radius:100px;">ANTI-DOGMA</span>
     </div>
   </div>
 </section>
@@ -507,26 +610,6 @@ footer { background: #060608; padding: 64px 52px 40px; border-top: 1px solid var
 
 <hr class="rule">
 
-<!-- ── ABOUT ── -->
-<section class="about-section" id="about">
-  <div class="about-inner">
-    <div class="about-mark reveal">
-      <img src="logos/parallax-correct.png" alt="Project Parallax — master mark" style="width:300px;height:300px;object-fit:contain;display:block;">
-      <p style="font-family:'Fira Mono',monospace;font-size:10px;letter-spacing:0.3em;color:var(--bei-cyan);text-align:center;line-height:2;margin-top:18px;">TWO PERSPECTIVES<br>ONE CONTINUUM</p>
-    </div>
-    <div class="about-body reveal">
-      <p class="section-eyebrow">ORIGIN</p>
-      <h2 class="section-title" style="margin-bottom:28px;">Perspective reveals pattern.</h2>
-      <p>Project Parallax begins with a simple premise: what we understand depends on where we stand, what lens we use, and when we look. The name comes from the astronomical phenomenon — the apparent shift in a star's position when viewed from two different angles.</p>
-      <p>The ecosystem is designed for seekers, researchers, creators, and practitioners who want tools that treat meaning seriously — without collapsing mystery into certainty. No single lens is the whole truth. But each lens can reveal part of the pattern.</p>
-      <p>Kairos, Prismarium, and Chronos were built to close that gap. Stelloquy is the voice that makes all three feel like a conversation, not a manual.</p>
-      <a href="#support" class="btn btn-vivid" style="display:inline-block;margin-top:8px;">Support the Project →</a>
-    </div>
-  </div>
-</section>
-
-<hr class="rule">
-
 <!-- ── FIELD NOTES ── -->
 <section id="notes">
   <div class="reveal">
@@ -539,19 +622,19 @@ footer { background: #060608; padding: 64px 52px 40px; border-top: 1px solid var
       <div class="note-date">APR 2026 · KAIROS</div>
       <div class="note-title">Why personal astrology needs its own vocabulary</div>
       <p class="note-excerpt">The language we inherited from traditional astrology was built for someone else's sky. What happens when we build tools that speak in yours?</p>
-      <a href="#" class="note-read">Read →</a>
+      <a href="#newsletter" class="note-read">Join the list →</a>
     </div>
     <div class="note-card reveal">
       <div class="note-date">MAR 2026 · PRISMARIUM</div>
       <div class="note-title">Seven lenses. What are they and why does it matter?</div>
       <p class="note-excerpt">When we talk about "convergence," we mean something specific: the places where different wisdom traditions point to the same thing from different angles.</p>
-      <a href="#" class="note-read">Read →</a>
+      <a href="#newsletter" class="note-read">Join the list →</a>
     </div>
     <div class="note-card reveal">
       <div class="note-date">FEB 2026 · DESIGN</div>
       <div class="note-title">On building luxury software for the spiritual life</div>
       <p class="note-excerpt">There's no reason tools for deep, personal work should look utilitarian. A conversation with the stars deserves a room worthy of the conversation.</p>
-      <a href="#" class="note-read">Read →</a>
+      <a href="#newsletter" class="note-read">Join the list →</a>
     </div>
   </div>
 </section>
@@ -567,50 +650,55 @@ footer { background: #060608; padding: 64px 52px 40px; border-top: 1px solid var
     <a href="https://ko-fi.com" target="_blank" rel="noopener" class="btn btn-vivid" style="font-size:16px;padding:14px 44px;">Make a contribution →</a>
     <p style="font-family:'Fira Mono',monospace;font-size:10px;letter-spacing:0.15em;color:rgba(242,239,230,0.28);margin-top:18px;">Every contribution keeps the tools free and the work independent.</p>
   </div>
-</section>
 
-<hr class="rule">
+  <!-- WHERE THE SUPPORT GOES -->
+  <div class="reveal" style="max-width:1100px;margin:84px auto 0;">
+    <div style="text-align:center;margin-bottom:48px;">
+      <p class="section-eyebrow" style="color:var(--prism);">WHERE YOUR SUPPORT GOES</p>
+      <h3 style="font-family:'Cinzel',serif;font-weight:500;font-size:clamp(24px,3vw,36px);letter-spacing:0.07em;line-height:1.2;margin-bottom:14px;">What we're building next in <span style="color:var(--prism);">Prismarium</span>.</h3>
+      <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:clamp(16px,1.6vw,19px);color:var(--bone-dim);line-height:1.55;max-width:620px;margin:0 auto;">Contributions fund the next chapter of the workshop — deeper media, smarter intelligence, a library that learns alongside you.</p>
+    </div>
 
-<!-- ── WHY NOW ── -->
-<section style="background:#0A0A12;" id="why-now">
-  <div style="max-width:900px;margin:0 auto;text-align:center;" class="reveal">
-    <p class="section-eyebrow">WHY NOW</p>
-    <h2 class="section-title">Built for a changing world.</h2>
-    <p style="font-size:clamp(17px,1.8vw,22px);color:var(--bone-dim);line-height:1.75;max-width:720px;margin:0 auto 48px;">We are living through a threshold of accelerated technology, fragmented meaning, and collective uncertainty. Project Parallax offers tools for people who want to move through this era with more reflection, discernment, and pattern awareness — not to tell you what to believe, but to help you study what is emerging.</p>
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px;max-width:860px;margin:0 auto;" class="why-grid">
-      <div style="border:1.5px solid rgba(153,102,255,0.2);border-radius:16px;padding:28px 22px;text-align:left;">
-        <div style="font-family:'Fira Mono',monospace;font-size:10px;letter-spacing:0.3em;color:var(--kairos);margin-bottom:12px;">MEANING</div>
-        <p style="font-size:15px;color:var(--bone-dim);line-height:1.6;">Too much information, not enough wisdom. Prismarium helps you explore traditions, symbols, and systems without being forced into one doctrine.</p>
+    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:18px;text-align:left;" class="support-features-grid">
+      <div style="border:1.5px solid rgba(78,231,253,0.22);border-radius:16px;padding:26px 24px;background:rgba(78,231,253,0.04);">
+        <div style="font-family:'Fira Mono',monospace;font-size:10px;letter-spacing:0.3em;color:var(--prism);margin-bottom:12px;">01 · COURSEWORK</div>
+        <div style="font-family:'Cinzel',serif;font-size:16px;letter-spacing:0.1em;margin-bottom:10px;">Educational videos</div>
+        <p style="font-size:14px;color:var(--bone-dim);line-height:1.65;">Filmed lessons that bring each course to life — visual, narrated, and paced for genuine study rather than passive scrolling.</p>
       </div>
-      <div style="border:1.5px solid rgba(78,231,253,0.2);border-radius:16px;padding:28px 22px;text-align:left;">
-        <div style="font-family:'Fira Mono',monospace;font-size:10px;letter-spacing:0.3em;color:var(--prism);margin-bottom:12px;">TIMING</div>
-        <p style="font-size:15px;color:var(--bone-dim);line-height:1.6;">The world is faster, more automated, more algorithmic. Kairos offers a private timing system to return to your own rhythm before the world convinces you to live on someone else's clock.</p>
+
+      <div style="border:1.5px solid rgba(78,231,253,0.22);border-radius:16px;padding:26px 24px;background:rgba(78,231,253,0.04);">
+        <div style="font-family:'Fira Mono',monospace;font-size:10px;letter-spacing:0.3em;color:var(--prism);margin-bottom:12px;">02 · LISTENING</div>
+        <div style="font-family:'Cinzel',serif;font-size:16px;letter-spacing:0.1em;margin-bottom:10px;">Audio readings of the books</div>
+        <p style="font-size:14px;color:var(--bone-dim);line-height:1.65;">Every course book read aloud, so the library can travel with you — on walks, in transit, between the lines of the day.</p>
       </div>
-      <div style="border:1.5px solid rgba(255,155,43,0.2);border-radius:16px;padding:28px 22px;text-align:left;">
-        <div style="font-family:'Fira Mono',monospace;font-size:10px;letter-spacing:0.3em;color:var(--chronos);margin-bottom:12px;">PATTERN</div>
-        <p style="font-size:15px;color:var(--bone-dim);line-height:1.6;">Collective anxiety about repeating cycles. Chronos is a research instrument for studying recurring configurations — astrology as research, not certainty. Pattern recognition, not prophecy.</p>
+
+      <div style="border:1.5px solid rgba(153,102,255,0.22);border-radius:16px;padding:26px 24px;background:rgba(153,102,255,0.04);">
+        <div style="font-family:'Fira Mono',monospace;font-size:10px;letter-spacing:0.3em;color:var(--kairos);margin-bottom:12px;">03 · INTELLIGENCE</div>
+        <div style="font-family:'Cinzel',serif;font-size:16px;letter-spacing:0.1em;margin-bottom:10px;">A model fine-tuned on our library</div>
+        <p style="font-size:14px;color:var(--bone-dim);line-height:1.65;">A dedicated model trained on the full Prismarium library — fluent in our sources, our framing, and the connective tissue between traditions.</p>
+      </div>
+
+      <div style="border:1.5px solid rgba(153,102,255,0.22);border-radius:16px;padding:26px 24px;background:rgba(153,102,255,0.04);">
+        <div style="font-family:'Fira Mono',monospace;font-size:10px;letter-spacing:0.3em;color:var(--kairos);margin-bottom:12px;">04 · LEARNING</div>
+        <div style="font-family:'Cinzel',serif;font-size:16px;letter-spacing:0.1em;margin-bottom:10px;">Machine learning on the material</div>
+        <p style="font-size:14px;color:var(--bone-dim);line-height:1.65;">ML pipelines that study the corpus itself — surfacing themes, resonances, and patterns across texts that no single reading could hold at once.</p>
+      </div>
+
+      <div style="border:1.5px solid rgba(245,185,66,0.22);border-radius:16px;padding:26px 24px;background:rgba(245,185,66,0.04);grid-column:span 2;" class="support-feature-wide">
+        <div style="font-family:'Fira Mono',monospace;font-size:10px;letter-spacing:0.3em;color:#F5B942;margin-bottom:12px;">05 · THE GRAPH</div>
+        <div style="font-family:'Cinzel',serif;font-size:16px;letter-spacing:0.1em;margin-bottom:10px;">A more intelligent knowledge graph</div>
+        <p style="font-size:14px;color:var(--bone-dim);line-height:1.65;max-width:760px;">Extending the intelligence of the Prismarium graph — richer relationships between concepts, traditions, symbols, and sources, so the workshop becomes a living map of meaning rather than a static index.</p>
       </div>
     </div>
   </div>
 </section>
 
-<hr class="rule">
-
-<!-- ── DISCERNMENT ── -->
-<section id="discernment" style="background:rgba(255,255,255,0.015);">
-  <div style="max-width:860px;margin:0 auto;text-align:center;" class="reveal">
-    <p class="section-eyebrow">OUR COMMITMENT</p>
-    <h2 class="section-title">Built for discernment,<br>not dependency.</h2>
-    <p style="font-size:clamp(17px,1.8vw,22px);color:var(--bone-dim);line-height:1.75;margin:0 auto 44px;">These tools are designed to support your inquiry — not replace your judgment. Project Parallax uses transparent framing, source-aware research, and reflective planning. We distinguish carefully between observed patterns, traditional interpretations, symbolic reflections, and personal evidence.</p>
-    <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;font-family:'Fira Mono',monospace;font-size:10px;letter-spacing:0.22em;">
-      <span style="border:1px solid rgba(78,231,253,0.3);color:var(--prism);padding:8px 18px;border-radius:100px;">TRANSPARENT SOURCES</span>
-      <span style="border:1px solid rgba(153,102,255,0.3);color:var(--kairos);padding:8px 18px;border-radius:100px;">MULTI-LENS EXPLORATION</span>
-      <span style="border:1px solid rgba(255,155,43,0.3);color:var(--chronos);padding:8px 18px;border-radius:100px;">PATTERN ≠ PROPHECY</span>
-      <span style="border:1px solid rgba(242,239,230,0.15);color:var(--bone-dim);padding:8px 18px;border-radius:100px;">NO GURU POSITIONING</span>
-      <span style="border:1px solid rgba(242,239,230,0.15);color:var(--bone-dim);padding:8px 18px;border-radius:100px;">ANTI-DOGMA</span>
-    </div>
-  </div>
-</section>
+<style>
+@media(max-width:760px){
+  .support-features-grid { grid-template-columns:1fr !important; }
+  .support-feature-wide { grid-column:span 1 !important; }
+}
+</style>
 
 <hr class="rule">
 
@@ -645,14 +733,19 @@ footer { background: #060608; padding: 64px 52px 40px; border-top: 1px solid var
 <!-- ── NEWSLETTER ── -->
 <section class="newsletter-section" id="newsletter">
   <div class="newsletter-inner reveal">
-    <p class="section-eyebrow">STAY CLOSE</p>
-    <h2 class="section-title">Field Notes, in your inbox.</h2>
-    <p class="section-sub" style="margin:14px auto 0;text-align:center;">New posts, product updates, early access. No noise.</p>
+    <p class="section-eyebrow">FIELD NOTES</p>
+    <h2 class="section-title">Stay close to the work.</h2>
+    <p class="section-sub" style="margin:14px auto 0;text-align:center;">Essays, product notes, and early access from the Parallax universe. Public posts live here; the inbox is just how you know when a new doorway opens.</p>
     <form class="newsletter-form" onsubmit="return false;">
       <input type="email" placeholder="your@email.com" aria-label="Email address">
-      <button type="submit" class="btn btn-solid">Subscribe</button>
+      <button type="submit" class="btn btn-solid">Join Field Notes</button>
     </form>
-    <p class="newsletter-note">No spam. Unsubscribe at any time.</p>
+    <div class="newsletter-interests" aria-label="Choose your primary interest">
+      <label class="newsletter-interest"><input type="radio" name="interest" value="kairos" checked><span>KAIROS</span></label>
+      <label class="newsletter-interest"><input type="radio" name="interest" value="prismarium"><span>PRISMARIUM</span></label>
+      <label class="newsletter-interest"><input type="radio" name="interest" value="chronos"><span>CHRONOS</span></label>
+    </div>
+    <p class="newsletter-note">No platform gate. No paid newsletter wall. Unsubscribe at any time.</p>
   </div>
 </section>
 
