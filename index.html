@@ -137,9 +137,9 @@ nav {
 /* hero text */
 .hero-inner { position: relative; z-index: 5; max-width: 1000px; }
 .hero-eyebrow {
-  font-family: 'Fira Mono', monospace; font-size: 12px;
-  letter-spacing: 0.42em; color: var(--bei-cyan); opacity: 0.9;
-  margin-bottom: 18px;
+  font-family: 'Fira Mono', monospace; font-size: clamp(16px, 1.8vw, 22px);
+  letter-spacing: 0.5em; color: var(--bei-cyan); opacity: 0.95;
+  margin-bottom: 26px;
 }
 .hero-name {
   font-family: 'Cinzel', serif; font-weight: 700;
@@ -374,7 +374,7 @@ footer { background: #060608; padding: 64px 52px 40px; border-top: 1px solid var
 <!-- ── NAV ── -->
 <nav>
   <a class="nav-brand" href="#hero">
-    <img src="logos/parallax-app-icon.svg" alt="Project Parallax" style="width:48px;height:48px;object-fit:contain;display:block;flex-shrink:0;">
+    <img src="logos/parallax-correct.png" alt="Project Parallax" style="width:52px;height:52px;object-fit:contain;display:block;flex-shrink:0;filter:drop-shadow(0 0 12px rgba(153,102,255,0.35)) drop-shadow(0 0 22px rgba(78,231,253,0.18));">
     <div class="nav-wordmark">
       <span class="nav-eyebrow">— PROJECT —</span>
       <span class="nav-title">PARALLAX</span>
