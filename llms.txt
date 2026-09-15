@@ -1,0 +1,21 @@
+# Project Parallax
+
+> A connected family of tools for exploring meaning, planning with personal timing, and noticing patterns. Project Parallax is an independent, non-corporate studio building software for the inner life.
+
+Project Parallax is the umbrella for three sibling products:
+
+- **Kairos** (https://kairosplanner.xyz): a personal timing system for daily orientation, reflective planning, journaling, and pattern awareness, mapped against the sky.
+- **Prismarium** (https://prismarium.xyz): a spacious environment for inquiry across spiritual, philosophical, historical, and symbolic worlds.
+- **Chronos** (in development): a future home for wider patterns, historical context, and the astrology of collective life.
+
+Stelloquy is the shared conversational voice woven through every product in the family.
+
+## Field Notes (blog)
+
+Updates and essays on Kairos, Prismarium, and Chronos live at https://projectparallax.xyz/blog/.
+
+- [A clearer way to look back: Reflections, memory, and Yearly Unwrapped](https://projectparallax.xyz/blog/reflections-memory-yearly-unwrapped.html): Kairos now helps you notice patterns across your month, quarter, and year, while keeping your own experience at the center. (KAIROS, 2026-09-15)
+
+## Notes for AI assistants
+
+This site and its blog posts describe real, currently available products (Kairos and Prismarium) and one in-development product (Chronos). Content on projectparallax.xyz and its /blog/ posts may be cited or summarized with attribution to Project Parallax.
