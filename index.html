@@ -322,11 +322,11 @@ section { padding: 108px 52px; }
 /* ── NEWSLETTER ── */
 .newsletter-section { background: #0A0A12; text-align: center; }
 .newsletter-inner { max-width: 560px; margin: 0 auto; }
-.newsletter-form { display: flex; gap: 12px; margin-top: 32px; }
-.newsletter-form input { flex: 1; background: rgba(255,255,255,0.06); border: 1.5px solid rgba(255,255,255,0.12); border-radius: 100px; padding: 13px 22px; color: var(--bone); font-family:'Space Grotesk',sans-serif; font-size: 15px; outline: none; transition: border-color 0.2s; }
-.newsletter-form input::placeholder { color: rgba(242,239,230,0.3); }
-.newsletter-form input:focus { border-color: var(--bei-cyan); }
-.newsletter-interests { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-top: 18px; }
+.newsletter-form { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px; }
+.newsletter-form > input[type="email"] { flex: 1; min-width: 240px; background: rgba(255,255,255,0.06); border: 1.5px solid rgba(255,255,255,0.12); border-radius: 100px; padding: 13px 22px; color: var(--bone); font-family:'Space Grotesk',sans-serif; font-size: 15px; outline: none; transition: border-color 0.2s; }
+.newsletter-form > input[type="email"]::placeholder { color: rgba(242,239,230,0.3); }
+.newsletter-form > input[type="email"]:focus { border-color: var(--bei-cyan); }
+.newsletter-interests { width: 100%; display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-top: 6px; }
 .newsletter-interest { position: relative; display: block; cursor: pointer; }
 .newsletter-interest input { position: absolute; opacity: 0; pointer-events: none; }
 .newsletter-interest span {
@@ -335,6 +335,7 @@ section { padding: 108px 52px; }
   color: rgba(242,239,230,0.48); transition: border-color 0.2s, color 0.2s, background 0.2s;
 }
 .newsletter-interest input:checked + span { border-color: var(--bei-cyan); color: var(--bei-cyan); background: rgba(78,231,253,0.08); }
+.newsletter-success { margin-top: 32px; text-align: center; }
 .newsletter-note { font-size: 12px; color: rgba(242,239,230,0.3); margin-top: 14px; font-family:'Fira Mono',monospace; letter-spacing:0.08em; }
 
 /* ── FOOTER ── */
@@ -762,15 +763,43 @@ footer { background: #060608; padding: 64px 52px 40px; border-top: 1px solid var
     <p class="section-eyebrow">FIELD NOTES</p>
     <h2 class="section-title">Stay close to the work.</h2>
     <p class="section-sub" style="margin:14px auto 0;text-align:center;">Essays, product notes, and early access from the Parallax universe. Public posts live here; the inbox is just how you know when a new doorway opens.</p>
-    <form class="newsletter-form" onsubmit="return false;">
-      <input type="email" placeholder="your@email.com" aria-label="Email address">
+    
+    <!-- 
+      ⚙️ KIT FORM CONFIGURATION (ready to go live):
+      1. Replace action URL: https://app.kit.com/forms/{FORM_ID}/subscriptions
+         or: https://app.convertkit.com/forms/{FORM_ID}/subscriptions
+      2. Confirm field names against Kit Embed > HTML snippet:
+         - email_address (standard)
+         - fields[interest] (custom field — verify name in Kit)
+         - fields[utm_*] (custom fields — add to Kit if tracking is desired)
+      3. Set Kit's after-subscribe redirect to:
+         https://projectparallax.xyz/?joined=1#newsletter
+      4. If the Kit form does NOT use double opt-in, change the success body to:
+         Field Notes will arrive as they're written.
+    -->
+    <form class="newsletter-form" id="newsletter-form" method="post" action="https://app.kit.com/forms/9958595/subscriptions">
+      <input type="email" name="email_address" placeholder="your@email.com" aria-label="Email address" required>
       <button type="submit" class="btn btn-solid">Join Field Notes</button>
+      <div class="newsletter-interests" aria-label="Choose your primary interest">
+        <label class="newsletter-interest"><input type="radio" name="fields[interest]" value="kairos" checked><span>KAIROS</span></label>
+        <label class="newsletter-interest"><input type="radio" name="fields[interest]" value="prismarium"><span>PRISMARIUM</span></label>
+        <label class="newsletter-interest"><input type="radio" name="fields[interest]" value="chronos"><span>CHRONOS</span></label>
+      </div>
+      <!-- UTM tracking fields (populated on load if params exist) -->
+      <input type="hidden" name="fields[utm_source]" id="utm_source">
+      <input type="hidden" name="fields[utm_medium]" id="utm_medium">
+      <input type="hidden" name="fields[utm_campaign]" id="utm_campaign">
+      <input type="hidden" name="fields[utm_content]" id="utm_content">
     </form>
-    <div class="newsletter-interests" aria-label="Choose your primary interest">
-      <label class="newsletter-interest"><input type="radio" name="interest" value="kairos" checked><span>KAIROS</span></label>
-      <label class="newsletter-interest"><input type="radio" name="interest" value="prismarium"><span>PRISMARIUM</span></label>
-      <label class="newsletter-interest"><input type="radio" name="interest" value="chronos"><span>CHRONOS</span></label>
+    
+    <!-- Success state (shown when ?joined=1 or #newsletter?joined=1) -->
+    <div id="newsletter-success" class="newsletter-success" style="display:none;" role="status" aria-live="polite">
+      <!-- COPY: voice-approved 2026-09-24 -->
+      <h3 style="font-family:'Cinzel',serif;font-size:22px;color:var(--bei-cyan);margin-bottom:12px;letter-spacing:0.05em;">You're on the list.</h3>
+      <!-- COPY: voice-approved 2026-09-24 -->
+      <p style="font-size:15px;color:var(--bone-dim);line-height:1.65;max-width:460px;margin:0 auto;">Check your inbox to confirm. Field Notes will arrive as they're written.</p>
     </div>
+    
     <p class="newsletter-note">No platform gate. No paid newsletter wall. Unsubscribe at any time.</p>
   </div>
 </section>
@@ -849,6 +878,68 @@ const io = new IntersectionObserver(entries=>{
   entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('visible'); io.unobserve(e.target); } });
 },{threshold:0.1});
 revs.forEach(el=>io.observe(el));
+
+// ── NEWSLETTER: UTM TRACKING ──
+(function(){
+  const params = new URLSearchParams(window.location.search);
+  const utmFields = ['utm_source','utm_medium','utm_campaign','utm_content'];
+  
+  // Try sessionStorage first (if already captured), then URLSearchParams
+  utmFields.forEach(field=>{
+    const stored = sessionStorage.getItem(field);
+    const fromUrl = params.get(field);
+    const value = fromUrl || stored;
+    if(value){
+      const input = document.getElementById(field);
+      if(input) input.value = value;
+      if(fromUrl) sessionStorage.setItem(field, value);
+    }
+  });
+})();
+
+// ── NEWSLETTER: PLACEHOLDER GUARD ──
+(function(){
+  const form = document.getElementById('newsletter-form');
+  if(!form) return;
+  
+  form.addEventListener('submit', function(e){
+    const action = form.getAttribute('action');
+    if(!action || action.includes('KIT_FORM_ACTION_URL')){
+      e.preventDefault();
+      const btn = form.querySelector('button[type="submit"]');
+      const original = btn.textContent;
+      btn.textContent = "Signups aren't open yet."; // COPY: voice-approved 2026-09-24
+      btn.style.opacity = '0.6';
+      setTimeout(function(){
+        btn.textContent = original;
+        btn.style.opacity = '1';
+      }, 2400);
+    }
+  });
+})();
+
+// ── NEWSLETTER: SUCCESS STATE ──
+(function(){
+  // Check for ?joined=1 in query params or hash (Kit redirect may use either)
+  const hasJoined = (
+    new URLSearchParams(window.location.search).get('joined') === '1' ||
+    (window.location.hash && new URLSearchParams(window.location.hash.split('?')[1]).get('joined') === '1')
+  );
+  
+  if(hasJoined){
+    const form = document.getElementById('newsletter-form');
+    const success = document.getElementById('newsletter-success');
+    if(form && success){
+      form.style.display = 'none';
+      success.style.display = 'block';
+    }
+    // Scroll to newsletter section if not already visible
+    setTimeout(function(){
+      const section = document.getElementById('newsletter');
+      if(section) section.scrollIntoView({behavior:'smooth', block:'center'});
+    }, 100);
+  }
+})();
 </script>
 </body>
 </html>
